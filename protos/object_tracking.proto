@@ -1,0 +1,29 @@
+syntax = "proto3";
+
+package protos;
+
+service ObjectTracking{
+ rpc track_objects(Request) returns (TrackingResponse) {}
+}
+
+message Request{
+ string image = 1;
+ int64 frame_id = 2;
+ int64 request_time_ms = 3;
+}
+
+message TrackingResponse{
+ int64 frame_id = 1;
+ int64 request_time_ms = 2;
+ int64 request_received_time_ms = 3;
+ int64 response_time_ms = 4;
+ repeated BoundingBox bounding_boxes = 5;
+}
+
+message BoundingBox {
+  string clazz = 1;
+  int32 x_min = 2;
+  int32 x_max = 3;
+  int32 y_min = 4;
+  int32 y_max = 5;
+}

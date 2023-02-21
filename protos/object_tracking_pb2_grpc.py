@@ -2,10 +2,10 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from protos import unary_pb2 as protos_dot_unary__pb2
+from protos import object_tracking_pb2 as object__tracking__pb2
 
 
-class UnaryStub(object):
+class ObjectTrackingStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -14,45 +14,42 @@ class UnaryStub(object):
         Args:
             channel: A grpc.Channel.
         """
-        self.GetServerResponse = channel.unary_unary(
-                '/Unary/GetServerResponse',
-                request_serializer=protos_dot_unary__pb2.Message.SerializeToString,
-                response_deserializer=protos_dot_unary__pb2.MessageResponse.FromString,
+        self.track_objects = channel.unary_unary(
+                '/protos.ObjectTracking/track_objects',
+                request_serializer=object__tracking__pb2.Request.SerializeToString,
+                response_deserializer=object__tracking__pb2.TrackingResponse.FromString,
                 )
 
 
-class UnaryServicer(object):
+class ObjectTrackingServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def GetServerResponse(self, request, context):
-        """A simple RPC.
-
-        Obtains the MessageResponse at a given position.
-        """
+    def track_objects(self, request, context):
+        """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
 
-def add_UnaryServicer_to_server(servicer, server):
+def add_ObjectTrackingServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'GetServerResponse': grpc.unary_unary_rpc_method_handler(
-                    servicer.GetServerResponse,
-                    request_deserializer=protos_dot_unary__pb2.Message.FromString,
-                    response_serializer=protos_dot_unary__pb2.MessageResponse.SerializeToString,
+            'track_objects': grpc.unary_unary_rpc_method_handler(
+                    servicer.track_objects,
+                    request_deserializer=object__tracking__pb2.Request.FromString,
+                    response_serializer=object__tracking__pb2.TrackingResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'Unary', rpc_method_handlers)
+            'protos.ObjectTracking', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Unary(object):
+class ObjectTracking(object):
     """Missing associated documentation comment in .proto file."""
 
     @staticmethod
-    def GetServerResponse(request,
+    def track_objects(request,
             target,
             options=(),
             channel_credentials=None,
@@ -62,8 +59,8 @@ class Unary(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/Unary/GetServerResponse',
-            protos_dot_unary__pb2.Message.SerializeToString,
-            protos_dot_unary__pb2.MessageResponse.FromString,
+        return grpc.experimental.unary_unary(request, target, '/protos.ObjectTracking/track_objects',
+            object__tracking__pb2.Request.SerializeToString,
+            object__tracking__pb2.TrackingResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
