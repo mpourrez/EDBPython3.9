@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15object_tracking.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"\xa6\x01\n\x10TrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12+\n\x0e\x62ounding_boxes\x18\x05 \x03(\x0b\x32\x13.protos.BoundingBox\"X\n\x0b\x42oundingBox\x12\r\n\x05\x63lazz\x18\x01 \x01(\t\x12\r\n\x05x_min\x18\x02 \x01(\x05\x12\r\n\x05x_max\x18\x03 \x01(\x05\x12\r\n\x05y_min\x18\x04 \x01(\x05\x12\r\n\x05y_max\x18\x05 \x01(\x05\x32N\n\x0eObjectTracking\x12<\n\rtrack_objects\x12\x0f.protos.Request\x1a\x18.protos.TrackingResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x15object_tracking.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"\xa9\x01\n\x10TrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12.\n\x0ftracked_objects\x18\x05 \x03(\x0b\x32\x15.protos.TrackedObject\"l\n\rTrackedObject\x12\x10\n\x08track_id\x18\x01 \x01(\x05\x12\r\n\x05\x63lazz\x18\x02 \x01(\t\x12\r\n\x05x_min\x18\x03 \x01(\x05\x12\r\n\x05x_max\x18\x04 \x01(\x05\x12\r\n\x05y_min\x18\x05 \x01(\x05\x12\r\n\x05y_max\x18\x06 \x01(\x05\x32N\n\x0eObjectTracking\x12<\n\rtrack_objects\x12\x0f.protos.Request\x1a\x18.protos.TrackingResponse\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'object_tracking_pb2', globals())
@@ -23,9 +23,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REQUEST._serialized_start=33
   _REQUEST._serialized_end=100
   _TRACKINGRESPONSE._serialized_start=103
-  _TRACKINGRESPONSE._serialized_end=269
-  _BOUNDINGBOX._serialized_start=271
-  _BOUNDINGBOX._serialized_end=359
-  _OBJECTTRACKING._serialized_start=361
-  _OBJECTTRACKING._serialized_end=439
+  _TRACKINGRESPONSE._serialized_end=272
+  _TRACKEDOBJECT._serialized_start=274
+  _TRACKEDOBJECT._serialized_end=382
+  _OBJECTTRACKING._serialized_start=384
+  _OBJECTTRACKING._serialized_end=462
 # @@protoc_insertion_point(module_scope)

@@ -1,9 +1,12 @@
 import grpc
 from concurrent import futures
+from base64 import b64decode
+import cv2
+import numpy as np
 from protos import object_tracking_pb2_grpc as pb2_grpc
 from protos import object_tracking_pb2 as pb2
 from utils import *
-
+from applications.object_tracking import object_tracker
 
 class ObjectTrackingService(pb2_grpc.ObjectTrackingServicer):
 
@@ -13,19 +16,12 @@ class ObjectTrackingService(pb2_grpc.ObjectTrackingServicer):
     def track_objects(self, request, context):
 
         request_received_time_ms = current_milli_time()
-        # image = request.image
-
-        response_time_ms = current_milli_time()
-        bounding_box = {'clazz': 'person', 'x_min': 12, 'x_max': 23, 'y_min': 34, 'y_max': 45}
-        result = {
-            'frame_id': request.frame_id,
-            'request_time_ms': request.request_time_ms,
-            'request_received_time_ms': request_received_time_ms,
-            'response_time_ms': response_time_ms,
-            'bounding_boxes':[bounding_box],
-        }
-
-        return pb2.TrackingResponse(**result)
+        byte_array = bytearray(request.image, encoding='utf-8')
+        decoded_bytes = b64decode(byte_array)
+        numpy_array = np.frombuffer(decoded_bytes, np.uint8)
+        image = cv2.imdecode(numpy_array, cv2.IMREAD_COLOR)
+        tracking_result = object_tracker.track_from_image(image, request.frame_id, request.request_time_ms, request_received_time_ms)
+        return tracking_result
 
 
 def serve():
