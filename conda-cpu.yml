@@ -10,6 +10,7 @@ dependencies:
     - lxml
     - tqdm
     - tensorflow==2.3.0
+    - seaborn
     - absl-py
     - easydict
     - flask

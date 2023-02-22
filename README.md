@@ -34,3 +34,7 @@ For this application, we are using the "yolov4-deepsort" github repository which
 
 
 ### 2- Object Detection
+
+For this application, we are using the "yolov3" github repository which includes object tracking for both CPU and GPU.
+
+[yolov3](https://github.com/theAIGuysCode/Object-Detection-API)

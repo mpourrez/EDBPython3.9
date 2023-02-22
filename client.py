@@ -1,6 +1,6 @@
 import grpc
-from protos import object_tracking_pb2_grpc as pb2_grpc
-from protos import object_tracking_pb2 as pb2
+from protos import benchmark_pb2_grpc as pb2_grpc
+from protos import benchmark_pb2 as pb2
 import cv2
 from base64 import b64encode
 from utils import *
@@ -20,7 +20,7 @@ class Client(object):
             '{}:{}'.format(self.host, self.server_port))
 
         # bind the client and the server
-        self.stub = pb2_grpc.ObjectTrackingStub(self.channel)
+        self.stub = pb2_grpc.BenchmarksStub(self.channel)
 
     def call_tracking_server(self, image):
         """
@@ -30,7 +30,8 @@ class Client(object):
         frame_id = 123
         request_time_ms = current_milli_time()
         message = pb2.Request(image=image, frame_id = frame_id, request_time_ms = request_time_ms)
-        return self.stub.track_objects(message)
+        return self.stub.detect_objects(message)
+        #return self.stub.track_objects(message)
 
 
 if __name__ == '__main__':

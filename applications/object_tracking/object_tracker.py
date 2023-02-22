@@ -19,7 +19,7 @@ from applications.object_tracking.deep_sort.detection import Detection
 from applications.object_tracking.deep_sort.tracker import Tracker
 from applications.object_tracking.tools import generate_detections as gdet
 
-from protos import object_tracking_pb2 as pb2
+from protos import benchmark_pb2 as pb2
 from utils import current_milli_time
 
 # comment out below line to enable tensorflow logging outputs
@@ -52,12 +52,11 @@ weights = "./applications/object_tracking/checkpoints/yolov4-tiny-416"
 saved_model_loaded = tf.saved_model.load(weights, tags=[tag_constants.SERVING])
 infer = saved_model_loaded.signatures['serving_default']
 
+
 ####################################################################################
 # Object Tracking and Detection using Yolov4
 ####################################################################################
 def track_from_image(image, frame_id, request_time, request_received_time):
-    global tracking_results
-
     print('[x] Frame #: ', frame_id)
     start_time = time.time()
     image_data = cv2.resize(image, (input_size, input_size))
@@ -154,7 +153,7 @@ def track_from_image(image, frame_id, request_time, request_received_time):
         cv2.putText(image, class_name + "-" + str(track.track_id), (int(bbox[0]), int(bbox[1] - 10)), 0, 0.75,
                     (255, 255, 255), 2)
 
-        tracked_object = pb2.TrackedObject()
+        tracked_object = pb2.DetectedTrackedObject()
         tracked_object.track_id = track.track_id
         tracked_object.clazz = class_name
         tracked_object.x_min = int(bbox[0])
@@ -172,19 +171,13 @@ def track_from_image(image, frame_id, request_time, request_received_time):
     # calculate frames per second of running detections
     fps = 1.0 / (time.time() - start_time)
     print("FPS: %.2f" % fps)
-    tracking_result = pb2.TrackingResponse()
+    tracking_result = pb2.DetectionTrackingResponse()
     tracking_result.frame_id = frame_id
     tracking_result.request_time_ms = request_time
     tracking_result.request_received_time_ms = request_received_time
     tracking_result.response_time_ms = current_milli_time()
-    tracking_result.tracked_objects.extend(tracked_objects)
+    tracking_result.detected_objects.extend(tracked_objects)
     return tracking_result
 
     # session.close()
     # cv2.destroyAllWindows()
-
-
-
-
-
-
