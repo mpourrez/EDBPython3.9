@@ -16,3 +16,4 @@ dependencies:
     - easydict
     - pillow
     - seaborn
+    - psutil

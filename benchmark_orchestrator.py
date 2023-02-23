@@ -73,7 +73,7 @@ def f(capture):
 ## Saving latency and resource utilization results in csv file
 ####################################################################################
 ####################################################################################
-def save_experiment_results(application, experiment_id, results):
+def save_experiment_results(client, application, experiment_id, results):
     latency_filename = "./results/latency/" + application + "/" + constants.EDGE_DEVICE_NAME + "-" + str(
         experiment_id) + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
@@ -95,6 +95,9 @@ def save_experiment_results(application, experiment_id, results):
             writer.writerow(row)
 
         writer.writerow(['CPU_usage_percent', 'peak_memory_mb', 'current_memory_mb'])
+        cpu_trace = client.call_server_for_cpu_trace()
+        memory_trace = client.call_server_for_memory_trace()
+        writer.writerow([cpu_trace.cpu_load, memory_trace.peak_memory_mb, memory_trace.current_memory_mb])
 
 
 ####################################################################################
@@ -110,6 +113,7 @@ if __name__ == '__main__':
 
             experiment_results = []
             capture_packets_with_wireshark(application, experiment_id)
+            client.call_server_to_start_mem_tracing()
 
             # **** Starting the experiment ****************** #
             frame_id = 1
@@ -141,5 +145,5 @@ if __name__ == '__main__':
             print("********[x]***** Stopping the wireshark thread")
             benchmark_orchestrator.wireshark_thread.join()
             print("********[x]***** Saving experiment results")
-            save_experiment_results(application, experiment_id, experiment_results)
+            save_experiment_results(client, application, experiment_id, experiment_results)
             experiment_id += 1

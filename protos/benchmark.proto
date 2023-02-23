@@ -5,6 +5,9 @@ package protos;
 service Benchmarks{
  rpc track_objects(Request) returns (DetectionTrackingResponse) {}
  rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
+ rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
+ rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
+ rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
 }
 
 message Request{
@@ -30,3 +33,14 @@ message DetectedTrackedObject {
   int32 y_min = 5;
   int32 y_max = 6;
 }
+
+message CPUTrace {
+  float cpu_load = 1;
+}
+
+message MemoryTrace {
+  float current_memory_mb = 1;
+  float peak_memory_mb = 2;
+}
+
+message EmptyProto {}

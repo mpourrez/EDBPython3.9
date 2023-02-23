@@ -30,6 +30,17 @@ class Client(object):
         message = create_grpc_request(image, frame_id)
         return self.stub.detect_objects(message)
 
+    def call_server_to_start_mem_tracing(self):
+        empty = pb2.EmptyProto()
+        return self.stub.start_memory_tracing(empty)
+
+    def call_server_for_cpu_trace(self):
+        empty = pb2.EmptyProto()
+        return self.stub.get_cpu_trace(empty)
+
+    def call_server_for_memory_trace(self):
+        empty = pb2.EmptyProto()
+        return self.stub.get_memory_usage(empty)
 
 ####################################################################################
 ####################### Create a gRPC request ######################################
