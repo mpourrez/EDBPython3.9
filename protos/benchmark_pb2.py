@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x62\x65nchmark.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"\xbb\x01\n\x19\x44\x65tectionTrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12\x37\n\x10\x64\x65tected_objects\x18\x05 \x03(\x0b\x32\x1d.protos.DetectedTrackedObject\"t\n\x15\x44\x65tectedTrackedObject\x12\x10\n\x08track_id\x18\x01 \x01(\x05\x12\r\n\x05\x63lazz\x18\x02 \x01(\t\x12\r\n\x05x_min\x18\x03 \x01(\x05\x12\r\n\x05x_max\x18\x04 \x01(\x05\x12\r\n\x05y_min\x18\x05 \x01(\x05\x12\r\n\x05y_max\x18\x06 \x01(\x05\x32\x9b\x01\n\nBenchmarks\x12\x45\n\rtrack_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12\x46\n\x0e\x64\x65tect_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x62\x65nchmark.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"\xde\x01\n\x19\x44\x65tectionTrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12!\n\x19response_received_time_ms\x18\x05 \x01(\x03\x12\x37\n\x10\x64\x65tected_objects\x18\x06 \x03(\x0b\x32\x1d.protos.DetectedTrackedObject\"t\n\x15\x44\x65tectedTrackedObject\x12\x10\n\x08track_id\x18\x01 \x01(\x05\x12\r\n\x05\x63lazz\x18\x02 \x01(\t\x12\r\n\x05x_min\x18\x03 \x01(\x05\x12\r\n\x05x_max\x18\x04 \x01(\x05\x12\r\n\x05y_min\x18\x05 \x01(\x05\x12\r\n\x05y_max\x18\x06 \x01(\x05\x32\x9b\x01\n\nBenchmarks\x12\x45\n\rtrack_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12\x46\n\x0e\x64\x65tect_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'benchmark_pb2', globals())
@@ -23,9 +23,9 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _REQUEST._serialized_start=27
   _REQUEST._serialized_end=94
   _DETECTIONTRACKINGRESPONSE._serialized_start=97
-  _DETECTIONTRACKINGRESPONSE._serialized_end=284
-  _DETECTEDTRACKEDOBJECT._serialized_start=286
-  _DETECTEDTRACKEDOBJECT._serialized_end=402
-  _BENCHMARKS._serialized_start=405
-  _BENCHMARKS._serialized_end=560
+  _DETECTIONTRACKINGRESPONSE._serialized_end=319
+  _DETECTEDTRACKEDOBJECT._serialized_start=321
+  _DETECTEDTRACKEDOBJECT._serialized_end=437
+  _BENCHMARKS._serialized_start=440
+  _BENCHMARKS._serialized_end=595
 # @@protoc_insertion_point(module_scope)

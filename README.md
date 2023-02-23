@@ -14,6 +14,19 @@ conda env create -f conda-gpu.yml
 conda activate tracking-yolov4-gpu
 ```
 
+Based on your desired experiments make changes in the "constants.py" file to set the information regarding the edge device. 
+Then run the server on the edge device by using the following line:
+
+```bash
+python edge_device.py
+```
+
+On your laptop (or benchmark orchestrator machine) run the following command:
+
+```bash
+python benchmark_orchestrator.py
+```
+
 ## Making Changes
 
 After making changes in the proto file (protos/unary.proto), execute the following code to generate the stubs:

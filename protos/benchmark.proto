@@ -18,7 +18,8 @@ message DetectionTrackingResponse{
  int64 request_time_ms = 2;
  int64 request_received_time_ms = 3;
  int64 response_time_ms = 4;
- repeated DetectedTrackedObject detected_objects = 5;
+ int64 response_received_time_ms = 5;
+ repeated DetectedTrackedObject detected_objects = 6;
 }
 
 message DetectedTrackedObject {

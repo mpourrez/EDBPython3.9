@@ -1,0 +1,5 @@
+frame_id,request_time_ms,request_received_time_ms,response_time_ms,response_received_time_ms,end_to_end_latency,compute_time,transmission_time
+1,1677116187076,1677116187094,1677116187351,1677116187353,277,257,20
+2,1677116188153,1677116188156,1677116188402,1677116188404,251,246,5
+3,1677116189227,1677116189229,1677116189360,1677116189361,134,131,3
+CPU_usage_percent,peak_memory_mb,current_memory_mb
