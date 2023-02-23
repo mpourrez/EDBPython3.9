@@ -2,7 +2,7 @@ import grpc
 from protos import benchmark_pb2_grpc as pb2_grpc
 from protos import benchmark_pb2 as pb2
 
-import constants
+import configs
 import utils
 
 
@@ -12,8 +12,8 @@ class Client(object):
     """
 
     def __init__(self):
-        self.host = constants.EDGE_DEVICE_IP
-        self.server_port = constants.EDGE_DEVICE_PORT
+        self.host = configs.EDGE_DEVICE_IP
+        self.server_port = configs.EDGE_DEVICE_PORT
 
         # instantiate a channel
         self.channel = grpc.insecure_channel(

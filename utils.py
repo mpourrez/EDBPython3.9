@@ -3,7 +3,7 @@ from base64 import b64decode, b64encode
 import cv2
 import numpy as np
 
-import constants
+import configs
 
 
 def current_milli_time():
@@ -20,7 +20,7 @@ def extract_image(request_image):
 
 def read_input_workload_frame(frame_id):
     count_frame_id_digits = 1
-    workload_input_path = constants.WORKLOAD_INPUT_PATH
+    workload_input_path = configs.WORKLOAD_INPUT_PATH
     if frame_id > 9:
         if frame_id > 99:
             count_frame_id_digits = 3

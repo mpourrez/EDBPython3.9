@@ -4,7 +4,7 @@ import asyncio
 import threading
 import csv
 
-import constants
+import configs
 import utils
 import grpc_client
 import benchmark_orchestrator
@@ -27,7 +27,7 @@ def capture_packets_with_wireshark(application, cpu_cores, experiment_id):
     else:
         print("********[x]***** Wireshark capture is ready for new experiment.")
     benchmark_orchestrator.wireshark_filename = "./results/wireshark/" + application + "/" \
-                                                + constants.EDGE_DEVICE_NAME + "-cpuStress" + \
+                                                + configs.EDGE_DEVICE_NAME + "-cpuStress" + \
                                                 str(cpu_cores) + "-exp" + str(experiment_id) + ".pcap"
 
     # ************** Starting wireshark capture *************** #
@@ -55,10 +55,10 @@ def process_packets(packet):
 
 
 def f(capture):
-    print("********[x]***** Starting to sniff with timeout: " + str(constants.MAX_EXPERIMENT_TIME_SECONDS))
+    print("********[x]***** Starting to sniff with timeout: " + str(configs.MAX_EXPERIMENT_TIME_SECONDS))
     benchmark_orchestrator.saved_wireshark_capture = False
     try:
-        capture.apply_on_packets(process_packets, timeout=constants.MAX_EXPERIMENT_TIME_SECONDS)
+        capture.apply_on_packets(process_packets, timeout=configs.MAX_EXPERIMENT_TIME_SECONDS)
     except asyncio.TimeoutError:
         print("********[x]***** Sniffing done with timed out")
     # capture.sniff(timeout=max_time)
@@ -75,7 +75,7 @@ def f(capture):
 ####################################################################################
 ####################################################################################
 def save_experiment_results(client, application, cpu_cores, experiment_id, results):
-    latency_filename = "./results/latency/" + application + "/" + constants.EDGE_DEVICE_NAME + "-cpuStress" + \
+    latency_filename = "./results/latency/" + application + "/" + configs.EDGE_DEVICE_NAME + "-cpuStress" + \
                        str(cpu_cores) + "-exp" + str(experiment_id) + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
@@ -109,11 +109,11 @@ def run_single_experiment(client, application, cpu_cores_to_stress, experiment_i
     experiment_results = []
     capture_packets_with_wireshark(application, cpu_cores_to_stress, experiment_id)
     client.call_server_to_start_mem_tracing()
-    client.call_server_to_stress_cpu(cpu_cores_to_stress, constants.MAX_EXPERIMENT_TIME_SECONDS)
+    client.call_server_to_stress_cpu(cpu_cores_to_stress, configs.MAX_EXPERIMENT_TIME_SECONDS)
 
     # **** Starting the experiment ****************** #
     frame_id = 1
-    max_frame = constants.MAX_FRAME_NUM
+    max_frame = configs.MAX_FRAME_NUM
     while frame_id <= max_frame:
         # **** Read image frame ********************* #
         input_image = utils.read_input_workload_frame(frame_id)
@@ -130,8 +130,8 @@ def run_single_experiment(client, application, cpu_cores_to_stress, experiment_i
         # **** BEGIN: Following the experiment's FPS config with sleep **** #
         end_time = time.time()
         processing_time = end_time - start_time
-        if processing_time < 1. / constants.FPS:
-            wait_time = (1. / constants.FPS) - processing_time
+        if processing_time < 1. / configs.FPS:
+            wait_time = (1. / configs.FPS) - processing_time
             time.sleep(wait_time)
         start_time = end_time
         # **** END: Following the experiment's FPS config with sleep ****** #
@@ -147,12 +147,12 @@ def run_single_experiment(client, application, cpu_cores_to_stress, experiment_i
 if __name__ == '__main__':
     client = grpc_client.Client()
 
-    for application in constants.APPLICATIONS:
+    for application in configs.APPLICATIONS:
         cpu_cores_to_stress = 0
-        while cpu_cores_to_stress <= constants.MAX_CPU_CORES_TO_STRESS:
+        while cpu_cores_to_stress <= configs.MAX_CPU_CORES_TO_STRESS:
 
             experiment_id = 1
-            while experiment_id <= constants.REPEAT_EXPERIMENTS:
+            while experiment_id <= configs.REPEAT_EXPERIMENTS:
                 run_single_experiment(client, application, cpu_cores_to_stress, experiment_id)
                 experiment_id += 1
 
