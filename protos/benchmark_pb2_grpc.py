@@ -39,6 +39,11 @@ class BenchmarksStub(object):
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
                 response_deserializer=benchmark__pb2.MemoryTrace.FromString,
                 )
+        self.stress_cpu = channel.unary_unary(
+                '/protos.Benchmarks/stress_cpu',
+                request_serializer=benchmark__pb2.CPUStressRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
 
 
 class BenchmarksServicer(object):
@@ -74,6 +79,12 @@ class BenchmarksServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def stress_cpu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_BenchmarksServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -101,6 +112,11 @@ def add_BenchmarksServicer_to_server(servicer, server):
                     servicer.get_memory_usage,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
                     response_serializer=benchmark__pb2.MemoryTrace.SerializeToString,
+            ),
+            'stress_cpu': grpc.unary_unary_rpc_method_handler(
+                    servicer.stress_cpu,
+                    request_deserializer=benchmark__pb2.CPUStressRequest.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -194,5 +210,22 @@ class Benchmarks(object):
         return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/get_memory_usage',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.MemoryTrace.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def stress_cpu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/stress_cpu',
+            benchmark__pb2.CPUStressRequest.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

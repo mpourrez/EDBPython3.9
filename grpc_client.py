@@ -42,6 +42,10 @@ class Client(object):
         empty = pb2.EmptyProto()
         return self.stub.get_memory_usage(empty)
 
+    def call_server_to_stress_cpu(self, num_cores, time):
+        message = pb2.CPUStressRequest(cpu_cores= num_cores, time_ms = time)
+        return self.stub.stress_cpu(message)
+
 ####################################################################################
 ####################### Create a gRPC request ######################################
 ####################################################################################

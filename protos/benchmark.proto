@@ -8,12 +8,18 @@ service Benchmarks{
  rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
  rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
  rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
+ rpc stress_cpu(CPUStressRequest) returns (EmptyProto) {}
 }
 
 message Request{
  string image = 1;
  int64 frame_id = 2;
  int64 request_time_ms = 3;
+}
+
+message CPUStressRequest{
+ int32 cpu_cores = 1;
+ int32 time_ms = 2;
 }
 
 message DetectionTrackingResponse{

@@ -2,6 +2,8 @@ import grpc
 from concurrent import futures
 import psutil
 import tracemalloc
+import multiprocessing as mp
+import subprocess
 
 from protos import benchmark_pb2_grpc as pb2_grpc
 from utils import *
@@ -47,6 +49,19 @@ class BenchmarkService(pb2_grpc.BenchmarksServicer):
 
     def start_memory_tracing(self, request, context):
         tracemalloc.start()
+        return pb2.EmptyProto()
+
+    def stress_cpu(self, request, context):
+        num_cores = request.cpu_cores
+        # if number of cores to stress is 0 then we don't want any stress on cpu
+        if num_cores> 0:
+            if num_cores > mp.cpu_count():
+                num_cores = mp.cpu_count()
+            stress_string = 'stress -c {0} -t {1}s'
+            shell_command = stress_string.format(num_cores, request.time_ms)
+            start_time = time.perf_counter()
+            subprocess.Popen(shell_command, shell=True)
+            print(time.perf_counter() - start_time)
         return pb2.EmptyProto()
 
 

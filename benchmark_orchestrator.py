@@ -20,14 +20,15 @@ packet_list = []
 ## Capturing packets with wireshark --> Pyshark Library
 ####################################################################################
 ####################################################################################
-def capture_packets_with_wireshark(application, experiment_id):
+def capture_packets_with_wireshark(application, cpu_cores, experiment_id):
     while benchmark_orchestrator.saved_wireshark_capture is not True:
         print("[!!] Not ready to start new experiment, waiting for wireshark capture")
         time.sleep(3)  # Just to avoid hogging the CPU
     else:
         print("********[x]***** Wireshark capture is ready for new experiment.")
-    benchmark_orchestrator.wireshark_filename = "./results/wireshark/" + application + \
-                                                "/" + constants.EDGE_DEVICE_NAME + "-" + str(experiment_id) + ".pcap"
+    benchmark_orchestrator.wireshark_filename = "./results/wireshark/" + application + "/" \
+                                                + constants.EDGE_DEVICE_NAME + "-cpuStress" + \
+                                                str(cpu_cores) + "-exp" + str(experiment_id) + ".pcap"
 
     # ************** Starting wireshark capture *************** #
     benchmark_orchestrator.wireshark_output = open(benchmark_orchestrator.wireshark_filename, "w")
@@ -73,9 +74,9 @@ def f(capture):
 ## Saving latency and resource utilization results in csv file
 ####################################################################################
 ####################################################################################
-def save_experiment_results(client, application, experiment_id, results):
-    latency_filename = "./results/latency/" + application + "/" + constants.EDGE_DEVICE_NAME + "-" + str(
-        experiment_id) + ".csv"
+def save_experiment_results(client, application, cpu_cores, experiment_id, results):
+    latency_filename = "./results/latency/" + application + "/" + constants.EDGE_DEVICE_NAME + "-cpuStress" + \
+                       str(cpu_cores) + "-exp" + str(experiment_id) + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
     with open(latency_filename, 'w', encoding='UTF8', newline='') as csv_output:
@@ -104,46 +105,55 @@ def save_experiment_results(client, application, experiment_id, results):
 ####################################################################################
 ####################################################################################
 ####################################################################################
+def run_single_experiment(client, application, cpu_cores_to_stress, experiment_id):
+    experiment_results = []
+    capture_packets_with_wireshark(application, cpu_cores_to_stress, experiment_id)
+    client.call_server_to_start_mem_tracing()
+    client.call_server_to_stress_cpu(cpu_cores_to_stress, constants.MAX_EXPERIMENT_TIME_SECONDS)
+
+    # **** Starting the experiment ****************** #
+    frame_id = 1
+    max_frame = constants.MAX_FRAME_NUM
+    while frame_id <= max_frame:
+        # **** Read image frame ********************* #
+        input_image = utils.read_input_workload_frame(frame_id)
+        start_time = time.time()
+        # **** Make gRPC call based on the application **** #
+        if application == 'object_tracking':
+            grpc_result = client.call_object_tracking_server(image=input_image, frame_id=frame_id)
+        else:
+            grpc_result = client.call_object_detection_server(image=input_image, frame_id=frame_id)
+        response_received_time_ms = utils.current_milli_time()
+        grpc_result.response_received_time_ms = response_received_time_ms
+        experiment_results.append(grpc_result)
+
+        # **** BEGIN: Following the experiment's FPS config with sleep **** #
+        end_time = time.time()
+        processing_time = end_time - start_time
+        if processing_time < 1. / constants.FPS:
+            wait_time = (1. / constants.FPS) - processing_time
+            time.sleep(wait_time)
+        start_time = end_time
+        # **** END: Following the experiment's FPS config with sleep ****** #
+
+        frame_id += 1
+
+    print("********[x]***** Stopping the wireshark thread")
+    benchmark_orchestrator.wireshark_thread.join()
+    print("********[x]***** Saving experiment results")
+    save_experiment_results(client, application, cpu_cores_to_stress, experiment_id, experiment_results)
+
+
 if __name__ == '__main__':
     client = grpc_client.Client()
 
     for application in constants.APPLICATIONS:
-        experiment_id = 1
-        while experiment_id <= constants.REPEAT_EXPERIMENTS:
+        cpu_cores_to_stress = 0
+        while cpu_cores_to_stress <= constants.MAX_CPU_CORES_TO_STRESS:
 
-            experiment_results = []
-            capture_packets_with_wireshark(application, experiment_id)
-            client.call_server_to_start_mem_tracing()
+            experiment_id = 1
+            while experiment_id <= constants.REPEAT_EXPERIMENTS:
+                run_single_experiment(client, application, cpu_cores_to_stress, experiment_id)
+                experiment_id += 1
 
-            # **** Starting the experiment ****************** #
-            frame_id = 1
-            max_frame = constants.MAX_FRAME_NUM
-            while frame_id <= max_frame:
-                # **** Read image frame ********************* #
-                input_image = utils.read_input_workload_frame(frame_id)
-                start_time = time.time()
-                # **** Make gRPC call based on the application **** #
-                if application == 'object_tracking':
-                    grpc_result = client.call_object_tracking_server(image=input_image, frame_id=frame_id)
-                else:
-                    grpc_result = client.call_object_detection_server(image=input_image, frame_id=frame_id)
-                response_received_time_ms = utils.current_milli_time()
-                grpc_result.response_received_time_ms = response_received_time_ms
-                experiment_results.append(grpc_result)
-
-                # **** BEGIN: Following the experiment's FPS config with sleep **** #
-                end_time = time.time()
-                processing_time = end_time - start_time
-                if processing_time < 1. / constants.FPS:
-                    wait_time = (1. / constants.FPS) - processing_time
-                    time.sleep(wait_time)
-                start_time = end_time
-                # **** END: Following the experiment's FPS config with sleep ****** #
-
-                frame_id += 1
-
-            print("********[x]***** Stopping the wireshark thread")
-            benchmark_orchestrator.wireshark_thread.join()
-            print("********[x]***** Saving experiment results")
-            save_experiment_results(client, application, experiment_id, experiment_results)
-            experiment_id += 1
+            cpu_cores_to_stress += 1

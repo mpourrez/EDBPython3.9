@@ -14,6 +14,11 @@ conda env create -f conda-gpu.yml
 conda activate tracking-yolov4-gpu
 ```
 
+For running stress tests on the edge device, you need to install stress package using the following commands:
+```bash
+sudo apt-get install stress
+```
+
 Based on your desired experiments make changes in the "constants.py" file to set the information regarding the edge device. 
 Then run the server on the edge device by using the following line:
 
