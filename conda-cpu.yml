@@ -1,31 +1,21 @@
 name: tracking-yolov4-cpu
 
 dependencies:
-  - python==3.7
+  - python==3.9
   - pip
   - matplotlib
   - opencv
   - pip:
-    - opencv-python==4.1.1.26
+    - opencv-python
     - lxml
     - tqdm
-    - tensorflow==2.3.0
+    - tensorflow
     - seaborn
     - absl-py
     - easydict
-    - flask
-    - flask-mqtt
     - pillow
-    - requests
-    - requests-toolbelt
-    - pika
-    - slixmpp
-    - websockets
-    - aiocoap
-    - rticonnextdds_connector
-    - paho-mqtt
     - nest_asyncio
     - pyshark
     - ntplib
-    - aioquic
     - psutil
+    - scipy
