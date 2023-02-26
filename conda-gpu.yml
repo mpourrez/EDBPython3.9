@@ -1,4 +1,4 @@
-name: tracking-yolov4-gpu
+name: benchmark-gpu
 
 dependencies:
   - python==3.7
@@ -17,3 +17,8 @@ dependencies:
     - pillow
     - seaborn
     - psutil
+    - nest_asyncio
+    - pyshark
+    - ntplib
+    - scipy
+    - speedtest-cli

@@ -9,6 +9,11 @@ import configs
 def current_milli_time():
     return round(time.time() * 1000)
 
+def bytes_to_mb(bytes):
+  KB = 1024 # One Kilobyte is 1024 bytes
+  MB = KB * 1024 # One MB is 1024 KB
+  return int(bytes/MB)
+
 
 def extract_image(request_image):
     byte_array = bytearray(request_image, encoding='utf-8')

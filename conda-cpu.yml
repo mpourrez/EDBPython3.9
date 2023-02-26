@@ -19,3 +19,4 @@ dependencies:
     - ntplib
     - psutil
     - scipy
+    - speedtest-cli
