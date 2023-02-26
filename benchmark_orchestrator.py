@@ -102,10 +102,14 @@ def save_experiment_results(client, application, fault_config_file_name, experim
         writer.writerow([cpu_trace.cpu_load, memory_trace.peak_memory_mb, memory_trace.current_memory_mb])
 
         writer.writerow(['network_download_speed', 'network_upload_speed'])
-        speed_test = speedtest.Speedtest()
-        download_speed = speed_test.download()
-        upload_speed = speed_test.upload()
-        writer.writerow([utils.bytes_to_mb(download_speed), utils.bytes_to_mb(upload_speed)])
+        try:
+            speed_test = speedtest.Speedtest()
+            download_speed = speed_test.download()
+            upload_speed = speed_test.upload()
+            writer.writerow([utils.bytes_to_mb(download_speed), utils.bytes_to_mb(upload_speed)])
+        except IndexError:
+            # if best server cannot be found just ignore writing the speedtest continute with the experiments
+            pass
 
 
 ####################################################################################
