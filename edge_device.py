@@ -2,7 +2,6 @@ import grpc
 from concurrent import futures
 import psutil
 import tracemalloc
-import multiprocessing as mp
 import subprocess
 
 from protos import benchmark_pb2_grpc as pb2_grpc
@@ -15,7 +14,7 @@ from protos import benchmark_pb2 as pb2
 class BenchmarkService(pb2_grpc.BenchmarksServicer):
 
     def __init__(self, *args, **kwargs):
-        pass
+        self.fault_injection_process = None
 
     def track_objects(self, request, context):
         request_received_time_ms = current_milli_time()
@@ -51,18 +50,28 @@ class BenchmarkService(pb2_grpc.BenchmarksServicer):
         tracemalloc.start()
         return pb2.EmptyProto()
 
-    def stress_cpu(self, request, context):
-        num_cores = request.cpu_cores
-        # if number of cores to stress is 0 then we don't want any stress on cpu
-        if num_cores> 0:
-            if num_cores > mp.cpu_count():
-                num_cores = mp.cpu_count()
-            stress_string = 'stress -c {0} -t {1}s'
-            shell_command = stress_string.format(num_cores, request.time_ms)
-            start_time = time.perf_counter()
-            subprocess.Popen(shell_command, shell=True)
-            print(time.perf_counter() - start_time)
+    def inject_fault(self, request, context):
+        fault_command = request.fault_command
+        fault_config = request.fault_config
+        # I'll make the stressor to run for a bit longer than experiment-time to make sure experiment is done
+        timeout = request.timeout + configs.TIME_BOUND_FOR_FAULT_INJECTION
+        stress_string = 'stress-ng {0} {1} --timeout {2}s'
+        shell_command = stress_string.format(fault_command, fault_config, str(timeout))
+        print("[x] Stress command to run: " + shell_command)
+        self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
         return pb2.EmptyProto()
+
+    def get_fault_injection_status(self, request, context):
+        if self.fault_injection_process is None:
+            # No faults has been injected yet
+            return pb2.FaultInjectionStatus(is_finished=True)
+        poll = self.fault_injection_process.poll()
+        if poll is None:
+            # A None value indicates that the process hasn't terminated yet
+            print("[xxxx] Fault Injection Still in Process")
+            return pb2.FaultInjectionStatus(is_finished=False)
+        else:
+            return pb2.FaultInjectionStatus(is_finished=True)
 
 
 def serve():

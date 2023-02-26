@@ -20,22 +20,22 @@ packet_list = []
 ## Capturing packets with wireshark --> Pyshark Library
 ####################################################################################
 ####################################################################################
-def capture_packets_with_wireshark(application, cpu_cores, experiment_id):
+def capture_packets_with_wireshark(application, fault_config_file_name, experiment_id):
     while benchmark_orchestrator.saved_wireshark_capture is not True:
         print("[!!] Not ready to start new experiment, waiting for wireshark capture")
         time.sleep(3)  # Just to avoid hogging the CPU
     else:
         print("********[x]***** Wireshark capture is ready for new experiment.")
     benchmark_orchestrator.wireshark_filename = "./results/wireshark/" + application + "/" \
-                                                + configs.EDGE_DEVICE_NAME + "-cpuStress" + \
-                                                str(cpu_cores) + "-exp" + str(experiment_id) + ".pcap"
+                                                + configs.EDGE_DEVICE_NAME + "-" + fault_config_file_name \
+                                                + "-exp" + str(experiment_id) + ".pcap"
 
     # ************** Starting wireshark capture *************** #
     benchmark_orchestrator.wireshark_output = open(benchmark_orchestrator.wireshark_filename, "w")
     print("********[x]***** Openned wireshark output")
-    capture = pyshark.LiveCapture(interface="en0", output_file=benchmark_orchestrator.wireshark_filename)
+    capture = pyshark.LiveCapture(interface="Wi-Fi", output_file=benchmark_orchestrator.wireshark_filename)
     print("********[x]***** Live Capture")
-    benchmark_orchestrator.wireshark_thread = threading.Thread(target=f, args=(capture,))
+    benchmark_orchestrator.wireshark_thread = threading.Thread(target=sniff, args=(capture,))
     benchmark_orchestrator.wireshark_thread.setDaemon(True)
     benchmark_orchestrator.wireshark_thread.start()
 
@@ -54,7 +54,7 @@ def process_packets(packet):
         pass
 
 
-def f(capture):
+def sniff(capture):
     print("********[x]***** Starting to sniff with timeout: " + str(configs.MAX_EXPERIMENT_TIME_SECONDS))
     benchmark_orchestrator.saved_wireshark_capture = False
     try:
@@ -74,9 +74,9 @@ def f(capture):
 ## Saving latency and resource utilization results in csv file
 ####################################################################################
 ####################################################################################
-def save_experiment_results(client, application, cpu_cores, experiment_id, results):
-    latency_filename = "./results/latency/" + application + "/" + configs.EDGE_DEVICE_NAME + "-cpuStress" + \
-                       str(cpu_cores) + "-exp" + str(experiment_id) + ".csv"
+def save_experiment_results(client, application, fault_config_file_name, experiment_id, results):
+    latency_filename = "./results/latency/" + application + "/" + configs.EDGE_DEVICE_NAME + "-" + fault_config_file_name + \
+                       "-exp" + str(experiment_id) + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
     with open(latency_filename, 'w', encoding='UTF8', newline='') as csv_output:
@@ -105,11 +105,33 @@ def save_experiment_results(client, application, cpu_cores, experiment_id, resul
 ####################################################################################
 ####################################################################################
 ####################################################################################
-def run_single_experiment(client, application, cpu_cores_to_stress, experiment_id):
+def run_single_experiment(client, application, fault, fault_config, experiment_id):
     experiment_results = []
-    capture_packets_with_wireshark(application, cpu_cores_to_stress, experiment_id)
+    fault_config_file_name = 'no-fault'
+    if fault is not None:
+        fault_config_file_name = '{0}-{1}'.format(fault.abbreviation, fault_config)
+    print("***************************************************************************************")
+    print("****************** Starting experiment: app:{0} - {1} - exp id: {2}".format(application,
+                                                                                       fault_config_file_name,
+                                                                                       experiment_id))
+    print("***************************************************************************************")
+    fault_injection_status = client.call_server_to_get_fault_injection_status()
+    while not fault_injection_status.is_finished:
+        print("[x] Previous experiment still in progress, we need to wait!! - (fault injection in progress)")
+        time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION/3)
+        fault_injection_status = client.call_server_to_get_fault_injection_status()
+    print("********[x]***** Ready to start the experiment.")
+
     client.call_server_to_start_mem_tracing()
-    client.call_server_to_stress_cpu(cpu_cores_to_stress, configs.MAX_EXPERIMENT_TIME_SECONDS)
+    if fault is not None and fault.abbreviation != 'PING':
+        client.call_server_to_inject_fault(fault.fault_command, fault_config,
+                                           (configs.MAX_EXPERIMENT_TIME_SECONDS +
+                                            configs.TIME_BOUND_FOR_FAULT_INJECTION))
+        time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION)  ### Sleep a bit until stressors are ready to go
+    elif fault is not None and fault.abbreviation == 'PING':
+        client.ping_flood_edge_device(fault.fault_command, fault_config)
+
+    capture_packets_with_wireshark(application, fault_config_file_name, experiment_id)
 
     # **** Starting the experiment ****************** #
     frame_id = 1
@@ -141,19 +163,30 @@ def run_single_experiment(client, application, cpu_cores_to_stress, experiment_i
     print("********[x]***** Stopping the wireshark thread")
     benchmark_orchestrator.wireshark_thread.join()
     print("********[x]***** Saving experiment results")
-    save_experiment_results(client, application, cpu_cores_to_stress, experiment_id, experiment_results)
+    save_experiment_results(client, application, fault_config_file_name, experiment_id, experiment_results)
+
+    if fault is not None and fault.abbreviation == 'PING':
+        ping_process_killed = client.kill_ping_process()
+        while not ping_process_killed:
+            print("[x] Ping flood process still in progress - trying to kill it!!!")
+            client.kill_ping_process()
 
 
 if __name__ == '__main__':
     client = grpc_client.Client()
 
+    # ####### No Fault Experiment ##########
     for application in configs.APPLICATIONS:
-        cpu_cores_to_stress = 0
-        while cpu_cores_to_stress <= configs.MAX_CPU_CORES_TO_STRESS:
+        experiment_id = 1
+        while experiment_id <= configs.REPEAT_EXPERIMENTS:
+            run_single_experiment(client, application, None, None, experiment_id)
+            experiment_id += 1
 
-            experiment_id = 1
-            while experiment_id <= configs.REPEAT_EXPERIMENTS:
-                run_single_experiment(client, application, cpu_cores_to_stress, experiment_id)
-                experiment_id += 1
-
-            cpu_cores_to_stress += 1
+    ###### Experiments With Fault Injections ###################
+    for application in configs.APPLICATIONS:
+        for fault in configs.FAULTS:
+            for fault_config in fault.fault_config:
+                experiment_id = 1
+                while experiment_id <= configs.REPEAT_EXPERIMENTS:
+                    run_single_experiment(client, application, fault, fault_config, experiment_id)
+                    experiment_id += 1

@@ -39,10 +39,15 @@ class BenchmarksStub(object):
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
                 response_deserializer=benchmark__pb2.MemoryTrace.FromString,
                 )
-        self.stress_cpu = channel.unary_unary(
-                '/protos.Benchmarks/stress_cpu',
-                request_serializer=benchmark__pb2.CPUStressRequest.SerializeToString,
+        self.inject_fault = channel.unary_unary(
+                '/protos.Benchmarks/inject_fault',
+                request_serializer=benchmark__pb2.FaultRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.get_fault_injection_status = channel.unary_unary(
+                '/protos.Benchmarks/get_fault_injection_status',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
                 )
 
 
@@ -79,7 +84,13 @@ class BenchmarksServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def stress_cpu(self, request, context):
+    def inject_fault(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def get_fault_injection_status(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -113,10 +124,15 @@ def add_BenchmarksServicer_to_server(servicer, server):
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
                     response_serializer=benchmark__pb2.MemoryTrace.SerializeToString,
             ),
-            'stress_cpu': grpc.unary_unary_rpc_method_handler(
-                    servicer.stress_cpu,
-                    request_deserializer=benchmark__pb2.CPUStressRequest.FromString,
+            'inject_fault': grpc.unary_unary_rpc_method_handler(
+                    servicer.inject_fault,
+                    request_deserializer=benchmark__pb2.FaultRequest.FromString,
                     response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
+            'get_fault_injection_status': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_fault_injection_status,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.FaultInjectionStatus.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -214,7 +230,7 @@ class Benchmarks(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def stress_cpu(request,
+    def inject_fault(request,
             target,
             options=(),
             channel_credentials=None,
@@ -224,8 +240,25 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/stress_cpu',
-            benchmark__pb2.CPUStressRequest.SerializeToString,
+        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/inject_fault',
+            benchmark__pb2.FaultRequest.SerializeToString,
             benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def get_fault_injection_status(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/get_fault_injection_status',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.FaultInjectionStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)

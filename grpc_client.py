@@ -1,6 +1,8 @@
 import grpc
 from protos import benchmark_pb2_grpc as pb2_grpc
 from protos import benchmark_pb2 as pb2
+import subprocess
+import time
 
 import configs
 import utils
@@ -14,6 +16,7 @@ class Client(object):
     def __init__(self):
         self.host = configs.EDGE_DEVICE_IP
         self.server_port = configs.EDGE_DEVICE_PORT
+        self.ping_process = None
 
         # instantiate a channel
         self.channel = grpc.insecure_channel(
@@ -42,9 +45,28 @@ class Client(object):
         empty = pb2.EmptyProto()
         return self.stub.get_memory_usage(empty)
 
-    def call_server_to_stress_cpu(self, num_cores, time):
-        message = pb2.CPUStressRequest(cpu_cores= num_cores, time_ms = time)
-        return self.stub.stress_cpu(message)
+    def call_server_to_inject_fault(self, fault_command, fault_config, time):
+        message = pb2.FaultRequest(fault_command=fault_command, fault_config=fault_config, timeout=time)
+        return self.stub.inject_fault(message)
+
+    def call_server_to_get_fault_injection_status(self):
+        message = pb2.EmptyProto()
+        return self.stub.get_fault_injection_status(message)
+
+    def ping_flood_edge_device(self, command, config):
+        shell_command = '{0} {1} {2}'.format(command, config, configs.EDGE_DEVICE_IP)
+        print('[x] Ping flooding the edge device: ' + shell_command)
+        self.ping_process = subprocess.Popen(shell_command, shell=True)
+        # wait for the subprocess to start the job
+        time.sleep(10)
+
+    def kill_ping_process(self):
+        self.ping_process.kill()
+        # wait for kill process to finish
+        time.sleep(10)
+        if self.ping_process.poll() is None:
+            return False
+        return True
 
 ####################################################################################
 ####################### Create a gRPC request ######################################

@@ -57,13 +57,10 @@ infer = saved_model_loaded.signatures['serving_default']
 # Object Tracking and Detection using Yolov4
 ####################################################################################
 def track_from_image(image, frame_id, request_time, request_received_time):
-    print('[x] Frame #: ', frame_id)
-    start_time = time.time()
     image_data = cv2.resize(image, (input_size, input_size))
     image_data = image_data / 255.
     image_data = image_data[np.newaxis, ...].astype(np.float32)
 
-    print("before running detections")
     batch_data = tf.constant(image_data)
     pred_bbox = infer(batch_data)
     for key, value in pred_bbox.items():
@@ -121,7 +118,6 @@ def track_from_image(image, frame_id, request_time, request_received_time):
     features = encoder(image, bboxes)
     detections = [Detection(bbox, score, class_name, feature) for bbox, score, class_name, feature in
                   zip(bboxes, scores, names, features)]
-    print(detections)
 
     # initialize color map
     cmap = plt.get_cmap('tab20b')
@@ -162,21 +158,14 @@ def track_from_image(image, frame_id, request_time, request_received_time):
         tracked_object.y_max = int(bbox[3])
 
         tracked_objects.append(tracked_object)
-        print("Tracker ID: {}, Class: {},  BBox Coords (xmin, ymin, xmax, ymax): {}".format(str(track.track_id),
-                                                                                            class_name, (
-                                                                                                int(bbox[0]),
-                                                                                                int(bbox[1]),
-                                                                                                int(bbox[2]),
-                                                                                                int(bbox[3]))))
-    # calculate frames per second of running detections
-    fps = 1.0 / (time.time() - start_time)
-    print("FPS: %.2f" % fps)
+
     tracking_result = pb2.DetectionTrackingResponse()
     tracking_result.frame_id = frame_id
     tracking_result.request_time_ms = request_time
     tracking_result.request_received_time_ms = request_received_time
     tracking_result.response_time_ms = current_milli_time()
     tracking_result.detected_objects.extend(tracked_objects)
+    print("[x] Object-tracking - Responded the client request")
     return tracking_result
 
     # session.close()

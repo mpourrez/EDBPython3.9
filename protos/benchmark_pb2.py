@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x62\x65nchmark.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"6\n\x10\x43PUStressRequest\x12\x11\n\tcpu_cores\x18\x01 \x01(\x05\x12\x0f\n\x07time_ms\x18\x02 \x01(\x05\"\xde\x01\n\x19\x44\x65tectionTrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12!\n\x19response_received_time_ms\x18\x05 \x01(\x03\x12\x37\n\x10\x64\x65tected_objects\x18\x06 \x03(\x0b\x32\x1d.protos.DetectedTrackedObject\"t\n\x15\x44\x65tectedTrackedObject\x12\x10\n\x08track_id\x18\x01 \x01(\x05\x12\r\n\x05\x63lazz\x18\x02 \x01(\t\x12\r\n\x05x_min\x18\x03 \x01(\x05\x12\r\n\x05x_max\x18\x04 \x01(\x05\x12\r\n\x05y_min\x18\x05 \x01(\x05\x12\r\n\x05y_max\x18\x06 \x01(\x05\"\x1c\n\x08\x43PUTrace\x12\x10\n\x08\x63pu_load\x18\x01 \x01(\x02\"@\n\x0bMemoryTrace\x12\x19\n\x11\x63urrent_memory_mb\x18\x01 \x01(\x02\x12\x16\n\x0epeak_memory_mb\x18\x02 \x01(\x02\"\x0c\n\nEmptyProto2\x93\x03\n\nBenchmarks\x12\x45\n\rtrack_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12\x46\n\x0e\x64\x65tect_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12@\n\x14start_memory_tracing\x12\x12.protos.EmptyProto\x1a\x12.protos.EmptyProto\"\x00\x12\x37\n\rget_cpu_trace\x12\x12.protos.EmptyProto\x1a\x10.protos.CPUTrace\"\x00\x12=\n\x10get_memory_usage\x12\x12.protos.EmptyProto\x1a\x13.protos.MemoryTrace\"\x00\x12<\n\nstress_cpu\x12\x18.protos.CPUStressRequest\x1a\x12.protos.EmptyProto\"\x00\x62\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x0f\x62\x65nchmark.proto\x12\x06protos\"C\n\x07Request\x12\r\n\x05image\x18\x01 \x01(\t\x12\x10\n\x08\x66rame_id\x18\x02 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x03 \x01(\x03\"L\n\x0c\x46\x61ultRequest\x12\x15\n\rfault_command\x18\x01 \x01(\t\x12\x14\n\x0c\x66\x61ult_config\x18\x02 \x01(\t\x12\x0f\n\x07timeout\x18\x03 \x01(\x05\"\xde\x01\n\x19\x44\x65tectionTrackingResponse\x12\x10\n\x08\x66rame_id\x18\x01 \x01(\x03\x12\x17\n\x0frequest_time_ms\x18\x02 \x01(\x03\x12 \n\x18request_received_time_ms\x18\x03 \x01(\x03\x12\x18\n\x10response_time_ms\x18\x04 \x01(\x03\x12!\n\x19response_received_time_ms\x18\x05 \x01(\x03\x12\x37\n\x10\x64\x65tected_objects\x18\x06 \x03(\x0b\x32\x1d.protos.DetectedTrackedObject\"t\n\x15\x44\x65tectedTrackedObject\x12\x10\n\x08track_id\x18\x01 \x01(\x05\x12\r\n\x05\x63lazz\x18\x02 \x01(\t\x12\r\n\x05x_min\x18\x03 \x01(\x05\x12\r\n\x05x_max\x18\x04 \x01(\x05\x12\r\n\x05y_min\x18\x05 \x01(\x05\x12\r\n\x05y_max\x18\x06 \x01(\x05\"\x1c\n\x08\x43PUTrace\x12\x10\n\x08\x63pu_load\x18\x01 \x01(\x02\"@\n\x0bMemoryTrace\x12\x19\n\x11\x63urrent_memory_mb\x18\x01 \x01(\x02\x12\x16\n\x0epeak_memory_mb\x18\x02 \x01(\x02\"+\n\x14\x46\x61ultInjectionStatus\x12\x13\n\x0bis_finished\x18\x01 \x01(\x08\"\x0c\n\nEmptyProto2\xe3\x03\n\nBenchmarks\x12\x45\n\rtrack_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12\x46\n\x0e\x64\x65tect_objects\x12\x0f.protos.Request\x1a!.protos.DetectionTrackingResponse\"\x00\x12@\n\x14start_memory_tracing\x12\x12.protos.EmptyProto\x1a\x12.protos.EmptyProto\"\x00\x12\x37\n\rget_cpu_trace\x12\x12.protos.EmptyProto\x1a\x10.protos.CPUTrace\"\x00\x12=\n\x10get_memory_usage\x12\x12.protos.EmptyProto\x1a\x13.protos.MemoryTrace\"\x00\x12:\n\x0cinject_fault\x12\x14.protos.FaultRequest\x1a\x12.protos.EmptyProto\"\x00\x12P\n\x1aget_fault_injection_status\x12\x12.protos.EmptyProto\x1a\x1c.protos.FaultInjectionStatus\"\x00\x62\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'benchmark_pb2', globals())
@@ -22,18 +22,20 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._options = None
   _REQUEST._serialized_start=27
   _REQUEST._serialized_end=94
-  _CPUSTRESSREQUEST._serialized_start=96
-  _CPUSTRESSREQUEST._serialized_end=150
-  _DETECTIONTRACKINGRESPONSE._serialized_start=153
-  _DETECTIONTRACKINGRESPONSE._serialized_end=375
-  _DETECTEDTRACKEDOBJECT._serialized_start=377
-  _DETECTEDTRACKEDOBJECT._serialized_end=493
-  _CPUTRACE._serialized_start=495
-  _CPUTRACE._serialized_end=523
-  _MEMORYTRACE._serialized_start=525
-  _MEMORYTRACE._serialized_end=589
-  _EMPTYPROTO._serialized_start=591
-  _EMPTYPROTO._serialized_end=603
-  _BENCHMARKS._serialized_start=606
-  _BENCHMARKS._serialized_end=1009
+  _FAULTREQUEST._serialized_start=96
+  _FAULTREQUEST._serialized_end=172
+  _DETECTIONTRACKINGRESPONSE._serialized_start=175
+  _DETECTIONTRACKINGRESPONSE._serialized_end=397
+  _DETECTEDTRACKEDOBJECT._serialized_start=399
+  _DETECTEDTRACKEDOBJECT._serialized_end=515
+  _CPUTRACE._serialized_start=517
+  _CPUTRACE._serialized_end=545
+  _MEMORYTRACE._serialized_start=547
+  _MEMORYTRACE._serialized_end=611
+  _FAULTINJECTIONSTATUS._serialized_start=613
+  _FAULTINJECTIONSTATUS._serialized_end=656
+  _EMPTYPROTO._serialized_start=658
+  _EMPTYPROTO._serialized_end=670
+  _BENCHMARKS._serialized_start=673
+  _BENCHMARKS._serialized_end=1156
 # @@protoc_insertion_point(module_scope)

@@ -41,17 +41,10 @@ def detect_objects(image, frame_id, request_time, request_received_time):
     img = tf.expand_dims(raw_img, 0)
     img = transform_images(img, size)
 
-    t1 = time.time()
     boxes, scores, classes, nums = yolo(img)
-    t2 = time.time()
-    print('time: {}'.format(t2 - t1))
 
-    print('detections:')
     detected_objects = []
     for i in range(nums[0]):
-        print('\t{}, {}, {}'.format(class_names[int(classes[0][i])],
-                                        np.array(scores[0][i]),
-                                        np.array(boxes[0][i])))
         bbox = np.array(boxes[0][i])
         tracked_object = pb2.DetectedTrackedObject()
         tracked_object.clazz = class_names[int(classes[0][i])]
@@ -69,6 +62,7 @@ def detect_objects(image, frame_id, request_time, request_received_time):
     tracking_result.request_received_time_ms = request_received_time
     tracking_result.response_time_ms = current_milli_time()
     tracking_result.detected_objects.extend(detected_objects)
+    print("[x] Object-detection - Responded the client request")
     return tracking_result
 
 

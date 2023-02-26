@@ -8,7 +8,8 @@ service Benchmarks{
  rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
  rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
  rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
- rpc stress_cpu(CPUStressRequest) returns (EmptyProto) {}
+ rpc inject_fault(FaultRequest) returns (EmptyProto) {}
+ rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
 }
 
 message Request{
@@ -17,9 +18,10 @@ message Request{
  int64 request_time_ms = 3;
 }
 
-message CPUStressRequest{
- int32 cpu_cores = 1;
- int32 time_ms = 2;
+message FaultRequest{
+ string fault_command = 1;
+ string fault_config = 2;
+ int32 timeout = 3;
 }
 
 message DetectionTrackingResponse{
@@ -47,6 +49,10 @@ message CPUTrace {
 message MemoryTrace {
   float current_memory_mb = 1;
   float peak_memory_mb = 2;
+}
+
+message FaultInjectionStatus {
+  bool is_finished = 1;
 }
 
 message EmptyProto {}
