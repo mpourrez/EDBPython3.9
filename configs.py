@@ -4,7 +4,7 @@
 configs.py
 """
 
-MAX_FRAME_NUM = 250
+MAX_FRAME_NUM = 300
 FPS = 5
 WORKLOAD_INPUT_PATH = './workloads/MOT20-01/img1/'
 MAX_EXPERIMENT_TIME_SECONDS = 200 #in-seconds - make it more than the time of video (for 1-min video set 100 seconds)

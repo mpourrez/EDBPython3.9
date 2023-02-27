@@ -147,7 +147,8 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
     # **** Starting the experiment ****************** #
     frame_id = 1
     max_frame = configs.MAX_FRAME_NUM
-    while frame_id <= max_frame:
+    experiment_start_time = time.time()
+    while (frame_id <= max_frame) and (time.time()<(experiment_start_time + configs.MAX_EXPERIMENT_TIME_SECONDS)) :
         # **** Read image frame ********************* #
         input_image = utils.read_input_workload_frame(frame_id)
         start_time = time.time()
