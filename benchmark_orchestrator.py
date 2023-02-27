@@ -107,7 +107,7 @@ def save_experiment_results(client, application, fault_config_file_name, experim
             download_speed = speed_test.download()
             upload_speed = speed_test.upload()
             writer.writerow([utils.bytes_to_mb(download_speed), utils.bytes_to_mb(upload_speed)])
-        except IndexError:
+        except:
             # if best server cannot be found just ignore writing the speedtest continute with the experiments
             pass
 
