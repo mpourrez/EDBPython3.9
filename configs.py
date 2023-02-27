@@ -5,10 +5,9 @@ configs.py
 """
 
 MAX_FRAME_NUM = 300
-FPS = 5
 WORKLOAD_INPUT_PATH = './workloads/MOT20-01/img1/'
-MAX_EXPERIMENT_TIME_SECONDS = 200 #in-seconds - make it more than the time of video (for 1-min video set 100 seconds)
-TIME_BOUND_FOR_FAULT_INJECTION = 10 #in-seconds
+MAX_EXPERIMENT_TIME_SECONDS = 60
+TIME_BOUND_FOR_FAULT_INJECTION = 5 #in-seconds
 REPEAT_EXPERIMENTS = 10
 
 EDGE_DEVICE_NAME = 'raspberrypi'

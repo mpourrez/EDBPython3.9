@@ -161,15 +161,6 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
         grpc_result.response_received_time_ms = response_received_time_ms
         experiment_results.append(grpc_result)
 
-        # **** BEGIN: Following the experiment's FPS config with sleep **** #
-        end_time = time.time()
-        processing_time = end_time - start_time
-        if processing_time < 1. / configs.FPS:
-            wait_time = (1. / configs.FPS) - processing_time
-            time.sleep(wait_time)
-        start_time = end_time
-        # **** END: Following the experiment's FPS config with sleep ****** #
-
         frame_id += 1
 
     print("********[x]***** Stopping the wireshark thread")
