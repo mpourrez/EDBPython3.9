@@ -5,6 +5,8 @@ package protos;
 service Benchmarks{
  rpc track_objects(Request) returns (DetectionTrackingResponse) {}
  rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
+ rpc speech_to_text(Request) returns (PocketSphinxResponse) {}
+ rpc align_speech_text(AudioTextRequest) returns (PocketSphinxResponse) {}
  rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
  rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
  rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
@@ -16,6 +18,13 @@ message Request{
  string image = 1;
  int64 frame_id = 2;
  int64 request_time_ms = 3;
+}
+
+message AudioTextRequest{
+ string audio = 1;
+ string text_input = 2;
+ int64 frame_id = 3;
+ int64 request_time_ms = 4;
 }
 
 message FaultRequest{
@@ -31,6 +40,15 @@ message DetectionTrackingResponse{
  int64 response_time_ms = 4;
  int64 response_received_time_ms = 5;
  repeated DetectedTrackedObject detected_objects = 6;
+}
+
+message PocketSphinxResponse{
+ int64 frame_id = 1;
+ int64 request_time_ms = 2;
+ int64 request_received_time_ms = 3;
+ int64 response_time_ms = 4;
+ int64 response_received_time_ms = 5;
+ string conversion_result = 6;
 }
 
 message DetectedTrackedObject {

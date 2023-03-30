@@ -9,6 +9,7 @@ import utils
 import grpc_client
 import benchmark_orchestrator
 import speedtest
+import analyze_results
 
 wireshark_thread = None
 wireshark_output = None
@@ -27,7 +28,7 @@ def capture_packets_with_wireshark(application, fault_config_file_name, experime
         time.sleep(3)  # Just to avoid hogging the CPU
     else:
         print("********[x]***** Wireshark capture is ready for new experiment.")
-    benchmark_orchestrator.wireshark_filename = "./results/wireshark/" + application + "/" \
+    benchmark_orchestrator.wireshark_filename = "./results4/wireshark/" + application + "/" \
                                                 + configs.EDGE_DEVICE_NAME + "-" + fault_config_file_name \
                                                 + "-exp" + str(experiment_id) + ".pcap"
 
@@ -76,7 +77,7 @@ def sniff(capture):
 ####################################################################################
 ####################################################################################
 def save_experiment_results(client, application, fault_config_file_name, experiment_id, results):
-    latency_filename = "./results/latency/" + application + "/" + configs.EDGE_DEVICE_NAME + "-" + fault_config_file_name + \
+    latency_filename = "./results4/latency/" + application + "/" + configs.EDGE_DEVICE_NAME + "-" + fault_config_file_name + \
                        "-exp" + str(experiment_id) + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
@@ -96,20 +97,20 @@ def save_experiment_results(client, application, fault_config_file_name, experim
                    compute_time, transmission_time]
             writer.writerow(row)
 
-        writer.writerow(['CPU_usage_percent', 'peak_memory_mb', 'current_memory_mb'])
-        cpu_trace = client.call_server_for_cpu_trace()
+        writer.writerow(['avg_CPU', 'avg_memory_mb'])
+        # cpu_trace = client.call_server_for_cpu_trace()
         memory_trace = client.call_server_for_memory_trace()
-        writer.writerow([cpu_trace.cpu_load, memory_trace.peak_memory_mb, memory_trace.current_memory_mb])
+        writer.writerow([memory_trace.current_memory_mb, memory_trace.peak_memory_mb])
 
-        writer.writerow(['network_download_speed', 'network_upload_speed'])
-        try:
-            speed_test = speedtest.Speedtest()
-            download_speed = speed_test.download()
-            upload_speed = speed_test.upload()
-            writer.writerow([utils.bytes_to_mb(download_speed), utils.bytes_to_mb(upload_speed)])
-        except:
-            # if best server cannot be found just ignore writing the speedtest continute with the experiments
-            pass
+        # writer.writerow(['network_download_speed', 'network_upload_speed'])
+        # try:
+        #     speed_test = speedtest.Speedtest()
+        #     download_speed = speed_test.download()
+        #     upload_speed = speed_test.upload()
+        #     writer.writerow([utils.bytes_to_mb(download_speed), utils.bytes_to_mb(upload_speed)])
+        # except:
+        #     # if best server cannot be found just ignore writing the speedtest continute with the experiments
+        #     pass
 
 
 ####################################################################################
@@ -134,15 +135,14 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
     print("********[x]***** Ready to start the experiment.")
 
     client.call_server_to_start_mem_tracing()
-    if fault is not None and fault.abbreviation != 'PING':
+    if fault is not None and fault.abbreviation != 'TCP':
         client.call_server_to_inject_fault(fault.fault_command, fault_config,
                                            (configs.MAX_EXPERIMENT_TIME_SECONDS +
                                             configs.TIME_BOUND_FOR_FAULT_INJECTION))
-        time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION)  ### Sleep a bit until stressors are ready to go
-    elif fault is not None and fault.abbreviation == 'PING':
-        client.ping_flood_edge_device(fault.fault_command, fault_config)
-
-    capture_packets_with_wireshark(application, fault_config_file_name, experiment_id)
+    time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION)  ### Sleep a bit until stressors are ready to go
+    # elif fault is not None and fault.abbreviation == 'TCP':
+    #     client.ping_flood_edge_device(fault.fault_command, fault_config)
+    # capture_packets_with_wireshark(application, fault_config_file_name, experiment_id)
 
     # **** Starting the experiment ****************** #
     frame_id = 1
@@ -150,46 +150,56 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
     experiment_start_time = time.time()
     while (frame_id <= max_frame) and (time.time()<(experiment_start_time + configs.MAX_EXPERIMENT_TIME_SECONDS)) :
         # **** Read image frame ********************* #
-        input_image = utils.read_input_workload_frame(frame_id)
+        if application == 'pocketsphinx':
+            input = utils.read_audio_workload()
+            print('Audio: {}'.format(str(frame_id)))
+        elif application == 'aeneas':
+            input_audio = utils.read_aeneas_audio_workload()
+            input_text = utils.read_aeneas_text_workload()
+            print('Audio Text: {}'.format(str(frame_id)))
+        else:
+            input = utils.read_input_workload_frame(frame_id)
         start_time = time.time()
         # **** Make gRPC call based on the application **** #
         if application == 'object_tracking':
-            grpc_result = client.call_object_tracking_server(image=input_image, frame_id=frame_id)
+            grpc_result = client.call_object_tracking_server(image=input, frame_id=frame_id)
+        elif application == 'object_detection':
+            grpc_result = client.call_object_detection_server(image=input, frame_id=frame_id)
+        elif application == 'pocketsphinx':
+            grpc_result = client.call_pocketsphinx(audio=input, frame_id=frame_id)
         else:
-            grpc_result = client.call_object_detection_server(image=input_image, frame_id=frame_id)
+            grpc_result = client.call_aeneas(audio=input_audio, text_input=input_text, frame_id=frame_id)
         response_received_time_ms = utils.current_milli_time()
         grpc_result.response_received_time_ms = response_received_time_ms
         experiment_results.append(grpc_result)
 
         frame_id += 1
 
-    print("********[x]***** Stopping the wireshark thread")
-    benchmark_orchestrator.wireshark_thread.join()
+    # print("********[x]***** Stopping the wireshark thread")
+    # benchmark_orchestrator.wireshark_thread.join()
     print("********[x]***** Saving experiment results")
+    time.sleep(5)
     save_experiment_results(client, application, fault_config_file_name, experiment_id, experiment_results)
 
-    if fault is not None and fault.abbreviation == 'PING':
-        ping_process_killed = client.kill_ping_process()
-        while not ping_process_killed:
-            print("[x] Ping flood process still in progress - trying to kill it!!!")
-            client.kill_ping_process()
+    # if fault is not None and fault.abbreviation == 'TCP':
+    #     ping_process_killed = client.kill_ping_process()
+    #     while not ping_process_killed:
+    #         print("[x] TCP flood process still in progress - trying to kill it!!!")
+    #         client.kill_ping_process()
 
 
 if __name__ == '__main__':
     client = grpc_client.Client()
 
-    # ####### No Fault Experiment ##########
     for application in configs.APPLICATIONS:
         experiment_id = 1
         while experiment_id <= configs.REPEAT_EXPERIMENTS:
             run_single_experiment(client, application, None, None, experiment_id)
             experiment_id += 1
-
-    ###### Experiments With Fault Injections ###################
-    for application in configs.APPLICATIONS:
         for fault in configs.FAULTS:
             for fault_config in fault.fault_config:
                 experiment_id = 1
                 while experiment_id <= configs.REPEAT_EXPERIMENTS:
                     run_single_experiment(client, application, fault, fault_config, experiment_id)
                     experiment_id += 1
+        #analyze_results.analyze_result_for_application(application)

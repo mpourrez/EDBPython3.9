@@ -33,6 +33,16 @@ class Client(object):
         message = create_grpc_request(image, frame_id)
         return self.stub.detect_objects(message)
 
+    def call_pocketsphinx(self, audio, frame_id):
+        message = create_grpc_request(audio, frame_id)
+        return self.stub.speech_to_text(message)
+
+    def call_aeneas(self, audio, text_input, frame_id):
+        request_time_ms = utils.current_milli_time()
+        message = pb2.AudioTextRequest(audio=audio, text_input=text_input, frame_id=frame_id,
+                                       request_time_ms=request_time_ms)
+        return self.stub.align_speech_text(message)
+
     def call_server_to_start_mem_tracing(self):
         empty = pb2.EmptyProto()
         return self.stub.start_memory_tracing(empty)
@@ -54,13 +64,14 @@ class Client(object):
         return self.stub.get_fault_injection_status(message)
 
     def ping_flood_edge_device(self, command, config):
-        shell_command = '{0} {1} {2}'.format(command, config, configs.EDGE_DEVICE_IP)
-        print('[x] Ping flooding the edge device: ' + shell_command)
+        shell_command = '{0} {1}'.format(command, config)
+        print('[x] TCP flooding the edge device: ' + shell_command)
         self.ping_process = subprocess.Popen(shell_command, shell=True)
         # wait for the subprocess to start the job
         time.sleep(10)
 
     def kill_ping_process(self):
+        print("killing process!!!")
         self.ping_process.kill()
         # wait for kill process to finish
         time.sleep(10)

@@ -2,6 +2,8 @@ import time
 from base64 import b64decode, b64encode
 import cv2
 import numpy as np
+from io import BytesIO
+from pydub import AudioSegment
 
 import configs
 
@@ -39,3 +41,31 @@ def read_input_workload_frame(frame_id):
     jpg_as_text = b64encode(buffer)
     base64_string = jpg_as_text.decode('utf-8')
     return base64_string
+
+def extract_audio(request_audio):
+    byte_array = bytearray(request_audio, encoding='utf-8')
+    decoded_bytes = b64decode(byte_array)
+    return decoded_bytes
+
+def read_audio_workload():
+    with open('workloads/audio/DeFog_b0430.wav', 'rb') as audio_file:
+        audio_data = audio_file.read()
+        base64_data = b64encode(audio_data).decode('utf-8')
+    return base64_data
+
+def read_aeneas_audio_workload():
+    audio = AudioSegment.from_file("workloads/aeneas/DeFog_p001.mp3", format="mp3")
+    first_five_seconds = audio[:5000]
+    audio_bytes = BytesIO()
+    first_five_seconds.export(audio_bytes, format("mp3"))
+    audio_base64 = b64encode(audio_bytes.getvalue()).decode("utf-8")
+    # with open('workloads/aeneas/DeFog_p001.mp3', 'rb') as audio_file:
+    #     audio_data = audio_file.read()
+    #     base64_data = b64encode(audio_data).decode('utf-8')
+    return audio_base64
+
+def read_aeneas_text_workload():
+    with open('workloads/aeneas/p001.xhtml', 'rb') as text_file:
+        text_date = text_file.read()
+        base64_data = b64encode(text_date).decode('utf-8')
+    return base64_data

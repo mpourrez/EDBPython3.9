@@ -24,6 +24,16 @@ class BenchmarksStub(object):
                 request_serializer=benchmark__pb2.Request.SerializeToString,
                 response_deserializer=benchmark__pb2.DetectionTrackingResponse.FromString,
                 )
+        self.speech_to_text = channel.unary_unary(
+                '/protos.Benchmarks/speech_to_text',
+                request_serializer=benchmark__pb2.Request.SerializeToString,
+                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
+                )
+        self.align_speech_text = channel.unary_unary(
+                '/protos.Benchmarks/align_speech_text',
+                request_serializer=benchmark__pb2.AudioTextRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
+                )
         self.start_memory_tracing = channel.unary_unary(
                 '/protos.Benchmarks/start_memory_tracing',
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
@@ -61,6 +71,18 @@ class BenchmarksServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def detect_objects(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def speech_to_text(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def align_speech_text(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -108,6 +130,16 @@ def add_BenchmarksServicer_to_server(servicer, server):
                     servicer.detect_objects,
                     request_deserializer=benchmark__pb2.Request.FromString,
                     response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
+            ),
+            'speech_to_text': grpc.unary_unary_rpc_method_handler(
+                    servicer.speech_to_text,
+                    request_deserializer=benchmark__pb2.Request.FromString,
+                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
+            ),
+            'align_speech_text': grpc.unary_unary_rpc_method_handler(
+                    servicer.align_speech_text,
+                    request_deserializer=benchmark__pb2.AudioTextRequest.FromString,
+                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
             ),
             'start_memory_tracing': grpc.unary_unary_rpc_method_handler(
                     servicer.start_memory_tracing,
@@ -175,6 +207,40 @@ class Benchmarks(object):
         return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/detect_objects',
             benchmark__pb2.Request.SerializeToString,
             benchmark__pb2.DetectionTrackingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def speech_to_text(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/speech_to_text',
+            benchmark__pb2.Request.SerializeToString,
+            benchmark__pb2.PocketSphinxResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def align_speech_text(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/align_speech_text',
+            benchmark__pb2.AudioTextRequest.SerializeToString,
+            benchmark__pb2.PocketSphinxResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
