@@ -11,10 +11,11 @@ import configs
 def current_milli_time():
     return round(time.time() * 1000)
 
+
 def bytes_to_mb(bytes):
-  KB = 1024 # One Kilobyte is 1024 bytes
-  MB = KB * 1024 # One MB is 1024 KB
-  return int(bytes/MB)
+    KB = 1024  # One Kilobyte is 1024 bytes
+    MB = KB * 1024  # One MB is 1024 KB
+    return int(bytes / MB)
 
 
 def extract_image(request_image):
@@ -42,16 +43,19 @@ def read_input_workload_frame(frame_id):
     base64_string = jpg_as_text.decode('utf-8')
     return base64_string
 
+
 def extract_audio(request_audio):
     byte_array = bytearray(request_audio, encoding='utf-8')
     decoded_bytes = b64decode(byte_array)
     return decoded_bytes
+
 
 def read_audio_workload():
     with open('workloads/audio/DeFog_b0430.wav', 'rb') as audio_file:
         audio_data = audio_file.read()
         base64_data = b64encode(audio_data).decode('utf-8')
     return base64_data
+
 
 def read_aeneas_audio_workload():
     audio = AudioSegment.from_file("workloads/aeneas/DeFog_p001.mp3", format="mp3")
@@ -63,6 +67,7 @@ def read_aeneas_audio_workload():
     #     audio_data = audio_file.read()
     #     base64_data = b64encode(audio_data).decode('utf-8')
     return audio_base64
+
 
 def read_aeneas_text_workload():
     with open('workloads/aeneas/p001.xhtml', 'rb') as text_file:

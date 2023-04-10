@@ -5,7 +5,7 @@ import grpc
 from protos import benchmark_pb2 as benchmark__pb2
 
 
-class BenchmarksStub(object):
+class ApplicationBenchmarksStub(object):
     """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
@@ -14,55 +14,173 @@ class BenchmarksStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.image_processing = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/image_processing',
+                request_serializer=benchmark__pb2.ImageProcessingRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ImageProcessingResponse.FromString,
+                )
+        self.sentiment_analysis = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/sentiment_analysis',
+                request_serializer=benchmark__pb2.SentimentAnalysisRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.SentimentAnalysisResponse.FromString,
+                )
+        self.speech_to_text = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/speech_to_text',
+                request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
+                )
+        self.image_classification_alexnet = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/image_classification_alexnet',
+                request_serializer=benchmark__pb2.ImageClassificationRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ImageClassificationResponse.FromString,
+                )
+        self.image_classification_alexnet_gpu = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/image_classification_alexnet_gpu',
+                request_serializer=benchmark__pb2.ImageClassificationRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ImageClassificationResponse.FromString,
+                )
+        self.image_classification_squeezenet = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/image_classification_squeezenet',
+                request_serializer=benchmark__pb2.ImageClassificationRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ImageClassificationResponse.FromString,
+                )
+        self.image_classification_squeezenet_gpu = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/image_classification_squeezenet_gpu',
+                request_serializer=benchmark__pb2.ImageClassificationRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ImageClassificationResponse.FromString,
+                )
+        self.object_detection_darknet = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/object_detection_darknet',
+                request_serializer=benchmark__pb2.ObjectDetectionRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ObjectDetectionResponse.FromString,
+                )
+        self.object_detection_darknet_gpu = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/object_detection_darknet_gpu',
+                request_serializer=benchmark__pb2.ObjectDetectionRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ObjectDetectionResponse.FromString,
+                )
+        self.pocket_sphinx = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/pocket_sphinx',
+                request_serializer=benchmark__pb2.PocketSphinxRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
+                )
+        self.aeneas = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/aeneas',
+                request_serializer=benchmark__pb2.AudioTextRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.AudioTextResponse.FromString,
+                )
+        self.object_tracking = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/object_tracking',
+                request_serializer=benchmark__pb2.ObjectTrackingRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ObjectTrackingResponse.FromString,
+                )
+        self.object_tracking_gpu = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/object_tracking_gpu',
+                request_serializer=benchmark__pb2.ObjectTrackingRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.ObjectTrackingResponse.FromString,
+                )
         self.track_objects = channel.unary_unary(
-                '/protos.Benchmarks/track_objects',
+                '/protos.ApplicationBenchmarks/track_objects',
                 request_serializer=benchmark__pb2.Request.SerializeToString,
                 response_deserializer=benchmark__pb2.DetectionTrackingResponse.FromString,
                 )
         self.detect_objects = channel.unary_unary(
-                '/protos.Benchmarks/detect_objects',
+                '/protos.ApplicationBenchmarks/detect_objects',
                 request_serializer=benchmark__pb2.Request.SerializeToString,
                 response_deserializer=benchmark__pb2.DetectionTrackingResponse.FromString,
                 )
-        self.speech_to_text = channel.unary_unary(
-                '/protos.Benchmarks/speech_to_text',
+        self.pocketsphinx = channel.unary_unary(
+                '/protos.ApplicationBenchmarks/pocketsphinx',
                 request_serializer=benchmark__pb2.Request.SerializeToString,
                 response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
                 )
         self.align_speech_text = channel.unary_unary(
-                '/protos.Benchmarks/align_speech_text',
+                '/protos.ApplicationBenchmarks/align_speech_text',
                 request_serializer=benchmark__pb2.AudioTextRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
                 )
-        self.start_memory_tracing = channel.unary_unary(
-                '/protos.Benchmarks/start_memory_tracing',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.EmptyProto.FromString,
-                )
-        self.get_cpu_trace = channel.unary_unary(
-                '/protos.Benchmarks/get_cpu_trace',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.CPUTrace.FromString,
-                )
-        self.get_memory_usage = channel.unary_unary(
-                '/protos.Benchmarks/get_memory_usage',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.MemoryTrace.FromString,
-                )
-        self.inject_fault = channel.unary_unary(
-                '/protos.Benchmarks/inject_fault',
-                request_serializer=benchmark__pb2.FaultRequest.SerializeToString,
-                response_deserializer=benchmark__pb2.EmptyProto.FromString,
-                )
-        self.get_fault_injection_status = channel.unary_unary(
-                '/protos.Benchmarks/get_fault_injection_status',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
-                )
 
 
-class BenchmarksServicer(object):
+class ApplicationBenchmarksServicer(object):
     """Missing associated documentation comment in .proto file."""
+
+    def image_processing(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def sentiment_analysis(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def speech_to_text(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def image_classification_alexnet(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def image_classification_alexnet_gpu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def image_classification_squeezenet(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def image_classification_squeezenet_gpu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def object_detection_darknet(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def object_detection_darknet_gpu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def pocket_sphinx(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def aeneas(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def object_tracking(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def object_tracking_gpu(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
 
     def track_objects(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -76,7 +194,7 @@ class BenchmarksServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def speech_to_text(self, request, context):
+    def pocketsphinx(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -87,6 +205,692 @@ class BenchmarksServicer(object):
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
+
+
+def add_ApplicationBenchmarksServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'image_processing': grpc.unary_unary_rpc_method_handler(
+                    servicer.image_processing,
+                    request_deserializer=benchmark__pb2.ImageProcessingRequest.FromString,
+                    response_serializer=benchmark__pb2.ImageProcessingResponse.SerializeToString,
+            ),
+            'sentiment_analysis': grpc.unary_unary_rpc_method_handler(
+                    servicer.sentiment_analysis,
+                    request_deserializer=benchmark__pb2.SentimentAnalysisRequest.FromString,
+                    response_serializer=benchmark__pb2.SentimentAnalysisResponse.SerializeToString,
+            ),
+            'speech_to_text': grpc.unary_unary_rpc_method_handler(
+                    servicer.speech_to_text,
+                    request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
+                    response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
+            ),
+            'image_classification_alexnet': grpc.unary_unary_rpc_method_handler(
+                    servicer.image_classification_alexnet,
+                    request_deserializer=benchmark__pb2.ImageClassificationRequest.FromString,
+                    response_serializer=benchmark__pb2.ImageClassificationResponse.SerializeToString,
+            ),
+            'image_classification_alexnet_gpu': grpc.unary_unary_rpc_method_handler(
+                    servicer.image_classification_alexnet_gpu,
+                    request_deserializer=benchmark__pb2.ImageClassificationRequest.FromString,
+                    response_serializer=benchmark__pb2.ImageClassificationResponse.SerializeToString,
+            ),
+            'image_classification_squeezenet': grpc.unary_unary_rpc_method_handler(
+                    servicer.image_classification_squeezenet,
+                    request_deserializer=benchmark__pb2.ImageClassificationRequest.FromString,
+                    response_serializer=benchmark__pb2.ImageClassificationResponse.SerializeToString,
+            ),
+            'image_classification_squeezenet_gpu': grpc.unary_unary_rpc_method_handler(
+                    servicer.image_classification_squeezenet_gpu,
+                    request_deserializer=benchmark__pb2.ImageClassificationRequest.FromString,
+                    response_serializer=benchmark__pb2.ImageClassificationResponse.SerializeToString,
+            ),
+            'object_detection_darknet': grpc.unary_unary_rpc_method_handler(
+                    servicer.object_detection_darknet,
+                    request_deserializer=benchmark__pb2.ObjectDetectionRequest.FromString,
+                    response_serializer=benchmark__pb2.ObjectDetectionResponse.SerializeToString,
+            ),
+            'object_detection_darknet_gpu': grpc.unary_unary_rpc_method_handler(
+                    servicer.object_detection_darknet_gpu,
+                    request_deserializer=benchmark__pb2.ObjectDetectionRequest.FromString,
+                    response_serializer=benchmark__pb2.ObjectDetectionResponse.SerializeToString,
+            ),
+            'pocket_sphinx': grpc.unary_unary_rpc_method_handler(
+                    servicer.pocket_sphinx,
+                    request_deserializer=benchmark__pb2.PocketSphinxRequest.FromString,
+                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
+            ),
+            'aeneas': grpc.unary_unary_rpc_method_handler(
+                    servicer.aeneas,
+                    request_deserializer=benchmark__pb2.AudioTextRequest.FromString,
+                    response_serializer=benchmark__pb2.AudioTextResponse.SerializeToString,
+            ),
+            'object_tracking': grpc.unary_unary_rpc_method_handler(
+                    servicer.object_tracking,
+                    request_deserializer=benchmark__pb2.ObjectTrackingRequest.FromString,
+                    response_serializer=benchmark__pb2.ObjectTrackingResponse.SerializeToString,
+            ),
+            'object_tracking_gpu': grpc.unary_unary_rpc_method_handler(
+                    servicer.object_tracking_gpu,
+                    request_deserializer=benchmark__pb2.ObjectTrackingRequest.FromString,
+                    response_serializer=benchmark__pb2.ObjectTrackingResponse.SerializeToString,
+            ),
+            'track_objects': grpc.unary_unary_rpc_method_handler(
+                    servicer.track_objects,
+                    request_deserializer=benchmark__pb2.Request.FromString,
+                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
+            ),
+            'detect_objects': grpc.unary_unary_rpc_method_handler(
+                    servicer.detect_objects,
+                    request_deserializer=benchmark__pb2.Request.FromString,
+                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
+            ),
+            'pocketsphinx': grpc.unary_unary_rpc_method_handler(
+                    servicer.pocketsphinx,
+                    request_deserializer=benchmark__pb2.Request.FromString,
+                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
+            ),
+            'align_speech_text': grpc.unary_unary_rpc_method_handler(
+                    servicer.align_speech_text,
+                    request_deserializer=benchmark__pb2.AudioTextRequest.FromString,
+                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'protos.ApplicationBenchmarks', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class ApplicationBenchmarks(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def image_processing(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/image_processing',
+            benchmark__pb2.ImageProcessingRequest.SerializeToString,
+            benchmark__pb2.ImageProcessingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def sentiment_analysis(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/sentiment_analysis',
+            benchmark__pb2.SentimentAnalysisRequest.SerializeToString,
+            benchmark__pb2.SentimentAnalysisResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def speech_to_text(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/speech_to_text',
+            benchmark__pb2.SpeechToTextRequest.SerializeToString,
+            benchmark__pb2.SpeechToTextResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def image_classification_alexnet(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/image_classification_alexnet',
+            benchmark__pb2.ImageClassificationRequest.SerializeToString,
+            benchmark__pb2.ImageClassificationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def image_classification_alexnet_gpu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/image_classification_alexnet_gpu',
+            benchmark__pb2.ImageClassificationRequest.SerializeToString,
+            benchmark__pb2.ImageClassificationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def image_classification_squeezenet(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/image_classification_squeezenet',
+            benchmark__pb2.ImageClassificationRequest.SerializeToString,
+            benchmark__pb2.ImageClassificationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def image_classification_squeezenet_gpu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/image_classification_squeezenet_gpu',
+            benchmark__pb2.ImageClassificationRequest.SerializeToString,
+            benchmark__pb2.ImageClassificationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def object_detection_darknet(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_detection_darknet',
+            benchmark__pb2.ObjectDetectionRequest.SerializeToString,
+            benchmark__pb2.ObjectDetectionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def object_detection_darknet_gpu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_detection_darknet_gpu',
+            benchmark__pb2.ObjectDetectionRequest.SerializeToString,
+            benchmark__pb2.ObjectDetectionResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def pocket_sphinx(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/pocket_sphinx',
+            benchmark__pb2.PocketSphinxRequest.SerializeToString,
+            benchmark__pb2.PocketSphinxResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def aeneas(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/aeneas',
+            benchmark__pb2.AudioTextRequest.SerializeToString,
+            benchmark__pb2.AudioTextResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def object_tracking(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_tracking',
+            benchmark__pb2.ObjectTrackingRequest.SerializeToString,
+            benchmark__pb2.ObjectTrackingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def object_tracking_gpu(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_tracking_gpu',
+            benchmark__pb2.ObjectTrackingRequest.SerializeToString,
+            benchmark__pb2.ObjectTrackingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def track_objects(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/track_objects',
+            benchmark__pb2.Request.SerializeToString,
+            benchmark__pb2.DetectionTrackingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def detect_objects(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/detect_objects',
+            benchmark__pb2.Request.SerializeToString,
+            benchmark__pb2.DetectionTrackingResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def pocketsphinx(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/pocketsphinx',
+            benchmark__pb2.Request.SerializeToString,
+            benchmark__pb2.PocketSphinxResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def align_speech_text(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/align_speech_text',
+            benchmark__pb2.AudioTextRequest.SerializeToString,
+            benchmark__pb2.PocketSphinxResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class MicroBenchmarksStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.multiply_matrices = channel.unary_unary(
+                '/protos.MicroBenchmarks/multiply_matrices',
+                request_serializer=benchmark__pb2.MatrixMultiplicationRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.MatrixMultiplicationResponse.FromString,
+                )
+        self.fast_fourier_transform = channel.unary_unary(
+                '/protos.MicroBenchmarks/fast_fourier_transform',
+                request_serializer=benchmark__pb2.FastFourierRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.FastFourierResponse.FromString,
+                )
+        self.floating_point_sqrt = channel.unary_unary(
+                '/protos.MicroBenchmarks/floating_point_sqrt',
+                request_serializer=benchmark__pb2.FloatingPointRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.FloatingPointResponse.FromString,
+                )
+        self.floating_point_sin = channel.unary_unary(
+                '/protos.MicroBenchmarks/floating_point_sin',
+                request_serializer=benchmark__pb2.FloatingPointRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.FloatingPointResponse.FromString,
+                )
+        self.sort_file = channel.unary_unary(
+                '/protos.MicroBenchmarks/sort_file',
+                request_serializer=benchmark__pb2.FileSorterRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.FileSorterResponse.FromString,
+                )
+        self.dd_cmd = channel.unary_unary(
+                '/protos.MicroBenchmarks/dd_cmd',
+                request_serializer=benchmark__pb2.DDRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.DDResponse.FromString,
+                )
+        self.run_iperf = channel.unary_unary(
+                '/protos.MicroBenchmarks/run_iperf',
+                request_serializer=benchmark__pb2.IperfRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.IperfResult.FromString,
+                )
+
+
+class MicroBenchmarksServicer(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def multiply_matrices(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def fast_fourier_transform(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def floating_point_sqrt(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def floating_point_sin(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def sort_file(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def dd_cmd(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def run_iperf(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+
+def add_MicroBenchmarksServicer_to_server(servicer, server):
+    rpc_method_handlers = {
+            'multiply_matrices': grpc.unary_unary_rpc_method_handler(
+                    servicer.multiply_matrices,
+                    request_deserializer=benchmark__pb2.MatrixMultiplicationRequest.FromString,
+                    response_serializer=benchmark__pb2.MatrixMultiplicationResponse.SerializeToString,
+            ),
+            'fast_fourier_transform': grpc.unary_unary_rpc_method_handler(
+                    servicer.fast_fourier_transform,
+                    request_deserializer=benchmark__pb2.FastFourierRequest.FromString,
+                    response_serializer=benchmark__pb2.FastFourierResponse.SerializeToString,
+            ),
+            'floating_point_sqrt': grpc.unary_unary_rpc_method_handler(
+                    servicer.floating_point_sqrt,
+                    request_deserializer=benchmark__pb2.FloatingPointRequest.FromString,
+                    response_serializer=benchmark__pb2.FloatingPointResponse.SerializeToString,
+            ),
+            'floating_point_sin': grpc.unary_unary_rpc_method_handler(
+                    servicer.floating_point_sin,
+                    request_deserializer=benchmark__pb2.FloatingPointRequest.FromString,
+                    response_serializer=benchmark__pb2.FloatingPointResponse.SerializeToString,
+            ),
+            'sort_file': grpc.unary_unary_rpc_method_handler(
+                    servicer.sort_file,
+                    request_deserializer=benchmark__pb2.FileSorterRequest.FromString,
+                    response_serializer=benchmark__pb2.FileSorterResponse.SerializeToString,
+            ),
+            'dd_cmd': grpc.unary_unary_rpc_method_handler(
+                    servicer.dd_cmd,
+                    request_deserializer=benchmark__pb2.DDRequest.FromString,
+                    response_serializer=benchmark__pb2.DDResponse.SerializeToString,
+            ),
+            'run_iperf': grpc.unary_unary_rpc_method_handler(
+                    servicer.run_iperf,
+                    request_deserializer=benchmark__pb2.IperfRequest.FromString,
+                    response_serializer=benchmark__pb2.IperfResult.SerializeToString,
+            ),
+    }
+    generic_handler = grpc.method_handlers_generic_handler(
+            'protos.MicroBenchmarks', rpc_method_handlers)
+    server.add_generic_rpc_handlers((generic_handler,))
+
+
+ # This class is part of an EXPERIMENTAL API.
+class MicroBenchmarks(object):
+    """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def multiply_matrices(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/multiply_matrices',
+            benchmark__pb2.MatrixMultiplicationRequest.SerializeToString,
+            benchmark__pb2.MatrixMultiplicationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def fast_fourier_transform(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/fast_fourier_transform',
+            benchmark__pb2.FastFourierRequest.SerializeToString,
+            benchmark__pb2.FastFourierResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def floating_point_sqrt(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/floating_point_sqrt',
+            benchmark__pb2.FloatingPointRequest.SerializeToString,
+            benchmark__pb2.FloatingPointResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def floating_point_sin(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/floating_point_sin',
+            benchmark__pb2.FloatingPointRequest.SerializeToString,
+            benchmark__pb2.FloatingPointResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def sort_file(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/sort_file',
+            benchmark__pb2.FileSorterRequest.SerializeToString,
+            benchmark__pb2.FileSorterResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def dd_cmd(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/dd_cmd',
+            benchmark__pb2.DDRequest.SerializeToString,
+            benchmark__pb2.DDResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def run_iperf(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.MicroBenchmarks/run_iperf',
+            benchmark__pb2.IperfRequest.SerializeToString,
+            benchmark__pb2.IperfResult.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+
+class EdgeResourceManagementStub(object):
+    """Missing associated documentation comment in .proto file."""
+
+    def __init__(self, channel):
+        """Constructor.
+
+        Args:
+            channel: A grpc.Channel.
+        """
+        self.start_memory_tracing = channel.unary_unary(
+                '/protos.EdgeResourceManagement/start_memory_tracing',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.get_cpu_trace = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_cpu_trace',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.CPUTrace.FromString,
+                )
+        self.get_memory_usage = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_memory_usage',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.MemoryTrace.FromString,
+                )
+        self.inject_fault = channel.unary_unary(
+                '/protos.EdgeResourceManagement/inject_fault',
+                request_serializer=benchmark__pb2.FaultRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.get_fault_injection_status = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_fault_injection_status',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
+                )
+
+
+class EdgeResourceManagementServicer(object):
+    """Missing associated documentation comment in .proto file."""
 
     def start_memory_tracing(self, request, context):
         """Missing associated documentation comment in .proto file."""
@@ -119,28 +923,8 @@ class BenchmarksServicer(object):
         raise NotImplementedError('Method not implemented!')
 
 
-def add_BenchmarksServicer_to_server(servicer, server):
+def add_EdgeResourceManagementServicer_to_server(servicer, server):
     rpc_method_handlers = {
-            'track_objects': grpc.unary_unary_rpc_method_handler(
-                    servicer.track_objects,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
-            ),
-            'detect_objects': grpc.unary_unary_rpc_method_handler(
-                    servicer.detect_objects,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
-            ),
-            'speech_to_text': grpc.unary_unary_rpc_method_handler(
-                    servicer.speech_to_text,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
-            ),
-            'align_speech_text': grpc.unary_unary_rpc_method_handler(
-                    servicer.align_speech_text,
-                    request_deserializer=benchmark__pb2.AudioTextRequest.FromString,
-                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
-            ),
             'start_memory_tracing': grpc.unary_unary_rpc_method_handler(
                     servicer.start_memory_tracing,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
@@ -168,81 +952,13 @@ def add_BenchmarksServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'protos.Benchmarks', rpc_method_handlers)
+            'protos.EdgeResourceManagement', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
-class Benchmarks(object):
+class EdgeResourceManagement(object):
     """Missing associated documentation comment in .proto file."""
-
-    @staticmethod
-    def track_objects(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/track_objects',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.DetectionTrackingResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def detect_objects(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/detect_objects',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.DetectionTrackingResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def speech_to_text(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/speech_to_text',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.PocketSphinxResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def align_speech_text(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/align_speech_text',
-            benchmark__pb2.AudioTextRequest.SerializeToString,
-            benchmark__pb2.PocketSphinxResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def start_memory_tracing(request,
@@ -255,7 +971,7 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/start_memory_tracing',
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/start_memory_tracing',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.EmptyProto.FromString,
             options, channel_credentials,
@@ -272,7 +988,7 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/get_cpu_trace',
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_cpu_trace',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.CPUTrace.FromString,
             options, channel_credentials,
@@ -289,7 +1005,7 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/get_memory_usage',
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_memory_usage',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.MemoryTrace.FromString,
             options, channel_credentials,
@@ -306,7 +1022,7 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/inject_fault',
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/inject_fault',
             benchmark__pb2.FaultRequest.SerializeToString,
             benchmark__pb2.EmptyProto.FromString,
             options, channel_credentials,
@@ -323,7 +1039,7 @@ class Benchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.Benchmarks/get_fault_injection_status',
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_fault_injection_status',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.FaultInjectionStatus.FromString,
             options, channel_credentials,

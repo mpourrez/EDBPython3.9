@@ -11,10 +11,12 @@ TIME_BOUND_FOR_FAULT_INJECTION = 5 #in-seconds
 REPEAT_EXPERIMENTS = 10
 
 EDGE_DEVICE_NAME = 'raspberrypi'
-EDGE_DEVICE_IP = '192.168.0.20'
+EDGE_DEVICES_IP = ['localhost', '192.168.0.168', '192.168.0.12', '192.168.0.139']
 EDGE_DEVICE_PORT = 50051
+ORCHESTRATOR_IP = '192.168.0.22'
 
-APPLICATIONS = ['object_detection', 'object_tracking','pocketsphinx']
+# APPLICATIONS = ['mm', 'fft', 'fpo-sine', 'fpo-sqrt', 'sort', 'dd', 'iperf', 'object_detection', 'object_tracking', 'pocketsphinx']
+APPLICATIONS = ['sort', 'dd', 'iperf', 'IP', 'SA', 'ST', 'object_detection', 'object_tracking', 'pocketsphinx']
 
 class Fault:
     def __init__(self, fault_name, abbreviation, fault_command, fault_config):

@@ -2,54 +2,298 @@ syntax = "proto3";
 
 package protos;
 
-service Benchmarks{
- rpc track_objects(Request) returns (DetectionTrackingResponse) {}
- rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
- rpc speech_to_text(Request) returns (PocketSphinxResponse) {}
- rpc align_speech_text(AudioTextRequest) returns (PocketSphinxResponse) {}
- rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
- rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
- rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
- rpc inject_fault(FaultRequest) returns (EmptyProto) {}
- rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
+service ApplicationBenchmarks{
+  rpc image_processing(ImageProcessingRequest) returns (ImageProcessingResponse) {}
+  rpc sentiment_analysis(SentimentAnalysisRequest) returns (SentimentAnalysisResponse) {}
+  rpc speech_to_text(SpeechToTextRequest) returns (SpeechToTextResponse) {}
+  rpc image_classification_alexnet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
+  rpc image_classification_alexnet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
+  rpc image_classification_squeezenet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
+  rpc image_classification_squeezenet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
+  rpc object_detection_darknet(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
+  rpc object_detection_darknet_gpu(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
+  rpc pocket_sphinx(PocketSphinxRequest) returns (PocketSphinxResponse) {}
+  rpc aeneas(AudioTextRequest) returns (AudioTextResponse) {}
+  rpc object_tracking(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
+  rpc object_tracking_gpu(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
+
+  rpc track_objects(Request) returns (DetectionTrackingResponse) {}
+  rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
+  rpc pocketsphinx(Request) returns (PocketSphinxResponse) {}
+  rpc align_speech_text(AudioTextRequest) returns (PocketSphinxResponse) {}
 }
 
-message Request{
- string image = 1;
- int64 frame_id = 2;
- int64 request_time_ms = 3;
+service MicroBenchmarks{
+  rpc multiply_matrices(MatrixMultiplicationRequest) returns (MatrixMultiplicationResponse) {}
+  rpc fast_fourier_transform(FastFourierRequest) returns (FastFourierResponse) {}
+  rpc floating_point_sqrt(FloatingPointRequest) returns (FloatingPointResponse) {}
+  rpc floating_point_sin(FloatingPointRequest) returns (FloatingPointResponse) {}
+  rpc sort_file(FileSorterRequest) returns (FileSorterResponse) {}
+  rpc dd_cmd(DDRequest) returns (DDResponse) {}
+  rpc run_iperf(IperfRequest) returns (IperfResult) {}
 }
 
-message AudioTextRequest{
- string audio = 1;
- string text_input = 2;
- int64 frame_id = 3;
- int64 request_time_ms = 4;
+service EdgeResourceManagement{
+  rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
+  rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
+  rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
+  rpc inject_fault(FaultRequest) returns (EmptyProto) {}
+  rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
 }
 
-message FaultRequest{
- string fault_command = 1;
- string fault_config = 2;
- int32 timeout = 3;
+/********************************************************
+*********************************************************
+START: The below messages are for micro-benchmarks
+*********************************************************
+********************************************************/
+
+message MatrixMultiplicationRequest{
+  Matrix matrix_1 = 1;
+  Matrix matrix_2 = 2;
+  int64 request_time_ms = 3;
 }
 
-message DetectionTrackingResponse{
- int64 frame_id = 1;
- int64 request_time_ms = 2;
- int64 request_received_time_ms = 3;
- int64 response_time_ms = 4;
- int64 response_received_time_ms = 5;
- repeated DetectedTrackedObject detected_objects = 6;
+message MatrixMultiplicationResponse{
+  Matrix matrix = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message FastFourierRequest{
+  Row input_sequence = 1;
+  int64 request_time_ms = 2;
+}
+
+message FastFourierResponse{
+  Row fourier_output = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message FloatingPointRequest{
+  int64 floating_point_input = 1;
+  int64 request_time_ms = 2;
+}
+
+message FloatingPointResponse{
+  float floating_point_output = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message FileSorterRequest{
+  FileData file = 1;
+  int64 request_time_ms = 2;
+}
+
+message FileSorterResponse{
+  FileData sorted_file = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message DDRequest{
+  int64 request_time_ms = 1;
+}
+
+message DDResponse{
+  int64 request_time_ms = 1;
+  int64 request_received_time_ms = 2;
+  int64 response_time_ms = 3;
+  int64 response_received_time_ms = 4;
+}
+
+message IperfRequest {
+  string hostname = 1;
+  int32 port = 2;
+  int32 duration = 3;
+  int64 request_time_ms = 4;
+}
+
+message IperfResult {
+  double bandwidth = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message Matrix {
+  repeated Row rows = 1;
+}
+
+message Row {
+  repeated float values = 1;
+}
+
+message FileData {
+  bytes data = 1;
+}
+
+/********************************************************
+*********************************************************
+END: The above messages are for micro-benchmarks
+*********************************************************
+********************************************************/
+
+/********************************************************
+*********************************************************
+START: The below messages are for application-benchmarks
+*********************************************************
+********************************************************/
+
+message ImageProcessingRequest{
+  string image = 1;
+  int64 request_time_ms = 2;
+}
+
+message ImageProcessingResponse{
+  string resized_image = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message SentimentAnalysisRequest{
+  string input_text = 1;
+  int64 request_time_ms = 2;
+}
+
+message SentimentAnalysisResponse{
+  int32 sentence_count = 1;
+  float polarity = 2;
+  float subjectivity = 3;
+  int64 request_time_ms = 4;
+  int64 request_received_time_ms = 5;
+  int64 response_time_ms = 6;
+  int64 response_received_time_ms = 7;
+}
+
+message SpeechToTextRequest{
+  string audio = 1;
+  int64 request_time_ms = 2;
+}
+
+message SpeechToTextResponse{
+  string text_conversion_output = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message ImageClassificationRequest{
+  string image = 1;
+  int64 request_time_ms = 2;
+}
+
+message ImageClassificationResponse{
+  int32 top_category_id = 1;
+  int32 top_category_probability = 2;
+  int64 request_time_ms = 3;
+  int64 request_received_time_ms = 4;
+  int64 response_time_ms = 5;
+  int64 response_received_time_ms = 6;
+}
+
+message ObjectDetectionRequest{
+  string image = 1;
+  int64 request_time_ms = 2;
+}
+
+message ObjectDetectionResponse{
+  int64 request_time_ms = 1;
+  int64 request_received_time_ms = 2;
+  int64 response_time_ms = 3;
+  int64 response_received_time_ms = 4;
+  repeated DetectedTrackedObject detected_objects = 5;
+}
+
+message PocketSphinxRequest{
+  string audio = 1;
+  int64 request_time_ms = 2;
 }
 
 message PocketSphinxResponse{
- int64 frame_id = 1;
- int64 request_time_ms = 2;
- int64 request_received_time_ms = 3;
- int64 response_time_ms = 4;
- int64 response_received_time_ms = 5;
- string conversion_result = 6;
+  string conversion_result = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
 }
+
+message AudioTextRequest{
+  string audio = 1;
+  string text_input = 2;
+  int64 frame_id = 3;
+  int64 request_time_ms = 4;
+}
+
+message AudioTextResponse{
+  string alignment_result = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+}
+
+message ObjectTrackingRequest{
+  string image = 1;
+  int64 request_time_ms = 3;
+}
+
+message ObjectTrackingResponse{
+  int64 request_time_ms = 1;
+  int64 request_received_time_ms = 2;
+  int64 response_time_ms = 3;
+  int64 response_received_time_ms = 4;
+  repeated DetectedTrackedObject tracked_objects = 5;
+}
+
+/********************************************************
+*********************************************************
+END: The above messages are for application-benchmarks
+*********************************************************
+********************************************************/
+
+message Request{
+  string image = 1;
+  int64 frame_id = 2;
+  int64 request_time_ms = 3;
+}
+
+message FaultRequest{
+  string fault_command = 1;
+  string fault_config = 2;
+  int32 timeout = 3;
+}
+
+message DetectionTrackingResponse{
+  int64 frame_id = 1;
+  int64 request_time_ms = 2;
+  int64 request_received_time_ms = 3;
+  int64 response_time_ms = 4;
+  int64 response_received_time_ms = 5;
+  repeated DetectedTrackedObject detected_objects = 6;
+}
+
+//message PocketSphinxResponse{
+//  int64 frame_id = 1;
+//  int64 request_time_ms = 2;
+//  int64 request_received_time_ms = 3;
+//  int64 response_time_ms = 4;
+//  int64 response_received_time_ms = 5;
+//  string conversion_result = 6;
+//}
 
 message DetectedTrackedObject {
   int32 track_id = 1;

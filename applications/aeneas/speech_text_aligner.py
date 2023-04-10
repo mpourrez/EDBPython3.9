@@ -11,8 +11,8 @@ def align_speech_text(audio_data, text_data, frame_id, request_time_ms, request_
     audio_path = "audio.mp3"
     with open(audio_path, "wb") as f:
         f.write(audio_data)
-    #
-    # # save the decoded text data as a temporary file in plain text format
+
+    # save the decoded text data as a temporary file in plain text format
     text_path = "text.txt"
     with open(text_path, "wb") as f:
         f.write(text_data)
