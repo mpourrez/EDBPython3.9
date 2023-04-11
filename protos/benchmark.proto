@@ -17,6 +17,7 @@ service ApplicationBenchmarks{
   rpc object_tracking(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
   rpc object_tracking_gpu(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
 
+  // OLD APPLICATIONS:
   rpc track_objects(Request) returns (DetectionTrackingResponse) {}
   rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
   rpc pocketsphinx(Request) returns (PocketSphinxResponse) {}
@@ -34,6 +35,10 @@ service MicroBenchmarks{
 }
 
 service EdgeResourceManagement{
+  rpc start_resource_tracing(EmptyProto) returns (EmptyProto) {}
+  rpc get_resource_utilization(EmptyProto) returns (ResourceUtilizationResponse) {}
+
+  // OLD SERVICES
   rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
   rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
   rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
@@ -264,6 +269,15 @@ message ObjectTrackingResponse{
 END: The above messages are for application-benchmarks
 *********************************************************
 ********************************************************/
+
+
+message ResourceUtilizationResponse{
+  float average_cpu_utilization = 1;
+  float average_memory_utilization = 2;
+  float average_disk_utilization = 3;
+  float average_network_utilization = 4;
+  float average_power_consumption = 5;
+}
 
 message Request{
   string image = 1;

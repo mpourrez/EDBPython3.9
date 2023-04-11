@@ -5,14 +5,52 @@ from protos import benchmark_pb2 as pb2
 import psutil
 import tracemalloc
 import subprocess
+import threading
+import time
 
 
 class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer):
 
     def __init__(self, *args, **kwargs):
+        self.resource_thread = None
+        self.power_thread = None
+
         self.fault_injection_process = None
         self.utilization_output = None
         self.resource_tracing_process = None
+
+    def start_resource_tracing(self, request, context):
+        print("[x] Tracing resource utilization. ")
+        # Start the resource utilization thread
+        self.resource_thread = ResourceUtilizationThread(interval=1)
+        self.resource_thread.start()
+        # Start the power measurement thread
+        self.power_thread = PowerMeasurementThread(interval=1)
+        self.power_thread.start()
+        return pb2.EmptyProto()
+
+    def get_resource_utilization(self, request, context):
+        # Stop the power measurement thread and get the average power consumption
+        self.power_thread.stop()
+        self.power_thread.join()
+        self.resource_thread.stop()
+        self.resource_thread.join()
+        avg_power = self.power_thread.get_average_power()
+        # Stop the resource utilization thread and get the average values
+        avg_cpu_utilization = self.resource_thread.get_average_cpu_utilization()
+        avg_memory_utilization = self.resource_thread.get_average_memory_utilization()
+        avg_disk_utilization = self.resource_thread.get_average_disk_utilization()
+        avg_network_utilization = self.resource_thread.get_average_network_utilization()
+        resource_utilization_response = pb2.ResourceUtilizationResponse()
+        resource_utilization_response.average_cpu_utilization = avg_cpu_utilization
+        resource_utilization_response.average_memory_utilization = avg_memory_utilization
+        resource_utilization_response.average_disk_utilization = avg_disk_utilization
+        resource_utilization_response.average_network_utilization = avg_network_utilization
+        resource_utilization_response.average_power_consumption = avg_power
+        return resource_utilization_response
+
+    # OLD CODE BELOW
+
     def get_cpu_trace(self, request, context):
         # This method gives the cpu load over the last 1 minute, 5 minutes, and 15 minutes
         # Since our experiments duration is 1 minute --> we can use the first one
@@ -74,3 +112,100 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
             return pb2.FaultInjectionStatus(is_finished=False)
         else:
             return pb2.FaultInjectionStatus(is_finished=True)
+
+
+class PowerMeasurementThread(threading.Thread):
+    def __init__(self, interval):
+        super().__init__()
+        self.interval = interval
+        self.stop_flag = False
+        self.power_data = []
+
+    def run(self):
+        while not self.stop_flag:
+            # Run vcgencmd to get power consumption data
+            command = "vcgencmd measure_volts core"
+            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = process.communicate()
+
+            # Parse the output to extract the voltage and current values
+            voltage = float(output.decode().split("=")[1][:-1])
+            current = voltage / 0.1
+
+            # Calculate the power consumption
+            power = voltage * current
+
+            # Add the power consumption data to the list
+            self.power_data.append(power)
+
+            # Wait for the measurement interval
+            time.sleep(self.interval)
+
+    def stop(self):
+        self.stop_flag = True
+
+    def get_average_power(self):
+        return sum(self.power_data) / len(self.power_data)
+
+
+class ResourceUtilizationThread(threading.Thread):
+    def __init__(self, interval):
+        super().__init__()
+        self.interval = interval
+        self.stop_flag = False
+        self.cpu_data = []
+        self.memory_data = []
+        self.disk_data = []
+        self.network_data = []
+
+    def run(self):
+        # Start the sar command to collect CPU, memory, and network utilization data
+        command = f"sar -u {self.interval} -r {self.interval} -n DEV {self.interval}"
+        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        # Start the iostat command to collect disk utilization data
+        iostat_command = f"iostat -dkx {self.interval}"
+        iostat_process = subprocess.Popen(iostat_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+
+        while not self.stop_flag:
+            # Read the sar output line by line
+            sar_line = process.stdout.readline().decode()
+
+            if sar_line and sar_line.startswith("Average"):
+                # Parse the CPU, memory, and network utilization data from the "Average" line
+                cpu_utilization = 100 - float(sar_line.split()[-1])
+                memory_utilization = float(sar_line.split()[-3])
+                network_utilization = float(sar_line.split()[-6])
+                self.cpu_data.append(cpu_utilization)
+                self.memory_data.append(memory_utilization)
+                self.network_data.append(network_utilization)
+
+            # Read the iostat output line by line
+            iostat_line = iostat_process.stdout.readline().decode()
+
+            if iostat_line and not iostat_line.startswith("Device"):
+                # Parse the disk utilization data from the iostat output
+                disk_utilization = float(iostat_line.split()[-1])
+                self.disk_data.append(disk_utilization)
+
+        # Terminate the sar and iostat processes after the loop is done
+        process.terminate()
+        iostat_process.terminate()
+
+    def stop(self):
+        self.stop_flag = True
+
+    def get_average_cpu_utilization(self):
+        return sum(self.cpu_data) / len(self.cpu_data)
+
+    def get_average_memory_utilization(self):
+        return sum(self.memory_data) / len(self.memory_data)
+
+    def get_average_disk_utilization(self):
+        return sum(self.disk_data) / len(self.disk_data)
+
+    def get_average_network_utilization(self):
+        return sum(self.network_data) / len(self.network_data)
+
+    def stop(self):
+        self.stop_flag = True

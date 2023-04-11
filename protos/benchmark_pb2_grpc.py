@@ -183,7 +183,8 @@ class ApplicationBenchmarksServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def track_objects(self, request, context):
-        """Missing associated documentation comment in .proto file."""
+        """OLD APPLICATIONS:
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -862,6 +863,16 @@ class EdgeResourceManagementStub(object):
         Args:
             channel: A grpc.Channel.
         """
+        self.start_resource_tracing = channel.unary_unary(
+                '/protos.EdgeResourceManagement/start_resource_tracing',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.get_resource_utilization = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_resource_utilization',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.ResourceUtilizationResponse.FromString,
+                )
         self.start_memory_tracing = channel.unary_unary(
                 '/protos.EdgeResourceManagement/start_memory_tracing',
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
@@ -892,8 +903,21 @@ class EdgeResourceManagementStub(object):
 class EdgeResourceManagementServicer(object):
     """Missing associated documentation comment in .proto file."""
 
-    def start_memory_tracing(self, request, context):
+    def start_resource_tracing(self, request, context):
         """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def get_resource_utilization(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def start_memory_tracing(self, request, context):
+        """OLD SERVICES
+        """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
@@ -925,6 +949,16 @@ class EdgeResourceManagementServicer(object):
 
 def add_EdgeResourceManagementServicer_to_server(servicer, server):
     rpc_method_handlers = {
+            'start_resource_tracing': grpc.unary_unary_rpc_method_handler(
+                    servicer.start_resource_tracing,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
+            'get_resource_utilization': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_resource_utilization,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.ResourceUtilizationResponse.SerializeToString,
+            ),
             'start_memory_tracing': grpc.unary_unary_rpc_method_handler(
                     servicer.start_memory_tracing,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
@@ -959,6 +993,40 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
  # This class is part of an EXPERIMENTAL API.
 class EdgeResourceManagement(object):
     """Missing associated documentation comment in .proto file."""
+
+    @staticmethod
+    def start_resource_tracing(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/start_resource_tracing',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def get_resource_utilization(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_resource_utilization',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.ResourceUtilizationResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
     def start_memory_tracing(request,

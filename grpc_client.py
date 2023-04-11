@@ -88,6 +88,16 @@ class Client(object):
                                    , request_time_ms=request_time_ms)
         return self.micro_stub.run_iperf(message)
 
+    # END: Micor Benchmarks
+
+    def call_edge_to_start_resource_tracing(self):
+        empty = pb2.EmptyProto()
+        return self.edge_resource_management_stub.start_resource_tracing(empty)
+
+    def get_resource_utilization(self):
+        empty = pb2.EmptyProto()
+        return self.edge_resource_management_stub.get_resource_utilization(empty)
+
     def call_object_tracking_server(self, image, frame_id):
         message = create_grpc_request(image, frame_id)
         return self.application_stub.track_objects(message)

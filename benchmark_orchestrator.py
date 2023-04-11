@@ -8,12 +8,13 @@ import analyze_results
 import numpy as np
 from math import sqrt, sin, pi
 
+
 ####################################################################################
 ####################################################################################
 ## Saving latency and resource utilization results in csv file
 ####################################################################################
 ####################################################################################
-def save_experiment_results(client, application, fault_config_file_name, results):
+def save_experiment_results(application, fault_config_file_name, results, res_utilizations):
     latency_filename = "./results/" + configs.EDGE_DEVICE_NAME + "/" + application + "-" + fault_config_file_name + \
                        ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
@@ -23,17 +24,21 @@ def save_experiment_results(client, application, fault_config_file_name, results
         writer = csv.writer(csv_output)
 
         header = ['experiment_id', 'request_time_ms', 'request_received_time_ms', 'response_time_ms',
-                  'response_received_time_ms', 'end_to_end_latency', 'compute_time', 'transmission_time']
+                  'response_received_time_ms', 'end_to_end_latency', 'compute_time', 'transmission_time', 'avg_cpu',
+                  'avg_memory', 'avg_disk', 'avg_network', 'avg_power']
         writer.writerow(header)
-        experiment_id = 0
+        index = 0
         for result in results:
-            experiment_id += 1
+            res_utilization = res_utilizations[index]
+            index += 1
             end_to_end_latency = result.response_received_time_ms - result.request_time_ms
             compute_time = result.response_time_ms - result.request_received_time_ms
             transmission_time = end_to_end_latency - compute_time
-            row = [experiment_id, result.request_time_ms, result.request_received_time_ms,
+            row = [index, result.request_time_ms, result.request_received_time_ms,
                    result.response_time_ms, result.response_received_time_ms, end_to_end_latency,
-                   compute_time, transmission_time]
+                   compute_time, transmission_time, res_utilization.average_cpu_utilization,
+                   res_utilization.average_memory_utilization, res_utilization.average_disk_utilization,
+                   res_utilization.average_network_utilization, res_utilization.average_power_consumption]
             writer.writerow(row)
 
         # writer.writerow(['avg_CPU', 'avg_memory_mb'])
@@ -61,7 +66,7 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
     #     time.sleep(configs.MAX_EXPERIMENT_TIME_SECONDS/10)
     #     fault_injection_status = client.call_server_to_get_fault_injection_status()
     print("********[x]***** Ready to start the experiment.")
-
+    client.call_edge_to_start_resource_tracing()
     # client.call_server_to_start_mem_tracing()
     # if fault is not None and fault.abbreviation != 'TCP' and fault.abbreviation != 'PING':
     #     client.call_server_to_inject_fault(fault.fault_command, fault_config,
@@ -86,7 +91,8 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
         grpc_result = client.call_iperf()
     response_received_time_ms = utils.current_milli_time()
     grpc_result.response_received_time_ms = response_received_time_ms
-    return grpc_result
+    resource_utilization_response = client.get_resource_utilization()
+    return grpc_result, resource_utilization_response
 
     # frame_id = 1
     # max_frame = configs.MAX_FRAME_NUM
@@ -125,15 +131,18 @@ if __name__ == '__main__':
         client = grpc_client.Client(edge_device_ip)
         for application in configs.APPLICATIONS:
             experiment_results = []
+            resource_utilizations = []
             # Fault Free Experiments
             experiment_id = 1
             while experiment_id <= configs.REPEAT_EXPERIMENTS:
-                grpc_result = run_single_experiment(client, application, None, None, experiment_id)
+                grpc_result, resource_utilization = run_single_experiment(client, application, None, None,
+                                                                          experiment_id)
                 experiment_results.append(grpc_result)
+                resource_utilizations.append(resource_utilization)
                 experiment_id += 1
 
             print("********[x]***** Saving experiment results")
-            save_experiment_results(client, application, "no-fault", experiment_results)
+            save_experiment_results(application, "no-fault", experiment_results, resource_utilizations)
 
             # # Experiments with Fault Injection
             # for fault in configs.FAULTS:
