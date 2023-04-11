@@ -69,7 +69,7 @@ class Client(object):
         return self.micro_stub.floating_point_sqrt(message)
 
     def call_sort_file(self):
-        with open('workloads/data.txt', "rb") as f:
+        with open('../workloads/data.txt', "rb") as f:
             data = f.read()
         file_data = pb2.FileData()
         file_data.data = data

@@ -1,12 +1,8 @@
-import time
 import csv
 
 import configs
 import utils
 import grpc_client
-import analyze_results
-import numpy as np
-from math import sqrt, sin, pi
 
 
 ####################################################################################
