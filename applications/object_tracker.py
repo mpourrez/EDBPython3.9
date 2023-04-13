@@ -32,7 +32,7 @@ nn_budget = None
 nms_max_overlap = 1.0
 
 # initialize deep sort
-model_filename = '/Users/maryampourreza/Projects/EDB/applications/object_tracking/model_data/mars-small128.pb'
+model_filename = '/home/pi/Projects/EDB/applications/object_tracking/model_data/mars-small128.pb'
 encoder = gdet.create_box_encoder(model_filename, batch_size=1)
 # calculate cosine distance metric
 metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
@@ -45,7 +45,7 @@ config.gpu_options.allow_growth = True
 session = InteractiveSession(config=config)
 STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config2(FLAGS)
 input_size = 416  # FLAGS.size
-weights = "/Users/maryampourreza/Projects/EDB/applications/object_tracking/checkpoints/yolov4-tiny-416"
+weights = "/home/pi/Projects/EDB/applications/object_tracking/checkpoints/yolov4-tiny-416"
 saved_model_loaded = tf.saved_model.load(weights, tags=[tag_constants.SERVING])
 infer = saved_model_loaded.signatures['serving_default']
 
@@ -64,7 +64,7 @@ def enable_gpu():
 ####################################################################################
 def track_from_image(request, request_received_time_ms):
     img_data = base64.b64decode(request.image)
-    image_data = cv2.resize(image, (input_size, input_size))
+    image_data = cv2.resize(img_data, (input_size, input_size))
     image_data = image_data / 255.
     image_data = image_data[np.newaxis, ...].astype(np.float32)
 
