@@ -5,6 +5,7 @@ configs.py
 """
 
 MAX_FRAME_NUM = 300
+PROJECT_PATH = "/home/pi/Projects/"
 WORKLOAD_INPUT_PATH = './workloads/MOT20-01/img1/'
 TIME_BOUND_FOR_FAULT_INJECTION = 5  # in-seconds
 REPEAT_EXPERIMENTS = 100
