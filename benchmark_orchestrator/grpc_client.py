@@ -98,6 +98,73 @@ class Client(object):
         empty = pb2.EmptyProto()
         return self.edge_resource_management_stub.get_resource_utilization(empty)
 
+    def call_server_to_get_fault_injection_status(self):
+        message = pb2.EmptyProto()
+        return self.edge_resource_management_stub.get_fault_injection_status(message)
+
+    def call_server_to_inject_fault(self, fault_command, fault_config):
+        message = pb2.FaultRequest(fault_command=fault_command, fault_config=fault_config)
+        return self.edge_resource_management_stub.inject_fault(message)
+
+    # END RESOURCE MANAGEMENT CODES
+
+    def call_image_processing(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ImageProcessingRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.image_processing(message)
+
+    def call_sentiment_analysis(self):
+        request_time_ms = utils.current_milli_time()
+        input_text = utils.get_random_sentiment_text()
+        message = pb2.SentimentAnalysisRequest(input_text=input_text, request_time_ms=request_time_ms)
+        return self.application_stub.sentiment_analysis(message)
+
+    def call_speech_to_text(self):
+        request_time_ms = utils.current_milli_time()
+        audio = utils.get_random_audio()
+        message = pb2.SpeechToTextRequest(audio=audio, request_time_ms=request_time_ms)
+        return self.application_stub.speech_to_text(message)
+    def call_image_classification_alexnet_cpu(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.image_classification_alexnet(message)
+
+    def call_image_classification_squeezenet_cpu(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.image_classification_squeezenet(message)
+
+    def call_object_detection_darknet(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ObjectDetectionRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.object_detection_darknet(message)
+
+    def call_pocket_sphinx(self):
+        request_time_ms = utils.current_milli_time()
+        audio = utils.get_random_audio()
+        message = pb2.PocketSphinxRequest(audio=audio, request_time_ms=request_time_ms)
+        return self.application_stub.pocket_sphinx(message)
+
+    def call_aeneas(self):
+        request_time_ms = utils.current_milli_time()
+        audio, transcript = utils.get_random_audio_text_for_alignment()
+        message = pb2.AudioTextRequest(audio=audio, text_input=transcript, request_time_ms=request_time_ms)
+        return self.application_stub.pocket_sphinx(message)
+
+    def call_object_tracking(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image_for_tracking()
+        message = pb2.ObjectTrackingRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.object_tracking(message)
+
+    ######################################################
+    ############ OLD CODE:################################
+    ######################################################
+
     def call_object_tracking_server(self, image, frame_id):
         message = create_grpc_request(image, frame_id)
         return self.application_stub.track_objects(message)
@@ -110,11 +177,11 @@ class Client(object):
         message = create_grpc_request(audio, frame_id)
         return self.application_stub.speech_to_text(message)
 
-    def call_aeneas(self, audio, text_input, frame_id):
-        request_time_ms = utils.current_milli_time()
-        message = pb2.AudioTextRequest(audio=audio, text_input=text_input, frame_id=frame_id,
-                                       request_time_ms=request_time_ms)
-        return self.application_stub.align_speech_text(message)
+    # def call_aeneas(self, audio, text_input, frame_id):
+    #     request_time_ms = utils.current_milli_time()
+    #     message = pb2.AudioTextRequest(audio=audio, text_input=text_input, frame_id=frame_id,
+    #                                    request_time_ms=request_time_ms)
+    #     return self.application_stub.align_speech_text(message)
 
     def call_server_to_start_mem_tracing(self):
         empty = pb2.EmptyProto()
@@ -128,9 +195,7 @@ class Client(object):
         empty = pb2.EmptyProto()
         return self.application_stub.get_memory_usage(empty)
 
-    def call_server_to_inject_fault(self, fault_command, fault_config, time):
-        message = pb2.FaultRequest(fault_command=fault_command, fault_config=fault_config, timeout=time)
-        return self.application_stub.inject_fault(message)
+
 
     # def call_server_to_get_fault_injection_status(self):
     #     message = pb2.EmptyProto()

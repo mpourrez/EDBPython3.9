@@ -3,10 +3,11 @@ from protos import benchmark_pb2_grpc as pb2_grpc
 from protos import benchmark_pb2 as pb2
 
 import psutil
-import tracemalloc
 import subprocess
 import threading
 import time
+import os
+import signal
 
 
 class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer):
@@ -33,10 +34,13 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         # Stop the power measurement thread and get the average power consumption
         self.power_thread.stop()
         self.power_thread.join()
+        # Stop the resource utilization thread and get the average values
         self.resource_thread.stop()
         self.resource_thread.join()
+        # Send a signal to the stress process to terminate it
+        os.kill(self.fault_injection_process.pid, signal.SIGTERM)
+
         avg_power = self.power_thread.get_average_power()
-        # Stop the resource utilization thread and get the average values
         avg_cpu_utilization = self.resource_thread.get_average_cpu_utilization()
         avg_memory_utilization = self.resource_thread.get_average_memory_utilization()
         avg_disk_utilization = self.resource_thread.get_average_disk_utilization()
@@ -48,6 +52,27 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         resource_utilization_response.average_network_utilization = avg_network_utilization
         resource_utilization_response.average_power_consumption = avg_power
         return resource_utilization_response
+
+    def get_fault_injection_status(self, request, context):
+        if self.fault_injection_process is None:
+            # No faults has been injected yet
+            return pb2.FaultInjectionStatus(is_finished=True)
+        poll = self.fault_injection_process.poll()
+        if poll is None:
+            # A None value indicates that the process hasn't terminated yet
+            print("[xxxx] Fault Injection Still in Process")
+            return pb2.FaultInjectionStatus(is_finished=False)
+        else:
+            return pb2.FaultInjectionStatus(is_finished=True)
+
+    def inject_fault(self, request, context):
+        fault_command = request.fault_command
+        fault_config = request.fault_config
+        stress_string = 'stress-ng {0} {1}'
+        shell_command = stress_string.format(fault_command, fault_config, str(timeout))
+        print("[x] Stress command to run: " + shell_command)
+        self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
+        return pb2.EmptyProto()
 
     # OLD CODE BELOW
 
@@ -90,28 +115,7 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
             shell=True)
         return pb2.EmptyProto()
 
-    def inject_fault(self, request, context):
-        fault_command = request.fault_command
-        fault_config = request.fault_config
-        # I'll make the stressor to run for a bit longer than experiment-time to make sure experiment is done
-        timeout = request.timeout + configs.TIME_BOUND_FOR_FAULT_INJECTION
-        stress_string = 'stress-ng {0} {1} --timeout {2}s'
-        shell_command = stress_string.format(fault_command, fault_config, str(timeout))
-        print("[x] Stress command to run: " + shell_command)
-        self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
-        return pb2.EmptyProto()
 
-    def get_fault_injection_status(self, request, context):
-        if self.fault_injection_process is None:
-            # No faults has been injected yet
-            return pb2.FaultInjectionStatus(is_finished=True)
-        poll = self.fault_injection_process.poll()
-        if poll is None:
-            # A None value indicates that the process hasn't terminated yet
-            print("[xxxx] Fault Injection Still in Process")
-            return pb2.FaultInjectionStatus(is_finished=False)
-        else:
-            return pb2.FaultInjectionStatus(is_finished=True)
 
 
 class PowerMeasurementThread(threading.Thread):

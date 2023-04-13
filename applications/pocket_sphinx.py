@@ -15,9 +15,9 @@ def convert_to_text(request, request_received_time_ms):
 
     # create a Pocketsphinx decoder
     config = pocketsphinx.Decoder.default_config()
-    config.set_string('-hmm', '/pocket_sphinx/cmusphinx-en-us-8khz-5.2')
-    config.set_string('-lm', '/pocket_sphinx/en-70k-0.2-pruned.lm.gz')
-    config.set_string('-dict', '/pocket_sphinx/cmudict.dict')
+    config.set_string('-hmm', '/pocket_sphinx_configurations/cmusphinx-en-us-8khz-5.2')
+    config.set_string('-lm', '/pocket_sphinx_configurations/en-70k-0.2-pruned.lm.gz')
+    config.set_string('-dict', '/pocket_sphinx_configurations/cmudict.dict')
     decoder = pocketsphinx.Decoder(config)
 
     # open the audio file and read in the data

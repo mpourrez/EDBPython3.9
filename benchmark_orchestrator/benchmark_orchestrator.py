@@ -3,6 +3,8 @@ import csv
 import configs
 import utils
 import grpc_client
+import time
+import analyze_results
 
 
 ####################################################################################
@@ -37,11 +39,6 @@ def save_experiment_results(application, fault_config_file_name, results, res_ut
                    res_utilization.average_network_utilization, res_utilization.average_power_consumption]
             writer.writerow(row)
 
-        # writer.writerow(['avg_CPU', 'avg_memory_mb'])
-        # # cpu_trace = client.call_server_for_cpu_trace()
-        # memory_trace = client.call_server_for_memory_trace()
-        # writer.writerow([memory_trace.current_memory_mb, memory_trace.peak_memory_mb])
-
 
 ####################################################################################
 ####################################################################################
@@ -56,70 +53,58 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
         configs.EDGE_DEVICE_NAME, client.host, application, fault_config_file_name, experiment_id))
     print("***************************************************************************************")
 
-    # fault_injection_status = client.call_server_to_get_fault_injection_status()
-    # while not fault_injection_status.is_finished:
-    #     print("[x] Previous experiment still in progress, we need to wait!! - (fault injection in progress)")
-    #     time.sleep(configs.MAX_EXPERIMENT_TIME_SECONDS/10)
-    #     fault_injection_status = client.call_server_to_get_fault_injection_status()
+    fault_injection_status = client.call_server_to_get_fault_injection_status()
+    while not fault_injection_status.is_finished:
+        print("[x] Previous experiment still in progress, we need to wait!! - (fault injection in progress)")
+        time.sleep(3)
+        fault_injection_status = client.call_server_to_get_fault_injection_status()
     print("********[x]***** Ready to start the experiment.")
     client.call_edge_to_start_resource_tracing()
-    # client.call_server_to_start_mem_tracing()
-    # if fault is not None and fault.abbreviation != 'TCP' and fault.abbreviation != 'PING':
-    #     client.call_server_to_inject_fault(fault.fault_command, fault_config,
-    #                                        (configs.MAX_EXPERIMENT_TIME_SECONDS +
-    #                                         configs.TIME_BOUND_FOR_FAULT_INJECTION))
-    # time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION)  ### Sleep a bit until stressors are ready to go
+    if fault is not None and fault.abbreviation != 'TCP' and fault.abbreviation != 'PING':
+        client.call_server_to_inject_fault(fault.fault_command, fault_config)
+    time.sleep(configs.TIME_BOUND_FOR_FAULT_INJECTION)  ### Sleep a bit until stressors are ready to go
 
     # **** Starting the experiment ****************** #
-    if application == 'mm':
+    if application == 'MM':
         grpc_result = client.call_matrix_multiplication()
-    elif application == 'fft':
+    elif application == 'FFT':
         grpc_result = client.call_fast_fourier_transform()
-    elif application == 'fpo-sine':
+    elif application == 'FPO-SIN':
         grpc_result = client.call_floating_point_sine()
-    elif application == 'fpo-sqrt':
+    elif application == 'FPO-SQRT':
         grpc_result = client.call_floating_point_sqrt()
-    elif application == 'sort':
+    elif application == 'SORT':
         grpc_result = client.call_sort_file()
-    elif application == 'dd':
+    elif application == 'DD':
         grpc_result = client.call_dd_cmd()
-    elif application == 'iperf':
+    elif application == 'IPERF':
         grpc_result = client.call_iperf()
+    elif application == 'IP':
+        grpc_result = client.call_image_processing()
+    elif application == 'SA':
+        grpc_result = client.call_sentiment_analysis()
+    elif application == 'ST':
+        grpc_result = client.call_speech_to_text()
+    elif application == 'IC-A-CPU':
+        grpc_result = client.call_image_classification_alexnet_cpu()
+    elif application == 'IC-S-CPU':
+        grpc_result = client.call_image_classification_squeezenet_cpu()
+    elif application == 'OD-CPU':
+        grpc_result = client.call_object_detection_darknet()
+    elif application == 'PS':
+        grpc_result = client.call_pocket_sphinx()
+    elif application == 'AE':
+        grpc_result = client.call_aeneas()
+    elif application == 'OT-CPU':
+        grpc_result = client.call_object_tracking()
+
     response_received_time_ms = utils.current_milli_time()
     grpc_result.response_received_time_ms = response_received_time_ms
     resource_utilization_response = client.get_resource_utilization()
     return grpc_result, resource_utilization_response
 
-    # frame_id = 1
-    # max_frame = configs.MAX_FRAME_NUM
-    # experiment_start_time = time.time()
-    # while (frame_id <= max_frame) and (time.time() < (experiment_start_time + configs.MAX_EXPERIMENT_TIME_SECONDS)):
-    #
-    #     # **** Read image frame ********************* #
-    #     if application == 'pocketsphinx':
-    #         input = utils.read_audio_workload()
-    #         print('Audio: {}'.format(str(frame_id)))
-    #     elif application == 'aeneas':
-    #         input_audio = utils.read_aeneas_audio_workload()
-    #         input_text = utils.read_aeneas_text_workload()
-    #         print('Audio Text: {}'.format(str(frame_id)))
-    #     else:
-    #         input = utils.read_input_workload_frame(frame_id)
-    #
-    #     # **** Make gRPC call based on the application **** #
-    #     if application == 'object_tracking':
-    #         grpc_result = client.call_object_tracking_server(image=input, frame_id=frame_id)
-    #     elif application == 'object_detection':
-    #         grpc_result = client.call_object_detection_server(image=input, frame_id=frame_id)
-    #     elif application == 'pocketsphinx':
-    #         grpc_result = client.call_pocketsphinx(audio=input, frame_id=frame_id)
-    #     else:
-    #         grpc_result = client.call_aeneas(audio=input_audio, text_input=input_text, frame_id=frame_id)
-    #     response_received_time_ms = utils.current_milli_time()
-    #     grpc_result.response_received_time_ms = response_received_time_ms
-    #     experiment_results.append(grpc_result)
-    #     frame_id += 1
-
+####################################################################################
+####################################################################################
 
 if __name__ == '__main__':
 
@@ -131,21 +116,31 @@ if __name__ == '__main__':
             # Fault Free Experiments
             experiment_id = 1
             while experiment_id <= configs.REPEAT_EXPERIMENTS:
-                grpc_result, resource_utilization = run_single_experiment(client, application, None, None,
+                exp_result, resource_utilization = run_single_experiment(client, application, None, None,
                                                                           experiment_id)
-                experiment_results.append(grpc_result)
+                experiment_results.append(exp_result)
                 resource_utilizations.append(resource_utilization)
                 experiment_id += 1
 
             print("********[x]***** Saving experiment results")
             save_experiment_results(application, "no-fault", experiment_results, resource_utilizations)
 
-            # # Experiments with Fault Injection
-            # for fault in configs.FAULTS:
-            #     for fault_config in fault.fault_config:
-            #         experiment_id = 1
-            #         while experiment_id <= configs.REPEAT_EXPERIMENTS:
-            #             run_single_experiment(client, application, fault, fault_config, experiment_id)
-            #             experiment_id += 1
-            #
-            # analyze_results.analyze_result_for_application(application)
+            # Experiments with Fault Injection
+            for fault in configs.FAULTS:
+                for fault_config in fault.fault_config:
+                    experiment_results = []
+                    resource_utilizations = []
+                    experiment_id = 1
+                    while experiment_id <= configs.REPEAT_EXPERIMENTS:
+                        exp_result, resource_utilization = run_single_experiment(client, application, fault,
+                                                                                 fault_config, experiment_id)
+                        experiment_results.append(exp_result)
+                        resource_utilizations.append(resource_utilization)
+                        experiment_id += 1
+
+                    print("********[x]***** Saving experiment results - with fault injections")
+                    save_experiment_results(application, '{0}-{1}'.format(fault.abbreviation, fault_config),
+                                            experiment_results, resource_utilizations)
+
+            analyze_results.analyze_result_for_application(application, edge_device_ip)
+

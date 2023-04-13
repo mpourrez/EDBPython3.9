@@ -37,13 +37,13 @@ service MicroBenchmarks{
 service EdgeResourceManagement{
   rpc start_resource_tracing(EmptyProto) returns (EmptyProto) {}
   rpc get_resource_utilization(EmptyProto) returns (ResourceUtilizationResponse) {}
+  rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
+  rpc inject_fault(FaultRequest) returns (EmptyProto) {}
 
   // OLD SERVICES
   rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
   rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
   rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
-  rpc inject_fault(FaultRequest) returns (EmptyProto) {}
-  rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
 }
 
 /********************************************************
@@ -239,7 +239,6 @@ message PocketSphinxResponse{
 message AudioTextRequest{
   string audio = 1;
   string text_input = 2;
-  int64 frame_id = 3;
   int64 request_time_ms = 4;
 }
 
@@ -279,16 +278,19 @@ message ResourceUtilizationResponse{
   float average_power_consumption = 5;
 }
 
+message FaultRequest{
+  string fault_command = 1;
+  string fault_config = 2;
+}
+
+message FaultInjectionStatus {
+  bool is_finished = 1;
+}
+
 message Request{
   string image = 1;
   int64 frame_id = 2;
   int64 request_time_ms = 3;
-}
-
-message FaultRequest{
-  string fault_command = 1;
-  string fault_config = 2;
-  int32 timeout = 3;
 }
 
 message DetectionTrackingResponse{
@@ -327,8 +329,6 @@ message MemoryTrace {
   float peak_memory_mb = 2;
 }
 
-message FaultInjectionStatus {
-  bool is_finished = 1;
-}
+
 
 message EmptyProto {}

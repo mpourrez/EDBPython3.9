@@ -6,17 +6,17 @@ configs.py
 
 MAX_FRAME_NUM = 300
 WORKLOAD_INPUT_PATH = './workloads/MOT20-01/img1/'
-MAX_EXPERIMENT_TIME_SECONDS = 60
-TIME_BOUND_FOR_FAULT_INJECTION = 5 #in-seconds
-REPEAT_EXPERIMENTS = 10
+TIME_BOUND_FOR_FAULT_INJECTION = 5  # in-seconds
+REPEAT_EXPERIMENTS = 100
 
 EDGE_DEVICE_NAME = 'raspberrypi'
 EDGE_DEVICES_IP = ['localhost', '192.168.0.168', '192.168.0.12', '192.168.0.139']
 EDGE_DEVICE_PORT = 50051
 ORCHESTRATOR_IP = '192.168.0.22'
 
-# APPLICATIONS = ['mm', 'fft', 'fpo-sine', 'fpo-sqrt', 'sort', 'dd', 'iperf', 'object_detection', 'object_tracking', 'pocketsphinx']
-APPLICATIONS = ['sort', 'dd', 'iperf', 'IP', 'SA', 'ST', 'object_detection', 'object_tracking', 'pocketsphinx']
+APPLICATIONS = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
+                'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
+
 
 class Fault:
     def __init__(self, fault_name, abbreviation, fault_command, fault_config):
@@ -25,21 +25,16 @@ class Fault:
         self.fault_command = fault_command
         self.fault_config = fault_config
 
+
 FAULTS = [
-    #Fault('page-fault', 'PF', '--fault', ['0']),
+    Fault('cpu-overload', 'CPU', '--cpu 0 --cpu-load', ['20', '50', '80']),
+    Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['20%', '60%', '90%']),
     Fault('io-stress', 'IO', '--io', ['100']),
-    #Fault('hdd-overload', 'HDD', '--hdd 0 --hdd-bytes', ['60%']),
-    #Fault('cpu-overload', 'CPU', '--cpu 0 --cpu-load', ['20', '50', '80']),
-    Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['60%']),
-    #Fault('cache-thrashing', 'CCHE', '--cache', ['0']),
-    #Fault('contextswitch', 'CTXS', '--cswitch --cswitch-ops', ['10000']),
-    # Fault('ping-flood', 'PING', '', ['faster']),
-    # Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['20%', '60%', '90%']),
-    # Fault('cpu-overload', 'CPU2', '--cpu 0 --cpu-load', ['20', '50', '80']),
-    # Fault('hdd-overload', 'HDD', '--hdd 0 --hdd-bytes', [ '20%']),
-    # Fault('hdd-overload', 'HDD2', '--hdd 0 --hdd-bytes', [ '60%']),
-    # Fault('hdd-overload', 'HDD', '--hdd 0 --hdd-bytes', [ '90%']),
-    #Fault('ping-flood', 'TCP', '', ['u1000']),
-    #Fault('ping-flood', 'PING', '', ['u1000']),
-    #Fault('interrupts', 'INTR', '--sleep ', ['32']),
+    Fault('page-fault', 'PF', '--fault', ['0']),
+    Fault('cache-thrashing', 'CCHE', '--cache', ['0']),
+    Fault('context-switch', 'CTXS', '--cswitch --cswitch-ops', ['10000']),
+    Fault('interrupts', 'INTR', '--sleep ', ['32']),
+    # Fault('hdd-overload', 'HDD', '--hdd 0 --hdd-bytes', ['20%', '', '60%']),
+    Fault('ping-flood', 'TCP', '', ['u1000']),
+    Fault('ping-flood', 'PING', '', ['u1000']),
 ]

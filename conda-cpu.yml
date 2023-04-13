@@ -4,9 +4,8 @@ dependencies:
   - python==3.9
   - pip
   - matplotlib
-  - opencv
   - pip:
-    - opencv-python
+    - opencv-contrib-python
     - lxml
     - tqdm
     - tensorflow
@@ -24,4 +23,12 @@ dependencies:
     - SpeechRecognition
     - numpy
     - pydub
-    - aeneas
+    - soundfile
+    - librosa
+    - nltk
+    - textblob
+    - torch
+    - torchvision
+    - pyaudio
+    - scikit-image
+    - filterpy

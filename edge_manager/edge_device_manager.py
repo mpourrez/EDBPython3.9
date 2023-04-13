@@ -1,6 +1,8 @@
+import sys
+sys.path.append('..')
+
 import grpc
 from concurrent import futures
-
 import configs
 from protos import benchmark_pb2_grpc as pb2_grpc
 from grpc_service_micro_benchmarks import MicroBenchmarksGRPCService
