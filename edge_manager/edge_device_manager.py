@@ -6,7 +6,7 @@ from concurrent import futures
 import configs
 from protos import benchmark_pb2_grpc as pb2_grpc
 from grpc_service_micro_benchmarks import MicroBenchmarksGRPCService
-from grpc_service_application_benchmarks import ApplicationBenchmarksGRPCService
+# from grpc_service_application_benchmarks import ApplicationBenchmarksGRPCService
 from grpc_service_edge_resource_management import EdgeResourceManagementGRPCService
 
 
@@ -21,7 +21,7 @@ def serve():
     ]
 
     server = grpc.server(futures.ThreadPoolExecutor(max_workers=10), options=options)
-    pb2_grpc.add_ApplicationBenchmarksServicer_to_server(ApplicationBenchmarksGRPCService(), server)
+    # pb2_grpc.add_ApplicationBenchmarksServicer_to_server(ApplicationBenchmarksGRPCService(), server)
     pb2_grpc.add_MicroBenchmarksServicer_to_server(MicroBenchmarksGRPCService(), server)
     pb2_grpc.add_EdgeResourceManagementServicer_to_server(EdgeResourceManagementGRPCService(), server)
 
