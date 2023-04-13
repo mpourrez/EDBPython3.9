@@ -1,5 +1,6 @@
-from applications import sentiment_analysis, image_processing, speech_to_text, pocket_sphinx, aeneas
-    # object_detection_darknet_cpu, object_detection_darknet_gpu, object_tracker
+from applications import sentiment_analysis, image_processing, speech_to_text, pocket_sphinx, aeneas, \
+    object_detection_darknet_cpu, object_detection_darknet_gpu
+# object_tracker
 # from applications.image_classification import image_classification_alexnet_cpu, image_classification_alexnet_gpu, \
 #     image_classification_squeezenet_cpu, image_classification_squeezenet_gpu
 from utils import *
@@ -48,15 +49,15 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
     #     classification_result = image_classification_squeezenet_gpu.classify_image(request, request_received_time_ms)
     #     return classification_result
     #
-    # def object_detection_darknet(self, request, context):
-    #     request_received_time_ms = current_milli_time()
-    #     detection_result = object_detection_darknet_cpu.detect(request, request_received_time_ms)
-    #     return detection_result
-    #
-    # def object_detection_darknet_gpu(self, request, context):
-    #     request_received_time_ms = current_milli_time()
-    #     detection_result = object_detection_darknet_gpu.detect(request, request_received_time_ms)
-    #     return detection_result
+    def object_detection_darknet(self, request, context):
+        request_received_time_ms = current_milli_time()
+        detection_result = object_detection_darknet_cpu.detect(request, request_received_time_ms)
+        return detection_result
+
+    def object_detection_darknet_gpu(self, request, context):
+        request_received_time_ms = current_milli_time()
+        detection_result = object_detection_darknet_gpu.detect(request, request_received_time_ms)
+        return detection_result
 
     def pocket_sphinx(self, request, context):
         request_received_time_ms = current_milli_time()
