@@ -175,10 +175,10 @@ class ResourceUtilizationThread(threading.Thread):
         iostat_process = subprocess.Popen(iostat_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         while not self.stop_flag:
-            cpu_line = cpu_process.stdout.readLine()
-            memory_line = memory_process.stdout.readLine()
-            network_line = network_process.stdout.readLine()
-            iostat_line = iostat_process.stdout.readLine()
+            cpu_line = cpu_process.stdout.readline()
+            memory_line = memory_process.stdout.readline()
+            network_line = network_process.stdout.readline()
+            iostat_line = iostat_process.stdout.readline()
 
             if cpu_line.strip() and not (cpu_line.startswith(b"Linux") or cpu_line.startswith(b"Average")):
                 cpu_fields = cpu_line.split()
