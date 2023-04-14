@@ -187,8 +187,8 @@ class ResourceUtilizationThread(threading.Thread):
 
             if memory_line.strip() and not (memory_line.startswith(b"Linux") or memory_line.startswith(b"Average")):
                 mem_fields = memory_line.split()
-                if len(mem_fields) > 4 and mem_fields[4] != b'%%memused':
-                    self.memory_data.append(float(mem_fields[4]))
+                if len(mem_fields) > 5 and mem_fields[5] != b'%memused':
+                    self.memory_data.append(float(mem_fields[5]))
 
             if network_line.strip() and not (network_line.startswith(b"Linux") or network_line.startswith(b"Average")):
                 net_fields = network_line.split()
