@@ -1,8 +1,7 @@
 from applications import sentiment_analysis, image_processing, speech_to_text, pocket_sphinx, aeneas, \
-    object_detection_darknet_cpu, object_detection_darknet_gpu
-# object_tracker
-from applications.image_classification import image_classification_alexnet_cpu, image_classification_alexnet_gpu, \
-    image_classification_squeezenet_cpu, image_classification_squeezenet_gpu
+    object_detection_darknet_cpu, object_detection_darknet_gpu, object_tracker
+# from applications.image_classification import image_classification_alexnet_cpu, image_classification_alexnet_gpu, \
+#     image_classification_squeezenet_cpu, image_classification_squeezenet_gpu
 from utils import *
 from protos import benchmark_pb2_grpc as pb2_grpc
 
@@ -29,25 +28,25 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         conversion_result = speech_to_text.convert_to_text(request, request_received_time_ms)
         return conversion_result
 
-    def image_classification_alexnet(self, request, context):
-        request_received_time_ms = current_milli_time()
-        classification_result = image_classification_alexnet_cpu.classify_image(request, request_received_time_ms)
-        return classification_result
-
-    def image_classification_alexnet_gpu(self, request, context):
-        request_received_time_ms = current_milli_time()
-        classification_result = image_classification_alexnet_gpu.classify_image(request, request_received_time_ms)
-        return classification_result
-
-    def image_classification_squeezenet(self, request, context):
-        request_received_time_ms = current_milli_time()
-        classification_result = image_classification_squeezenet_cpu.classify_image(request, request_received_time_ms)
-        return classification_result
-
-    def image_classification_squeezenet_gpu(self, request, context):
-        request_received_time_ms = current_milli_time()
-        classification_result = image_classification_squeezenet_gpu.classify_image(request, request_received_time_ms)
-        return classification_result
+    # def image_classification_alexnet(self, request, context):
+    #     request_received_time_ms = current_milli_time()
+    #     classification_result = image_classification_alexnet_cpu.classify_image(request, request_received_time_ms)
+    #     return classification_result
+    #
+    # def image_classification_alexnet_gpu(self, request, context):
+    #     request_received_time_ms = current_milli_time()
+    #     classification_result = image_classification_alexnet_gpu.classify_image(request, request_received_time_ms)
+    #     return classification_result
+    #
+    # def image_classification_squeezenet(self, request, context):
+    #     request_received_time_ms = current_milli_time()
+    #     classification_result = image_classification_squeezenet_cpu.classify_image(request, request_received_time_ms)
+    #     return classification_result
+    #
+    # def image_classification_squeezenet_gpu(self, request, context):
+    #     request_received_time_ms = current_milli_time()
+    #     classification_result = image_classification_squeezenet_gpu.classify_image(request, request_received_time_ms)
+    #     return classification_result
 
     def object_detection_darknet(self, request, context):
         request_received_time_ms = current_milli_time()
@@ -71,13 +70,13 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         speech_to_text_result = aeneas.align_speech_text(audio_data, text_data, request, request_received_time_ms)
         return speech_to_text_result
 
-    # def object_tracking(self, request, context):
-    #     request_received_time_ms = current_milli_time()
-    #     tracking_result = object_tracker.track_from_image(request, request_received_time_ms)
-    #     return tracking_result
-    #
-    # def object_tracking_gpu(self, request, context):
-    #     request_received_time_ms = current_milli_time()
-    #     object_tracker.enable_gpu()
-    #     tracking_result = object_tracker.track_from_image(request, request_received_time_ms)
-    #     return tracking_result
+    def object_tracking(self, request, context):
+        request_received_time_ms = current_milli_time()
+        tracking_result = object_tracker.track_from_image(request, request_received_time_ms)
+        return tracking_result
+
+    def object_tracking_gpu(self, request, context):
+        request_received_time_ms = current_milli_time()
+        object_tracker.enable_gpu()
+        tracking_result = object_tracker.track_from_image(request, request_received_time_ms)
+        return tracking_result
