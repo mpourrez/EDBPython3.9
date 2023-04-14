@@ -274,8 +274,9 @@ message ResourceUtilizationResponse{
   float average_cpu_utilization = 1;
   float average_memory_utilization = 2;
   float average_disk_utilization = 3;
-  float average_network_utilization = 4;
-  float average_power_consumption = 5;
+  float average_network_received_speed = 4;
+  float average_network_transmitted_speed = 5;
+  float average_power_consumption = 6;
 }
 
 message FaultRequest{

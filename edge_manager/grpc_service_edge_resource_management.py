@@ -44,12 +44,13 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         avg_cpu_utilization = self.resource_thread.get_average_cpu_utilization()
         avg_memory_utilization = self.resource_thread.get_average_memory_utilization()
         avg_disk_utilization = self.resource_thread.get_average_disk_utilization()
-        avg_network_utilization = self.resource_thread.get_average_network_utilization()
+        avg_network_received_speed, avg_network_transmitted_speed = self.resource_thread.get_average_network_utilization()
         resource_utilization_response = pb2.ResourceUtilizationResponse()
         resource_utilization_response.average_cpu_utilization = avg_cpu_utilization
         resource_utilization_response.average_memory_utilization = avg_memory_utilization
         resource_utilization_response.average_disk_utilization = avg_disk_utilization
-        resource_utilization_response.average_network_utilization = avg_network_utilization
+        resource_utilization_response.average_network_received_speed = avg_network_received_speed
+        resource_utilization_response.average_network_transmitted_speed = avg_network_transmitted_speed
         resource_utilization_response.average_power_consumption = avg_power
         return resource_utilization_response
 
@@ -160,40 +161,51 @@ class ResourceUtilizationThread(threading.Thread):
         self.cpu_data = []
         self.memory_data = []
         self.disk_data = []
-        self.network_data = []
+        self.network_received_speed = []
+        self.network_transmitted_speed = []
 
     def run(self):
         # Start the sar command to collect CPU, memory, and network utilization data
-        command = f"sar -u {self.interval} -r {self.interval} -n DEV {self.interval}"
-        process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        cpu_process = subprocess.Popen("sar -u 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        memory_process = subprocess.Popen("sar -r 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        network_process = subprocess.Popen("sar -r 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Start the iostat command to collect disk utilization data
         iostat_command = f"iostat -dkx {self.interval}"
         iostat_process = subprocess.Popen(iostat_command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         while not self.stop_flag:
-            # Read the sar output line by line
-            sar_line = process.stdout.readline().decode()
+            cpu_line = cpu_process.stdout.readline()
+            memory_line = memory_process.stdout.readline()
+            network_line = network_process.stdout.readLine()
+            iostat_line = iostat_process.stdout.readline()
 
-            if sar_line and sar_line.startswith("Average"):
-                # Parse the CPU, memory, and network utilization data from the "Average" line
-                cpu_utilization = 100 - float(sar_line.split()[-1])
-                memory_utilization = float(sar_line.split()[-3])
-                network_utilization = float(sar_line.split()[-6])
-                self.cpu_data.append(cpu_utilization)
-                self.memory_data.append(memory_utilization)
-                self.network_data.append(network_utilization)
+            if cpu_line.strip() and not (cpu_line.startswith(b"Linux") or cpu_line.startswith(b"Average")):
+                cpu_fields = cpu_line.split()
+                if len(cpu_fields) == 9 and cpu_fields[8] != b'%idle':
+                    self.cpu_data.append(100.0 - float(cpu_fields[8]))
 
-            # Read the iostat output line by line
-            iostat_line = iostat_process.stdout.readline().decode()
+            if memory_line.strip() and not (memory_line.startswith(b"Linux") or memory_line.startswith(b"Average")):
+                mem_fields = memory_line.split()
+                if len(mem_fields) > 4 and mem_fields[4] != b'%%memused':
+                    self.memory_data.append(float(mem_fields[4]))
 
-            if iostat_line and not iostat_line.startswith("Device"):
-                # Parse the disk utilization data from the iostat output
-                disk_utilization = float(iostat_line.split()[-1])
-                self.disk_data.append(disk_utilization)
+            if network_line.strip() and not (network_line.startswith(b"Linux") or network_line.startswith(b"Average")):
+                net_fields = network_line.split()
+                if len(net_fields) > 4 and net_fields[1] == b'wlan0':
+                    self.network_received_speed.append(float(net_fields[4]))
+                    self.network_transmitted_speed.append(float(net_fields[5]))
+
+            if iostat_line.strip() and not (iostat_line.startswith(b"Linux") or iostat_line.startswith(b"Device")):
+                iostat_fields = iostat_line.split()
+                if len(iostat_fields) > 4 and iostat_fields[0] == b'mmcblk0':
+                    self.disk_data.append(float(net_fields[22]))
+
 
         # Terminate the sar and iostat processes after the loop is done
-        process.terminate()
+        cpu_process.terminate()
+        memory_process.terminate()
+        network_process.terminate()
         iostat_process.terminate()
 
     def stop(self):
@@ -209,7 +221,7 @@ class ResourceUtilizationThread(threading.Thread):
         return sum(self.disk_data) / len(self.disk_data)
 
     def get_average_network_utilization(self):
-        return sum(self.network_data) / len(self.network_data)
+        return sum(self.network_received_speed) / len(self.network_received_speed), sum(self.network_transmitted_speed) / len(self.network_transmitted_speed)
 
     def stop(self):
         self.stop_flag = True
