@@ -129,19 +129,15 @@ class PowerMeasurementThread(threading.Thread):
     def run(self):
         while not self.stop_flag:
             # Run vcgencmd to get power consumption data
-            command = "sudo vcgencmd measure_volts core"
+            command = "sudo vcgencmd measure_temp"
             process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
             output, error = process.communicate()
 
             # Parse the output to extract the voltage and current values
-            voltage = float(output.decode().split("=")[1][:-2])
-            current = voltage / 0.1
-
-            # Calculate the power consumption
-            power = voltage * current
+            temperature = float(output.decode().split("=")[1][:-3])
 
             # Add the power consumption data to the list
-            self.power_data.append(power)
+            self.power_data.append(temperature)
 
             # Wait for the measurement interval
             time.sleep(self.interval)
