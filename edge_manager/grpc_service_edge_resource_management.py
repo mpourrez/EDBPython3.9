@@ -218,6 +218,4 @@ class ResourceUtilizationThread(threading.Thread):
 
     def get_average_network_utilization(self):
         return sum(self.network_received_speed) / len(self.network_received_speed), sum(self.network_transmitted_speed) / len(self.network_transmitted_speed)
-
-    def stop(self):
-        self.stop_flag = True
+    
