@@ -59,11 +59,11 @@ message MatrixMultiplicationRequest{
 }
 
 message MatrixMultiplicationResponse{
-  Matrix matrix = 1;
-  int64 request_time_ms = 2;
-  int64 request_received_time_ms = 3;
-  int64 response_time_ms = 4;
-  int64 response_received_time_ms = 5;
+  int64 request_time_ms = 1;
+  int64 request_received_time_ms = 2;
+  int64 response_time_ms = 3;
+  int64 response_received_time_ms = 4;
+  Matrix matrix = 5;
 }
 
 message FastFourierRequest{
