@@ -164,7 +164,7 @@ class ResourceUtilizationThread(threading.Thread):
         # Start the sar command to collect CPU, memory, and network utilization data
         cpu_process = subprocess.Popen("sar -u 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
         memory_process = subprocess.Popen("sar -r 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        network_process = subprocess.Popen("sar -r 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+        network_process = subprocess.Popen("sar -n DEV 1", shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
         # Start the iostat command to collect disk utilization data
         iostat_command = f"iostat -dkx {self.interval}"
@@ -188,9 +188,9 @@ class ResourceUtilizationThread(threading.Thread):
 
             if network_line.strip() and not (network_line.startswith(b"Linux") or network_line.startswith(b"Average")):
                 net_fields = network_line.split()
-                if len(net_fields) > 4 and net_fields[1] == b'wlan0':
-                    self.network_received_speed.append(float(net_fields[4]))
-                    self.network_transmitted_speed.append(float(net_fields[5]))
+                if len(net_fields) > 4 and net_fields[2] == b'wlan0':
+                    self.network_received_speed.append(float(net_fields[5]))
+                    self.network_transmitted_speed.append(float(net_fields[6]))
 
             if iostat_line.strip() and not (iostat_line.startswith(b"Linux") or iostat_line.startswith(b"Device")):
                 iostat_fields = iostat_line.split()
