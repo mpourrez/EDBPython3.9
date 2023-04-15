@@ -38,7 +38,8 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         self.resource_thread.stop()
         self.resource_thread.join()
         # Send a signal to the stress process to terminate it
-        os.kill(self.fault_injection_process.pid, signal.SIGTERM)
+        if self.fault_injection_process:
+            os.kill(self.fault_injection_process.pid, signal.SIGTERM)
 
         avg_power = self.power_thread.get_average_power()
         avg_cpu_utilization = self.resource_thread.get_average_cpu_utilization()
@@ -70,7 +71,7 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         fault_command = request.fault_command
         fault_config = request.fault_config
         stress_string = 'stress-ng {0} {1}'
-        shell_command = stress_string.format(fault_command, fault_config, str(timeout))
+        shell_command = stress_string.format(fault_command, fault_config)
         print("[x] Stress command to run: " + shell_command)
         self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
         return pb2.EmptyProto()
@@ -194,8 +195,8 @@ class ResourceUtilizationThread(threading.Thread):
 
             if iostat_line.strip() and not (iostat_line.startswith(b"Linux") or iostat_line.startswith(b"Device")):
                 iostat_fields = iostat_line.split()
-                if len(iostat_fields) > 4 and iostat_fields[0] == b'mmcblk0':
-                    self.disk_data.append(float(net_fields[22]))
+                if len(iostat_fields) > 22 and iostat_fields[0] == b'mmcblk0':
+                    self.disk_data.append(float(iostat_fields[22]))
 
 
         # Terminate the sar and iostat processes after the loop is done
@@ -218,4 +219,4 @@ class ResourceUtilizationThread(threading.Thread):
 
     def get_average_network_utilization(self):
         return sum(self.network_received_speed) / len(self.network_received_speed), sum(self.network_transmitted_speed) / len(self.network_transmitted_speed)
-    
+
