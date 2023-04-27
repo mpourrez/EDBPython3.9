@@ -2,6 +2,8 @@ import os
 import signal
 import subprocess
 import time as t
+from protos import benchmark_pb2 as pb2
+from utils import current_milli_time
 
 
 def run_iperf(request, request_received_time_ms):
@@ -74,4 +76,9 @@ def run_iperf(request, request_received_time_ms):
         print("Following exception has occured:", e)
         print("\nExiting the program.\n")
         exit(0)
-    return
+    iperf_response = pb2.IperfResult()
+    iperf_response.request_time_ms = request.request_time_ms
+    iperf_response.request_received_time_ms = request_received_time_ms
+    iperf_response.response_time_ms = current_milli_time()
+
+    return iperf_response

@@ -4,6 +4,8 @@ from applications.micro_benchmarks import matrix_multiplication, floating_point_
     fast_fourier_transform, sorter, dd_cmd, iperf3
 from utils import current_milli_time
 
+import multiprocessing
+
 
 class MicroBenchmarksGRPCService(pb2_grpc.MicroBenchmarksServicer):
     def multiply_matrices(self, request, context):

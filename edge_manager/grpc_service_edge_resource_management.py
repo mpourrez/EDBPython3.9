@@ -1,9 +1,11 @@
+import utils
 from utils import *
 from protos import benchmark_pb2_grpc as pb2_grpc
 from protos import benchmark_pb2 as pb2
 
 import psutil
 import subprocess
+import multiprocessing
 import threading
 import time
 import os
@@ -17,6 +19,9 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         self.power_thread = None
 
         self.fault_injection_process = None
+        self.fault_injection_parent_process = None
+        self.fault_injection_start_times_ms = []
+        self.fault_injection_stop_times_ms = []
         self.utilization_output = None
         self.resource_tracing_process = None
 
@@ -24,6 +29,16 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         print("[x] Tracing resource utilization. ")
         # Start the resource utilization thread
         self.resource_thread = ResourceUtilizationThread(interval=1)
+        self.resource_thread.start()
+        # Start the power measurement thread
+        self.power_thread = PowerMeasurementThread(interval=1)
+        self.power_thread.start()
+        return pb2.EmptyProto()
+
+    def start_resource_tracing_and_saving(self, request, context):
+        print("[x] Tracing resource utilization. ")
+        # Start the resource utilization thread
+        self.resource_thread = ResourceUtilizationSavingThread(interval=1)
         self.resource_thread.start()
         # Start the power measurement thread
         self.power_thread = PowerMeasurementThread(interval=1)
@@ -70,11 +85,100 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
     def inject_fault(self, request, context):
         fault_command = request.fault_command
         fault_config = request.fault_config
-        stress_string = 'stress-ng {0} {1}'
+        stress_string = 'stress-ng {0} {1} --timeout 30'
         shell_command = stress_string.format(fault_command, fault_config)
         print("[x] Stress command to run: " + shell_command)
+        self.fault_injection_start_times_ms.append(utils.current_milli_time())
         self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
         return pb2.EmptyProto()
+
+    def stop_fault_injection(self, request, context):
+        try:
+            os.kill(self.fault_injection_process.pid, signal.SIGTERM)
+            self.fault_injection_stop_times_ms.append(utils.current_milli_time())
+            print("[x] Fault Injection Process Killed.")
+        except:
+            pass
+        return pb2.EmptyProto()
+
+    def inject_fault_after_delay(self, request, context):
+        print("[x] Request received on inject fault after delay")
+        self.fault_injection_parent_process = threading.Thread(target=self.run_command,
+                                                               args=(request.delay, request.fault_command,
+                                                                     request.fault_config))
+        # self.fault_injection_parent_process.start()
+        print("[x] Responding to the user request")
+        return pb2.EmptyProto()
+
+    def run_command(self, delay, fault_command, fault_config):
+        time.sleep(delay)
+        fault_command = fault_command
+        fault_config = fault_config
+        stress_string = 'stress-ng {0} {1}'
+        shell_command = stress_string.format(fault_command, fault_config)
+        print("[x] Starting Fault Injection")
+        self.fault_injection_start_times_ms.append(utils.current_milli_time())
+        self.fault_injection_process = subprocess.Popen(shell_command, shell=True)
+
+    def get_resource_logs(self, request, context):
+        print("[x] Received resource log request.")
+        try:
+            os.kill(self.power_thread.get_power_process().pid, signal.SIGTERM)
+        except:
+            pass
+        self.power_thread.stop()
+        self.power_thread.join()
+        print("[x] Power thread stopped.")
+        # Stop the resource utilization thread and get the average values
+        self.resource_thread.stop()
+        self.resource_thread.join()
+        print("[x] Resource thread stopped.")
+        # Send a signal to the stress process to terminate it
+        try:
+            os.kill(self.fault_injection_parent_process.pid, signal.SIGTERM)
+            print("[x] Fault Injection Parent Process Killed.")
+        except:
+            pass
+        try:
+            os.kill(self.fault_injection_process.pid, signal.SIGTERM)
+            self.fault_injection_stop_times_ms.append(utils.current_milli_time())
+            print("[x] ]ault Injection Process Killed.")
+        except:
+            pass
+
+        with open('cpu_utilization.log', "rb") as f:
+            cpu_data = f.read()
+
+        with open('memory_utilization.log', "rb") as f:
+            memory_data = f.read()
+
+        with open('network_utilization.log', "rb") as f:
+            network_data = f.read()
+
+        with open('ios_utilization.log', "rb") as f:
+            ios_data = f.read()
+
+        cpu_file_data = pb2.FileData()
+        cpu_file_data.data = cpu_data
+
+        memory_file_data = pb2.FileData()
+        memory_file_data.data = memory_data
+
+        network_file_data = pb2.FileData()
+        network_file_data.data = network_data
+
+        ios_file_data = pb2.FileData()
+        ios_file_data.data = ios_data
+
+        temperature_timestamps_ms, cpu_temperatures = self.power_thread.get_temperatures()
+
+        resource_logs = pb2.ResourceLogs(cpu_log=cpu_file_data, memory_log=memory_file_data, io_log=ios_file_data,
+                                         network_log=network_file_data,
+                                         fault_injection_start_times_ms=self.fault_injection_start_times_ms,
+                                         fault_injection_stop_times_ms=self.fault_injection_stop_times_ms,
+                                         temperature_timestamps_ms=temperature_timestamps_ms,
+                                         cpu_temperatures=cpu_temperatures)
+        return resource_logs
 
     # OLD CODE BELOW
 
@@ -118,21 +222,22 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         return pb2.EmptyProto()
 
 
-
-
 class PowerMeasurementThread(threading.Thread):
     def __init__(self, interval):
         super().__init__()
         self.interval = interval
         self.stop_flag = False
+        self.power_timestamps = []
         self.power_data = []
+        self.power_process = None
 
     def run(self):
         while not self.stop_flag:
             # Run vcgencmd to get power consumption data
             command = "sudo vcgencmd measure_temp"
-            process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-            output, error = process.communicate()
+            self.power_timestamps.append(utils.current_milli_time())
+            self.power_process = subprocess.Popen(command.split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+            output, error = self.power_process.communicate()
 
             # Parse the output to extract the voltage and current values
             temperature = float(output.decode().split("=")[1][:-3])
@@ -143,8 +248,14 @@ class PowerMeasurementThread(threading.Thread):
             # Wait for the measurement interval
             time.sleep(self.interval)
 
+    def get_power_process(self):
+        return self.power_process
+
     def stop(self):
         self.stop_flag = True
+
+    def get_temperatures(self):
+        return self.power_timestamps, self.power_data
 
     def get_average_power(self):
         return sum(self.power_data) / len(self.power_data)
@@ -198,7 +309,6 @@ class ResourceUtilizationThread(threading.Thread):
                 if len(iostat_fields) > 22 and iostat_fields[0] == b'mmcblk0':
                     self.disk_data.append(float(iostat_fields[22]))
 
-
         # Terminate the sar and iostat processes after the loop is done
         cpu_process.terminate()
         memory_process.terminate()
@@ -218,5 +328,46 @@ class ResourceUtilizationThread(threading.Thread):
         return sum(self.disk_data) / len(self.disk_data)
 
     def get_average_network_utilization(self):
-        return sum(self.network_received_speed) / len(self.network_received_speed), sum(self.network_transmitted_speed) / len(self.network_transmitted_speed)
+        return sum(self.network_received_speed) / len(self.network_received_speed), sum(
+            self.network_transmitted_speed) / len(self.network_transmitted_speed)
+
+
+class ResourceUtilizationSavingThread(threading.Thread):
+    def __init__(self, interval):
+        super().__init__()
+        self.interval = interval
+        self.cpu_process = None
+        self.memory_process = None
+        self.network_process = None
+        self.iostat_process = None
+
+    def run(self):
+        # Start the sar command to collect CPU, memory, and network utilization data
+        cpu_command = f"sar -u ALL {self.interval} > cpu_utilization.log"
+        self.cpu_process = subprocess.Popen(cpu_command, shell=True)
+        self.memory_process = subprocess.Popen(f"sar -r ALL {self.interval} > memory_utilization.log", shell=True)
+        self.network_process = subprocess.Popen(f"sar -n DEV 1 {self.interval} > network_utilization.log ", shell=True)
+        self.iostat_process = subprocess.Popen(f"iostat -t mmcblk0 -dkx {self.interval} > ios_utilization.log", shell=True)
+
+    def stop(self):
+        self.cpu_process.terminate()
+        self.memory_process.terminate()
+        self.network_process.terminate()
+        self.iostat_process.terminate()
+        print("Terminated CPU SAR Process")
+        print("Terminated MEM SAR Process")
+        print("Terminated NET SAR Process")
+        print("Terminated IOSTAT Process")
+
+    def get_cpu_process(self):
+        return self.cpu_process
+
+    def get_memory_process(self):
+        return self.memory_process
+
+    def get_network_process(self):
+        return self.network_process
+
+    def get_io_process(self):
+        return self.io_process
 

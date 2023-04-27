@@ -36,9 +36,14 @@ service MicroBenchmarks{
 
 service EdgeResourceManagement{
   rpc start_resource_tracing(EmptyProto) returns (EmptyProto) {}
+  rpc start_resource_tracing_and_saving(EmptyProto) returns (EmptyProto) {}
   rpc get_resource_utilization(EmptyProto) returns (ResourceUtilizationResponse) {}
   rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
+  rpc get_resource_tracing_status(EmptyProto) returns (FaultInjectionStatus) {}
   rpc inject_fault(FaultRequest) returns (EmptyProto) {}
+  rpc stop_fault_injection(EmptyProto) returns (EmptyProto) {}
+  rpc inject_fault_after_delay(FaultRequestWithDelay) returns (EmptyProto) {}
+  rpc get_resource_logs(EmptyProto) returns (ResourceLogs) {}
 
   // OLD SERVICES
   rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
@@ -282,6 +287,23 @@ message ResourceUtilizationResponse{
 message FaultRequest{
   string fault_command = 1;
   string fault_config = 2;
+}
+
+message FaultRequestWithDelay{
+  string fault_command = 1;
+  string fault_config = 2;
+  int32 delay = 3;
+}
+
+message ResourceLogs{
+  FileData cpu_log = 1;
+  FileData memory_log = 2;
+  FileData io_log = 3;
+  FileData network_log = 4;
+  repeated int64 fault_injection_start_times_ms = 5;
+  repeated int64 fault_injection_stop_times_ms = 6;
+  repeated int64 temperature_timestamps_ms = 7;
+  repeated float cpu_temperatures = 8;
 }
 
 message FaultInjectionStatus {

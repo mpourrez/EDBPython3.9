@@ -8,8 +8,8 @@ def multiply(request, request_received_time_ms):
     matrix_1 = deserialize_matrix(request.matrix_1)
     matrix_2 = deserialize_matrix(request.matrix_2)
 
-    for i in range(300):
-        multiplied_matrix = np.matmul(matrix_1, matrix_2)
+    #for i in range(300):
+    multiplied_matrix = np.matmul(matrix_1, matrix_2)
     rows = []
     for i in range(multiplied_matrix.shape[0]):
         row = pb2.Row(values=list(multiplied_matrix[i]))

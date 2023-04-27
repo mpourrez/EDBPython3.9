@@ -32,7 +32,9 @@ class Client(object):
         self.edge_resource_management_stub = pb2_grpc.EdgeResourceManagementStub(self.channel)
 
     def call_matrix_multiplication(self):
-        matrix_size = 1080
+        print("[x] Request for matrix multiplication")
+        # matrix_size = 1080
+        matrix_size = 400
         matrix_1 = np.random.rand(matrix_size, matrix_size)
         matrix_2 = np.random.rand(matrix_size, matrix_size)
         rows_1 = []
@@ -47,20 +49,32 @@ class Client(object):
         request_time_ms = utils.current_milli_time()
         message = pb2.MatrixMultiplicationRequest(matrix_1=grpc_matrix_1, matrix_2=grpc_matrix_2,
                                                   request_time_ms=request_time_ms)
-        return self.micro_stub.multiply_matrices(message)
+        try:
+            result = self.micro_stub.multiply_matrices(message, timeout=20)
+            print("[x] Received matrix multiplication result.")
+            return result
+        except:
+            print("[x] Timedout on matrix multiplication")
+            return None
 
     def call_fast_fourier_transform(self):
-        input_sequence = np.random.rand(1000000)
+        input_sequence = np.random.rand(100000)
         fourier_input = pb2.Row(values=list(input_sequence))
         request_time_ms = utils.current_milli_time()
+        print("[x] Request for fast fourier transform")
         message = pb2.FastFourierRequest(input_sequence=fourier_input, request_time_ms=request_time_ms)
-        return self.micro_stub.fast_fourier_transform(message)
+        result = self.micro_stub.fast_fourier_transform(message)
+        print("[x] Received response for fast fourier transform")
+        return result
 
     def call_floating_point_sine(self):
+        print("[x] Request for floating point Sin")
         floating_point_input = np.random.randint(1, 361)
         request_time_ms = utils.current_milli_time()
         message = pb2.FloatingPointRequest(floating_point_input=floating_point_input, request_time_ms=request_time_ms)
-        return self.micro_stub.floating_point_sin(message)
+        result = self.micro_stub.floating_point_sin(message)
+        print("[x] Received response for floating point sin")
+        return result
 
     def call_floating_point_sqrt(self):
         floating_point_input = np.random.randint(10000, 30001)
@@ -73,26 +87,42 @@ class Client(object):
             data = f.read()
         file_data = pb2.FileData()
         file_data.data = data
+        print("[x] Request for sort sent")
         request_time_ms = utils.current_milli_time()
         message = pb2.FileSorterRequest(file=file_data, request_time_ms=request_time_ms)
-        return self.micro_stub.sort_file(message)
+        result = self.micro_stub.sort_file(message)
+        print("[x] Received sort result")
+        return result
 
     def call_dd_cmd(self):
         request_time_ms = utils.current_milli_time()
+        print("[x] Request for DD sent")
         message = pb2.DDRequest(request_time_ms=request_time_ms)
-        return self.micro_stub.dd_cmd(message)
+        result = self.micro_stub.dd_cmd(message)
+        print("[x] Received DD response")
+        return result
 
     def call_iperf(self):
+        print("[x] Request to IPERF")
         request_time_ms = utils.current_milli_time()
         message = pb2.IperfRequest(hostname=configs.ORCHESTRATOR_IP, port=configs.EDGE_DEVICE_PORT, duration=3
                                    , request_time_ms=request_time_ms)
-        return self.micro_stub.run_iperf(message)
+        result = self.micro_stub.run_iperf(message)
+        print("[x] Response received from IPERF")
+        return result
 
     # END: Micor Benchmarks
 
     def call_edge_to_start_resource_tracing(self):
         empty = pb2.EmptyProto()
         return self.edge_resource_management_stub.start_resource_tracing(empty)
+
+    def call_edge_to_start_resource_tracing_with_saving(self):
+        empty = pb2.EmptyProto()
+        print("[x] Start resource tracing with saving")
+        result = self.edge_resource_management_stub.start_resource_tracing_and_saving(empty)
+        print("[x] Received resource tracing with saving result")
+        return result
 
     def get_resource_utilization(self):
         empty = pb2.EmptyProto()
@@ -102,29 +132,61 @@ class Client(object):
         message = pb2.EmptyProto()
         return self.edge_resource_management_stub.get_fault_injection_status(message)
 
+    def call_server_to_get_resource_tracking_status(self):
+        message = pb2.EmptyProto()
+        return self.edge_resource_management_stub.get_resource_tracing_status(message)
+
     def call_server_to_inject_fault(self, fault_command, fault_config):
         message = pb2.FaultRequest(fault_command=fault_command, fault_config=fault_config)
-        return self.edge_resource_management_stub.inject_fault(message)
+        print("[x] Start fault injection")
+        result = self.edge_resource_management_stub.inject_fault(message)
+        return result
+
+    def call_server_to_stop_fault_injection(self):
+        message = pb2.EmptyProto()
+        print("[x] Stop fault injection")
+        result = self.edge_resource_management_stub.stop_fault_injection(message)
+        return result
+
+    def inject_fault_after_delay(self, fault_command, fault_config, delay):
+        print("[x] Sending fault request with delay")
+        message = pb2.FaultRequestWithDelay(fault_command=fault_command, fault_config=fault_config, delay=delay)
+        result = self.edge_resource_management_stub.inject_fault_after_delay(message)
+        return result
+
+    def get_resource_logs(self):
+        message = pb2.EmptyProto()
+        return self.edge_resource_management_stub.get_resource_logs(message)
 
     # END RESOURCE MANAGEMENT CODES
 
     def call_image_processing(self):
+        print("[x] Sending request for image processing")
         request_time_ms = utils.current_milli_time()
         image = utils.get_random_image()
         message = pb2.ImageProcessingRequest(image=image, request_time_ms=request_time_ms)
-        return self.application_stub.image_processing(message)
+        result = self.application_stub.image_processing(message)
+        print("[x] Received response for image processing")
+        return result
 
     def call_sentiment_analysis(self):
+        print("[x] Sending request for sentiment analysis")
         request_time_ms = utils.current_milli_time()
         input_text = utils.get_random_sentiment_text()
         message = pb2.SentimentAnalysisRequest(input_text=input_text, request_time_ms=request_time_ms)
-        return self.application_stub.sentiment_analysis(message)
+        result = self.application_stub.sentiment_analysis(message)
+        print("[x] Received response for sentiment analysis")
+        return result
 
     def call_speech_to_text(self):
+        print("[x] Received request for speech to text")
         request_time_ms = utils.current_milli_time()
         audio = utils.get_random_audio()
         message = pb2.SpeechToTextRequest(audio=audio, request_time_ms=request_time_ms)
-        return self.application_stub.speech_to_text(message)
+        result = self.application_stub.speech_to_text(message)
+        print("[x] Received response for speech to text")
+        return result
+
     def call_image_classification_alexnet_cpu(self):
         request_time_ms = utils.current_milli_time()
         image = utils.get_random_image()
@@ -138,6 +200,7 @@ class Client(object):
         return self.application_stub.image_classification_squeezenet(message)
 
     def call_object_detection_darknet(self):
+        print("[x] Sending request for object detection")
         request_time_ms = utils.current_milli_time()
         image = utils.get_random_image()
         message = pb2.ObjectDetectionRequest(image=image, request_time_ms=request_time_ms)
@@ -147,19 +210,26 @@ class Client(object):
         request_time_ms = utils.current_milli_time()
         audio = utils.get_random_audio()
         message = pb2.PocketSphinxRequest(audio=audio, request_time_ms=request_time_ms)
-        return self.application_stub.pocket_sphinx(message)
+        result = self.application_stub.pocket_sphinx(message)
+        print(result)
+        return result
 
     def call_aeneas(self):
+        print("[x] Calling aeneas")
         request_time_ms = utils.current_milli_time()
         audio, transcript = utils.get_random_audio_text_for_alignment()
         message = pb2.AudioTextRequest(audio=audio, text_input=transcript, request_time_ms=request_time_ms)
-        return self.application_stub.pocket_sphinx(message)
+        print(message)
+        return self.application_stub.aeneas(message)
 
     def call_object_tracking(self):
         request_time_ms = utils.current_milli_time()
         image = utils.get_random_image_for_tracking()
+        print("[x] Calling object tracking")
         message = pb2.ObjectTrackingRequest(image=image, request_time_ms=request_time_ms)
-        return self.application_stub.object_tracking(message)
+        result = self.application_stub.object_tracking(message)
+        print("[x] Received result for object tracking")
+        return result
 
     ######################################################
     ############ OLD CODE:################################
@@ -194,8 +264,6 @@ class Client(object):
     def call_server_for_memory_trace(self):
         empty = pb2.EmptyProto()
         return self.application_stub.get_memory_usage(empty)
-
-
 
     # def call_server_to_get_fault_injection_status(self):
     #     message = pb2.EmptyProto()

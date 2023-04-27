@@ -95,7 +95,7 @@ def track_from_image(request, request_received_time_ms):
     classes = classes[0:int(num_objects)]
 
     # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, width, height
-    original_h, original_w, _ = image.shape
+    original_h, original_w, _ = image_data.shape
     bboxes = utils.format_boxes(bboxes, original_h, original_w)
 
     # store all predictions in one parameter for simplicity when calling functions

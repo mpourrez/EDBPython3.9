@@ -868,6 +868,11 @@ class EdgeResourceManagementStub(object):
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
                 response_deserializer=benchmark__pb2.EmptyProto.FromString,
                 )
+        self.start_resource_tracing_and_saving = channel.unary_unary(
+                '/protos.EdgeResourceManagement/start_resource_tracing_and_saving',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
         self.get_resource_utilization = channel.unary_unary(
                 '/protos.EdgeResourceManagement/get_resource_utilization',
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
@@ -878,10 +883,30 @@ class EdgeResourceManagementStub(object):
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
                 response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
                 )
+        self.get_resource_tracing_status = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_resource_tracing_status',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
+                )
         self.inject_fault = channel.unary_unary(
                 '/protos.EdgeResourceManagement/inject_fault',
                 request_serializer=benchmark__pb2.FaultRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.stop_fault_injection = channel.unary_unary(
+                '/protos.EdgeResourceManagement/stop_fault_injection',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.inject_fault_after_delay = channel.unary_unary(
+                '/protos.EdgeResourceManagement/inject_fault_after_delay',
+                request_serializer=benchmark__pb2.FaultRequestWithDelay.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
+        self.get_resource_logs = channel.unary_unary(
+                '/protos.EdgeResourceManagement/get_resource_logs',
+                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                response_deserializer=benchmark__pb2.ResourceLogs.FromString,
                 )
         self.start_memory_tracing = channel.unary_unary(
                 '/protos.EdgeResourceManagement/start_memory_tracing',
@@ -909,6 +934,12 @@ class EdgeResourceManagementServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def start_resource_tracing_and_saving(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def get_resource_utilization(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
@@ -921,7 +952,31 @@ class EdgeResourceManagementServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def get_resource_tracing_status(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
     def inject_fault(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def stop_fault_injection(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def inject_fault_after_delay(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def get_resource_logs(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -954,6 +1009,11 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
                     response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
             ),
+            'start_resource_tracing_and_saving': grpc.unary_unary_rpc_method_handler(
+                    servicer.start_resource_tracing_and_saving,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
             'get_resource_utilization': grpc.unary_unary_rpc_method_handler(
                     servicer.get_resource_utilization,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
@@ -964,10 +1024,30 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
                     response_serializer=benchmark__pb2.FaultInjectionStatus.SerializeToString,
             ),
+            'get_resource_tracing_status': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_resource_tracing_status,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.FaultInjectionStatus.SerializeToString,
+            ),
             'inject_fault': grpc.unary_unary_rpc_method_handler(
                     servicer.inject_fault,
                     request_deserializer=benchmark__pb2.FaultRequest.FromString,
                     response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
+            'stop_fault_injection': grpc.unary_unary_rpc_method_handler(
+                    servicer.stop_fault_injection,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
+            'inject_fault_after_delay': grpc.unary_unary_rpc_method_handler(
+                    servicer.inject_fault_after_delay,
+                    request_deserializer=benchmark__pb2.FaultRequestWithDelay.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            ),
+            'get_resource_logs': grpc.unary_unary_rpc_method_handler(
+                    servicer.get_resource_logs,
+                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    response_serializer=benchmark__pb2.ResourceLogs.SerializeToString,
             ),
             'start_memory_tracing': grpc.unary_unary_rpc_method_handler(
                     servicer.start_memory_tracing,
@@ -1012,6 +1092,23 @@ class EdgeResourceManagement(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def start_resource_tracing_and_saving(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/start_resource_tracing_and_saving',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def get_resource_utilization(request,
             target,
             options=(),
@@ -1046,6 +1143,23 @@ class EdgeResourceManagement(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
+    def get_resource_tracing_status(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_resource_tracing_status',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.FaultInjectionStatus.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
     def inject_fault(request,
             target,
             options=(),
@@ -1059,6 +1173,57 @@ class EdgeResourceManagement(object):
         return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/inject_fault',
             benchmark__pb2.FaultRequest.SerializeToString,
             benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def stop_fault_injection(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/stop_fault_injection',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def inject_fault_after_delay(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/inject_fault_after_delay',
+            benchmark__pb2.FaultRequestWithDelay.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def get_resource_logs(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_resource_logs',
+            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.ResourceLogs.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
