@@ -73,19 +73,19 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
     def get_fault_injection_status(self, request, context):
         if self.fault_injection_process is None:
             # No faults has been injected yet
-            return pb2.FaultInjectionStatus(is_finished=True)
+            return pb2.ProcessStatus(is_finished=True)
         poll = self.fault_injection_process.poll()
         if poll is None:
             # A None value indicates that the process hasn't terminated yet
             print("[xxxx] Fault Injection Still in Process")
-            return pb2.FaultInjectionStatus(is_finished=False)
+            return pb2.ProcessStatus(is_finished=False)
         else:
-            return pb2.FaultInjectionStatus(is_finished=True)
+            return pb2.ProcessStatus(is_finished=True)
 
     def get_resource_tracing_status(self, request, context):
         if self.resource_thread is None:
             # No resource tracing has been done yet
-            return pb2.FaultInjectionStatus(is_finished=True)
+            return pb2.ProcessStatus(is_finished=True)
         poll_cpu = self.resource_thread.get_cpu_process().poll()
         poll_memory = self.resource_thread.get_memory_process().poll()
         poll_network = self.resource_thread.get_network_process().poll()
@@ -94,9 +94,9 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         if poll_cpu is None or poll_memory is None or poll_network is None or poll_io is None:
             # A None value indicates that the process hasn't terminated yet
             print("[xxxx] Resource Tracing is in Process")
-            return pb2.FaultInjectionStatus(is_finished=False)
+            return pb2.ProcessStatus(is_finished=False)
         else:
-            return pb2.FaultInjectionStatus(is_finished=True)
+            return pb2.ProcessStatus(is_finished=True)
 
     def inject_fault(self, request, context):
         fault_command = request.fault_command
