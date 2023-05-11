@@ -29,31 +29,32 @@ sentiment_filename = "workloads/stanfordSentimentTreebank/datasetSentences.txt" 
 image_dataset_directory = "workloads/coco-dataset-val2017"  # image dataset (coco)
 audio_alignment_dataset_dir = "workloads/Mozilla-dataset-2022-12-07/en"
 
-# get the path of the script and its directory
-script_path = os.path.abspath(__file__)
-script_dir = os.path.dirname(script_path)
+def initial_workload_setup():
+    # get the path of the script and its directory
+    script_path = os.path.abspath(__file__)
+    script_dir = os.path.dirname(script_path)
 
-# Read the CSV file containing the metadata for the audio files and transcriptions
-audio_alignment_metadata_file = os.path.join(script_dir, audio_alignment_dataset_dir, "validated.tsv")
-audio_alignment_metadata_df = pd.read_csv(audio_alignment_metadata_file, delimiter="\t")
+    # Read the CSV file containing the metadata for the audio files and transcriptions
+    audio_alignment_metadata_file = os.path.join(script_dir, audio_alignment_dataset_dir, "validated.tsv")
+    audio_alignment_metadata_df = pd.read_csv(audio_alignment_metadata_file, delimiter="\t")
 
-# count the number of lines in the file
-num_lines_in_sentiment_dataset = sum(1 for line in open(os.path.join(script_dir, sentiment_filename)))
+    # count the number of lines in the file
+    num_lines_in_sentiment_dataset = sum(1 for line in open(os.path.join(script_dir, sentiment_filename)))
 
-# get a list of all files in the directory
-image_files = os.listdir(os.path.join(script_dir, image_dataset_directory))
+    # get a list of all files in the directory
+    image_files = os.listdir(os.path.join(script_dir, image_dataset_directory))
 
-# filter out any non-files (e.g. subdirectories)
-image_files = [f for f in image_files if os.path.isfile(os.path.join(script_dir, image_dataset_directory, f))]
+    # filter out any non-files (e.g. subdirectories)
+    image_files = [f for f in image_files if os.path.isfile(os.path.join(script_dir, image_dataset_directory, f))]
 
-# get a list of all audio dataset files and subdirectories in the directory
-all_audio_files = []
-for root, dirs, files in os.walk(os.path.join(script_dir,audio_directory)):
-    for file in files:
-        all_audio_files.append(os.path.join(root, file))
+    # get a list of all audio dataset files and subdirectories in the directory
+    all_audio_files = []
+    for root, dirs, files in os.walk(os.path.join(script_dir,audio_directory)):
+        for file in files:
+            all_audio_files.append(os.path.join(root, file))
 
-# filter out any directories from the list of files
-audio_files = [f for f in all_audio_files if os.path.isfile(f)]
+    # filter out any directories from the list of files
+    audio_files = [f for f in all_audio_files if os.path.isfile(f)]
 
 
 def get_random_image():

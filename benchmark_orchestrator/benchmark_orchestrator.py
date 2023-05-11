@@ -275,6 +275,7 @@ def run_application_over_time(edge_server, application_to_test, fault_to_inject,
 ####################################################################################
 
 if __name__ == '__main__':
+    utils.initial_workload_setup()
     for edge_device_ip in configs.EDGE_DEVICES_IP:
         client = grpc_client.Client(edge_device_ip)
         for app in configs.APPLICATIONS:
