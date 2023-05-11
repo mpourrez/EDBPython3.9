@@ -274,7 +274,7 @@ END: The above messages are for application-benchmarks
 *********************************************************
 ********************************************************/
 message ResourceTracingRequest {
-  int32 timout = 1;
+  int32 timeout = 1;
 }
 
 message ResourceUtilizationResponse{
