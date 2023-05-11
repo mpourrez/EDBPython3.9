@@ -14,6 +14,7 @@ def convert_to_text(request, request_received_time_ms):
     with open('audio.wav', 'wb') as f:
         f.write(audio_data)
 
+    print("wrote audio file")
     # create a Pocketsphinx decoder
     config = pocketsphinx.Decoder.default_config()
     config.set_string('-hmm', '/usr/share/pocketsphinx/model/en-us/en-us')
@@ -21,11 +22,13 @@ def convert_to_text(request, request_received_time_ms):
     config.set_string('-dict', '/usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
     decoder = pocketsphinx.Decoder(config)
 
+    print("Created decoder")
     # Create an audio object
     pa = pyaudio.PyAudio()
-
+    print("created pa")
     # Open the audio file
     wf = wave.open('audio.wav', 'rb')
+    print("openned wav file")
 
     # Define a callback function for the audio stream
     def audio_callback(in_data, frame_count, time_info, status):
@@ -66,7 +69,7 @@ def convert_to_text(request, request_received_time_ms):
     wf.close()
 
     conversion_response = pb2.PocketSphinxResponse()
-    conversion_response.conversion_result = result #decoder.hyp().hypstr
+    conversion_response.conversion_result = result  # decoder.hyp().hypstr
     conversion_response.request_time_ms = request.request_time_ms
     conversion_response.request_received_time_ms = request_received_time_ms
     conversion_response.response_time_ms = current_milli_time()

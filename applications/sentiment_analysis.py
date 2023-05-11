@@ -3,7 +3,7 @@ from textblob import TextBlob
 from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
 
-# nltk.download('punkt')
+nltk.download('punkt')
 
 
 def analyze_sentiment(request, request_received_time_ms):

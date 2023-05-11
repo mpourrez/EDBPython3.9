@@ -64,7 +64,10 @@ def enable_gpu():
 # Object Tracking and Detection using Yolov4
 ####################################################################################
 def track_from_image(request, request_received_time_ms):
-    img_data = base64.b64decode(request.image)
+    image_bytes = bytearray(request.image, encoding='utf-8')
+    img_data = base64.b64decode(image_bytes)
+    numpy_array = np.frombuffer(img_data, np.uint8)
+    image = cv2.imdecode(numpy_array, cv2.IMREAD_COLOR)
     image_data = cv2.resize(img_data, (input_size, input_size))
     image_data = image_data / 255.
     image_data = image_data[np.newaxis, ...].astype(np.float32)
@@ -95,7 +98,7 @@ def track_from_image(request, request_received_time_ms):
     classes = classes[0:int(num_objects)]
 
     # format bounding boxes from normalized ymin, xmin, ymax, xmax ---> xmin, ymin, width, height
-    original_h, original_w, _ = image_data.shape
+    original_h, original_w, _ = image.shape
     bboxes = utils.format_boxes(bboxes, original_h, original_w)
 
     # store all predictions in one parameter for simplicity when calling functions

@@ -6,7 +6,7 @@ from utils import current_milli_time
 
 def transform(request, request_received_time_ms):
     fourier_input = request.input_sequence.values
-    for i in range(50):
+    for i in range(25):
         fourier_result = np.fft.fft(fourier_input)
 
     fourier_response = pb2.FastFourierResponse(fourier_output=pb2.Row(values=list(fourier_result)))
