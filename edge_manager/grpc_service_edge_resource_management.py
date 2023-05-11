@@ -387,4 +387,4 @@ class ResourceUtilizationSavingThread(threading.Thread):
         return self.network_process
 
     def get_io_process(self):
-        return self.io_process
+        return self.iostat_process
