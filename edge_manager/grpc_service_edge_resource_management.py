@@ -363,7 +363,7 @@ class ResourceUtilizationSavingThread(threading.Thread):
         cpu_command = f"sar -u ALL {self.interval} {self.timeout}> cpu_utilization.log"
         self.cpu_process = subprocess.Popen(cpu_command, shell=True)
         self.memory_process = subprocess.Popen(f"sar -r ALL {self.interval} {self.timeout} > memory_utilization.log", shell=True)
-        self.network_process = subprocess.Popen(f"sar -n DEV 1 {self.interval} {self.timeout} > network_utilization.log ", shell=True)
+        self.network_process = subprocess.Popen(f"sar -n DEV {self.interval} {self.timeout} > network_utilization.log ", shell=True)
         self.iostat_process = subprocess.Popen(f"iostat -t mmcblk0 -dkx {self.interval} {self.timeout} > ios_utilization.log",
                                                shell=True)
 
