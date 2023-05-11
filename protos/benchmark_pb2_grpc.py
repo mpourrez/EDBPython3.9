@@ -870,7 +870,7 @@ class EdgeResourceManagementStub(object):
                 )
         self.start_resource_tracing_and_saving = channel.unary_unary(
                 '/protos.EdgeResourceManagement/start_resource_tracing_and_saving',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+                request_serializer=benchmark__pb2.ResourceTracingRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.EmptyProto.FromString,
                 )
         self.get_resource_utilization = channel.unary_unary(
@@ -881,12 +881,12 @@ class EdgeResourceManagementStub(object):
         self.get_fault_injection_status = channel.unary_unary(
                 '/protos.EdgeResourceManagement/get_fault_injection_status',
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
+                response_deserializer=benchmark__pb2.ProcessStatus.FromString,
                 )
         self.get_resource_tracing_status = channel.unary_unary(
                 '/protos.EdgeResourceManagement/get_resource_tracing_status',
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.FaultInjectionStatus.FromString,
+                response_deserializer=benchmark__pb2.ProcessStatus.FromString,
                 )
         self.inject_fault = channel.unary_unary(
                 '/protos.EdgeResourceManagement/inject_fault',
@@ -1011,7 +1011,7 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
             ),
             'start_resource_tracing_and_saving': grpc.unary_unary_rpc_method_handler(
                     servicer.start_resource_tracing_and_saving,
-                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
+                    request_deserializer=benchmark__pb2.ResourceTracingRequest.FromString,
                     response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
             ),
             'get_resource_utilization': grpc.unary_unary_rpc_method_handler(
@@ -1022,12 +1022,12 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
             'get_fault_injection_status': grpc.unary_unary_rpc_method_handler(
                     servicer.get_fault_injection_status,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
-                    response_serializer=benchmark__pb2.FaultInjectionStatus.SerializeToString,
+                    response_serializer=benchmark__pb2.ProcessStatus.SerializeToString,
             ),
             'get_resource_tracing_status': grpc.unary_unary_rpc_method_handler(
                     servicer.get_resource_tracing_status,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
-                    response_serializer=benchmark__pb2.FaultInjectionStatus.SerializeToString,
+                    response_serializer=benchmark__pb2.ProcessStatus.SerializeToString,
             ),
             'inject_fault': grpc.unary_unary_rpc_method_handler(
                     servicer.inject_fault,
@@ -1103,7 +1103,7 @@ class EdgeResourceManagement(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/start_resource_tracing_and_saving',
-            benchmark__pb2.EmptyProto.SerializeToString,
+            benchmark__pb2.ResourceTracingRequest.SerializeToString,
             benchmark__pb2.EmptyProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
@@ -1138,7 +1138,7 @@ class EdgeResourceManagement(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_fault_injection_status',
             benchmark__pb2.EmptyProto.SerializeToString,
-            benchmark__pb2.FaultInjectionStatus.FromString,
+            benchmark__pb2.ProcessStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -1155,7 +1155,7 @@ class EdgeResourceManagement(object):
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_resource_tracing_status',
             benchmark__pb2.EmptyProto.SerializeToString,
-            benchmark__pb2.FaultInjectionStatus.FromString,
+            benchmark__pb2.ProcessStatus.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

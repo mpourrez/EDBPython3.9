@@ -36,10 +36,10 @@ service MicroBenchmarks{
 
 service EdgeResourceManagement{
   rpc start_resource_tracing(EmptyProto) returns (EmptyProto) {}
-  rpc start_resource_tracing_and_saving(EmptyProto) returns (EmptyProto) {}
+  rpc start_resource_tracing_and_saving(ResourceTracingRequest) returns (EmptyProto) {}
   rpc get_resource_utilization(EmptyProto) returns (ResourceUtilizationResponse) {}
-  rpc get_fault_injection_status(EmptyProto) returns (FaultInjectionStatus) {}
-  rpc get_resource_tracing_status(EmptyProto) returns (FaultInjectionStatus) {}
+  rpc get_fault_injection_status(EmptyProto) returns (ProcessStatus) {}
+  rpc get_resource_tracing_status(EmptyProto) returns (ProcessStatus) {}
   rpc inject_fault(FaultRequest) returns (EmptyProto) {}
   rpc stop_fault_injection(EmptyProto) returns (EmptyProto) {}
   rpc inject_fault_after_delay(FaultRequestWithDelay) returns (EmptyProto) {}
@@ -273,7 +273,9 @@ message ObjectTrackingResponse{
 END: The above messages are for application-benchmarks
 *********************************************************
 ********************************************************/
-
+message ResourceTracingRequest {
+  int32 timout = 1;
+}
 
 message ResourceUtilizationResponse{
   float average_cpu_utilization = 1;
@@ -306,7 +308,7 @@ message ResourceLogs{
   repeated float cpu_temperatures = 8;
 }
 
-message FaultInjectionStatus {
+message ProcessStatus {
   bool is_finished = 1;
 }
 

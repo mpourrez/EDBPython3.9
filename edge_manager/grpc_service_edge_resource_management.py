@@ -38,7 +38,7 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
     def start_resource_tracing_and_saving(self, request, context):
         print("[x] Tracing resource utilization. ")
         # Start the resource utilization thread
-        self.resource_thread = ResourceUtilizationSavingThread(interval=1)
+        self.resource_thread = ResourceUtilizationSavingThread(interval=1, timeout=request.timeout)
         self.resource_thread.start()
         # Start the power measurement thread
         self.power_thread = PowerMeasurementThread(interval=1)
@@ -78,6 +78,22 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         if poll is None:
             # A None value indicates that the process hasn't terminated yet
             print("[xxxx] Fault Injection Still in Process")
+            return pb2.FaultInjectionStatus(is_finished=False)
+        else:
+            return pb2.FaultInjectionStatus(is_finished=True)
+
+    def get_resource_tracing_status(self, request, context):
+        if self.resource_thread is None:
+            # No resource tracing has been done yet
+            return pb2.FaultInjectionStatus(is_finished=True)
+        poll_cpu = self.resource_thread.get_cpu_process().poll()
+        poll_memory = self.resource_thread.get_memory_process().poll()
+        poll_network = self.resource_thread.get_network_process().poll()
+        poll_io = self.resource_thread.get_io_process().poll()
+
+        if poll_cpu is None or poll_memory is None or poll_network is None or poll_io is None:
+            # A None value indicates that the process hasn't terminated yet
+            print("[xxxx] Resource Tracing is in Process")
             return pb2.FaultInjectionStatus(is_finished=False)
         else:
             return pb2.FaultInjectionStatus(is_finished=True)
@@ -333,9 +349,10 @@ class ResourceUtilizationThread(threading.Thread):
 
 
 class ResourceUtilizationSavingThread(threading.Thread):
-    def __init__(self, interval):
+    def __init__(self, interval, timeout):
         super().__init__()
         self.interval = interval
+        self.timeout = timeout
         self.cpu_process = None
         self.memory_process = None
         self.network_process = None
@@ -343,11 +360,12 @@ class ResourceUtilizationSavingThread(threading.Thread):
 
     def run(self):
         # Start the sar command to collect CPU, memory, and network utilization data
-        cpu_command = f"sar -u ALL {self.interval} > cpu_utilization.log"
+        cpu_command = f"sar -u ALL {self.interval} {self.timeout}> cpu_utilization.log"
         self.cpu_process = subprocess.Popen(cpu_command, shell=True)
-        self.memory_process = subprocess.Popen(f"sar -r ALL {self.interval} > memory_utilization.log", shell=True)
-        self.network_process = subprocess.Popen(f"sar -n DEV 1 {self.interval} > network_utilization.log ", shell=True)
-        self.iostat_process = subprocess.Popen(f"iostat -t mmcblk0 -dkx {self.interval} > ios_utilization.log", shell=True)
+        self.memory_process = subprocess.Popen(f"sar -r ALL {self.interval} {self.timeout} > memory_utilization.log", shell=True)
+        self.network_process = subprocess.Popen(f"sar -n DEV 1 {self.interval} {self.timeout} > network_utilization.log ", shell=True)
+        self.iostat_process = subprocess.Popen(f"iostat -t mmcblk0 -dkx {self.interval} {self.timeout} > ios_utilization.log",
+                                               shell=True)
 
     def stop(self):
         self.cpu_process.terminate()
@@ -370,4 +388,3 @@ class ResourceUtilizationSavingThread(threading.Thread):
 
     def get_io_process(self):
         return self.io_process
-

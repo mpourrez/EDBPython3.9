@@ -118,9 +118,9 @@ class Client(object):
         return self.edge_resource_management_stub.start_resource_tracing(empty)
 
     def call_edge_to_start_resource_tracing_with_saving(self):
-        empty = pb2.EmptyProto()
+        resource_tracing_request = pb2.ResourceTracingRequest(timeout=configs.EXPERIMENT_DURATION + 10)
         print("[x] Start resource tracing with saving")
-        result = self.edge_resource_management_stub.start_resource_tracing_and_saving(empty)
+        result = self.edge_resource_management_stub.start_resource_tracing_and_saving(resource_tracing_request)
         print("[x] Received resource tracing with saving result")
         return result
 
