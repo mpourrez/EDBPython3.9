@@ -86,6 +86,7 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
         if self.resource_thread is None:
             # No resource tracing has been done yet
             return pb2.ProcessStatus(is_finished=True)
+        self.resource_thread.stop()
         poll_cpu = self.resource_thread.get_cpu_process().poll()
         poll_memory = self.resource_thread.get_memory_process().poll()
         poll_network = self.resource_thread.get_network_process().poll()
