@@ -359,6 +359,11 @@ class ResourceUtilizationSavingThread(threading.Thread):
         self.iostat_process = None
 
     def run(self):
+        # Delete previous files:
+        subprocess.run("rm cpu_utilization.log", shell=True)
+        subprocess.run("rm memory_utilization.log", shell=True)
+        subprocess.run("rm network_utilization.log", shell=True)
+        subprocess.run("rm ios_utilization.log", shell=True)
         # Start the sar command to collect CPU, memory, and network utilization data
         cpu_command = f"sar -u ALL {self.interval} {self.timeout}> cpu_utilization.log"
         self.cpu_process = subprocess.Popen(cpu_command, shell=True)
