@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import benchmark_pb2 as benchmark__pb2
+from protos import benchmark_pb2 as benchmark__pb2
 
 
 class ApplicationBenchmarksStub(object):
