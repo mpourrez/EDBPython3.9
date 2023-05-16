@@ -27,8 +27,8 @@ def classify_image(request, request_received_time_ms):
     prob, predicted = torch.max(output, 1)
 
     classification_response = pb2.ImageClassificationResponse()
-    classification_response.top_category_id = predicted
-    classification_response.top_category_probability = prob * 100
+    classification_response.top_category_id = predicted.item()
+    classification_response.top_category_probability = prob.item() * 100
     classification_response.request_time_ms = request.request_time_ms
     classification_response.request_received_time_ms = request_received_time_ms
     classification_response.response_time_ms = current_milli_time()
