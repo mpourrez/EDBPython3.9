@@ -19,7 +19,7 @@ def classify_image(request, request_received_time_ms):
         )
     ])
 
-    model = AlexNet(num_classes=2)
+    model = AlexNet(num_classes=1000)
     model.transform = transform
     model.load_state_dict(torch.load('alexnet.pth'))
 
