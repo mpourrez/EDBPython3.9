@@ -242,9 +242,9 @@ message PocketSphinxResponse{
 }
 
 message AudioTextRequest{
-  string audio = 1;
-  string text_input = 2;
-  int64 request_time_ms = 3;
+  int64 request_time_ms = 1;
+  string audio = 2;
+  string text_input = 3;
 }
 
 message AudioTextResponse{
