@@ -3,7 +3,10 @@ from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
 import torch
 import torchvision.transforms as transforms
+import torchvision.models as models
 
+alexnet = models.alexnet(pretrained=True)
+torch.save(alexnet.state_dict(), 'alexnet.pth')
 
 def classify_image(request, request_received_time_ms):
     transform = transforms.Compose([
