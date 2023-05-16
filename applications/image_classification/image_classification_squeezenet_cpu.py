@@ -9,7 +9,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-squeezenet = models.squeezenet1_0(weights=models.squeezenet1_0(pretrained=False).weights)
+squeezenet = models.squeezenet1_0(pretrained=True)
 torch.save(squeezenet.state_dict(), 'squeezenet.pth')
 
 
@@ -24,21 +24,19 @@ def classify_image(request, request_received_time_ms):
         )
     ])
 
-    device = torch.device('cpu')
     model = SqueezeNet(num_classes=1000)
-    model.transform = transform
-    model.load_state_dict(torch.load('squeezenet.pth', map_location=device))
-    model.to(device)
+    # Load the state dictionary into the model
+    model.load_state_dict(torch.load('squeezenet.pth', map_location=torch.device('cpu')))
 
-    with torch.no_grad():
-        output = model(request.image.to(device))
-        prob, predicted = torch.max(output, 1)
 
-        classification_response = pb2.ImageClassificationResponse()
-        classification_response.top_category_id = int(predicted.item())
-        classification_response.top_category_probability = int(prob.item() * 100)
-        classification_response.request_time_ms = request.request_time_ms
-        classification_response.request_received_time_ms = request_received_time_ms
-        classification_response.response_time_ms = current_milli_time()
+    output = model(request.image)
+    prob, predicted = torch.max(output, 1)
+
+    classification_response = pb2.ImageClassificationResponse()
+    classification_response.top_category_id = int(predicted.item())
+    classification_response.top_category_probability = int(prob.item() * 100)
+    classification_response.request_time_ms = request.request_time_ms
+    classification_response.request_received_time_ms = request_received_time_ms
+    classification_response.response_time_ms = current_milli_time()
 
     return classification_response
