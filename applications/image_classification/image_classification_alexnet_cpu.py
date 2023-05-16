@@ -5,7 +5,7 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-alexnet = models.alexnet(pretrained=True)
+alexnet = models.alexnet(weights=models.AlexNet_Weights.IMAGENET1K_V1)
 torch.save(alexnet.state_dict(), 'alexnet.pth')
 
 def classify_image(request, request_received_time_ms):
