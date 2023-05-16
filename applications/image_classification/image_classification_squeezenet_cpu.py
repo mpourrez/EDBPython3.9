@@ -1,12 +1,10 @@
 from utils import current_milli_time
-from applications.image_classification.squeezenet_module import SqueezeNet
 from protos import benchmark_pb2 as pb2
 import base64
-from io import BytesIO
 from PIL import Image
+import io
 import torch
-import torch.nn as nn
-import torchvision.transforms as transforms
+\import torchvision.transforms as transforms
 import torchvision.models as models
 
 squeezenet = models.squeezenet1_0(pretrained=True)
@@ -24,12 +22,20 @@ def classify_image(request, request_received_time_ms):
         )
     ])
 
-    model = SqueezeNet(num_classes=1000)
-    # Load the state dictionary into the model
+    # Create a new instance of SqueezeNet
+    model = models.squeezenet1_0(pretrained=False)
+    model.transform = transform
+    # Load the state_dict into the new_model
     model.load_state_dict(torch.load('squeezenet.pth', map_location=torch.device('cpu')))
 
+    # Decode the base64 image
+    image_data = base64.b64decode(request.image)
+    # Open the image using PIL
+    image = Image.open(io.BytesIO(image_data))
+    # Preprocess the image using the transformation pipeline
+    input_image = transform(image).unsqueeze(0)  # Add an extra dimension for batch
 
-    output = model(request.image)
+    output = model(input_image)
     prob, predicted = torch.max(output, 1)
 
     classification_response = pb2.ImageClassificationResponse()
