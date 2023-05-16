@@ -4,7 +4,7 @@ import base64
 from PIL import Image
 import io
 import torch
-\import torchvision.transforms as transforms
+import torchvision.transforms as transforms
 import torchvision.models as models
 
 squeezenet = models.squeezenet1_0(pretrained=True)
