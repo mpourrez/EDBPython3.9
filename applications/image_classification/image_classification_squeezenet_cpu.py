@@ -9,7 +9,7 @@ import torch.nn as nn
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-squeezenet = models.squeezenet1_0(pretrained=True)
+squeezenet = models.squeezenet1_0(weights=models.squeezenet1_0(pretrained=False).weights)
 torch.save(squeezenet.state_dict(), 'squeezenet.pth')
 
 
