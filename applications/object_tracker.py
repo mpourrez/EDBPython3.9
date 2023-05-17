@@ -68,7 +68,7 @@ def track_from_image(request, request_received_time_ms):
     img_data = base64.b64decode(image_bytes)
     numpy_array = np.frombuffer(img_data, np.uint8)
     image = cv2.imdecode(numpy_array, cv2.IMREAD_COLOR)
-    image_data = cv2.resize(img_data, (input_size, input_size))
+    image_data = cv2.resize(image, (input_size, input_size))
     image_data = image_data / 255.
     image_data = image_data[np.newaxis, ...].astype(np.float32)
 

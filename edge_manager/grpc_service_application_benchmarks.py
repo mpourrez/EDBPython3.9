@@ -65,9 +65,7 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
 
     def aeneas(self, request, context):
         request_received_time_ms = current_milli_time()
-        audio_data = extract_audio(request.audio)
-        text_data = extract_audio(request.text_input)
-        speech_to_text_result = aeneas.align_speech_text(audio_data, text_data, request, request_received_time_ms)
+        speech_to_text_result = aeneas.align_speech_text(request, request_received_time_ms)
         return speech_to_text_result
 
     def object_tracking(self, request, context):
