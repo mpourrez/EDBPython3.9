@@ -3,7 +3,6 @@ from aeneas.task import Task
 
 from protos import benchmark_pb2 as pb2
 from utils import current_milli_time
-from base64 import b64decode
 
 def align_speech_text(request, request_received_time_ms):
     print("[x] Aeneas Request Received")
@@ -21,22 +20,13 @@ def align_speech_text(request, request_received_time_ms):
     with open(audio_file, "wb") as f:
         f.write(audio_data)
 
-    with open(transcript_file, "wb") as f:
+    with open(transcript_file, "w") as f:
         f.write(transcript)
-
-    # audio_path = "audio.wav"
-    # audio_decoded = b64decode(bytearray(request.audio, encoding='utf-8'))
-    # with open(audio_path, "wb") as f:
-    #     f.write(audio_decoded)
-    # # save the decoded text data as a temporary file in plain text format
-    # text_path = "text.txt"
-    # with open(text_path, "wb") as f:
-    #     f.write(request.text_input.encode("utf-8"))
 
     config_string = "task_language=eng|is_text_type=plain"
     task = Task(config_string)
-    task.audio_file_path_absolute = audio_file #"audio.wav"
-    task.text_file_path_absolute = transcript_file #"text.txt"
+    task.audio_file_path_absolute = audio_file
+    task.text_file_path_absolute = transcript_file
     ExecuteTask(task).execute()
 
     result = ""
