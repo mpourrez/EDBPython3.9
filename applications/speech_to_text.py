@@ -13,8 +13,8 @@ def convert_to_text(request, request_received_time_ms):
             request_time_ms = audio_chunk.request_time_ms
         audio_data.extend(audio_chunk.audio)
     # Save the audio chunk to a file
-    with open(audio_file, "wb") as audio_file:
-        audio_file.write(audio_data)
+    with open(audio_file, "wb") as f:
+        f.write(audio_data)
 
     r = sr.Recognizer()
     with sr.AudioFile(audio_file) as source:
