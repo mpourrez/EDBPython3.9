@@ -189,8 +189,8 @@ message SentimentAnalysisResponse{
 }
 
 message SpeechToTextRequest{
-  string audio = 1;
-  int64 request_time_ms = 2;
+  int64 request_time_ms = 1;
+  bytes audio = 2;
 }
 
 message SpeechToTextResponse{
