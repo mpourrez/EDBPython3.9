@@ -5,7 +5,7 @@ package protos;
 service ApplicationBenchmarks{
   rpc image_processing(ImageProcessingRequest) returns (ImageProcessingResponse) {}
   rpc sentiment_analysis(SentimentAnalysisRequest) returns (SentimentAnalysisResponse) {}
-  rpc speech_to_text(SpeechToTextRequest) returns (SpeechToTextResponse) {}
+  rpc speech_to_text(stream SpeechToTextRequest) returns (SpeechToTextResponse) {}
   rpc sample_audio_stream(stream AudioChunk) returns (EmptyProto) {}
 
   rpc image_classification_alexnet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
@@ -196,8 +196,8 @@ message AudioChunk {
 }
 
 message SpeechToTextRequest{
-  int64 request_time_ms = 1;
-  bytes audio = 2;
+  bytes audio = 1;
+  int64 request_time_ms = 2;
 }
 
 message SpeechToTextResponse{
