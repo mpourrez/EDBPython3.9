@@ -6,15 +6,13 @@ service ApplicationBenchmarks{
   rpc image_processing(ImageProcessingRequest) returns (ImageProcessingResponse) {}
   rpc sentiment_analysis(SentimentAnalysisRequest) returns (SentimentAnalysisResponse) {}
   rpc speech_to_text(stream SpeechToTextRequest) returns (SpeechToTextResponse) {}
-  rpc sample_audio_stream(stream AudioChunk) returns (EmptyProto) {}
-
+  rpc pocket_sphinx(stream SpeechToTextRequest) returns (SpeechToTextResponse) {}
   rpc image_classification_alexnet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc image_classification_alexnet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc image_classification_squeezenet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc image_classification_squeezenet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc object_detection_darknet(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
   rpc object_detection_darknet_gpu(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
-  rpc pocket_sphinx(SpeechToTextRequest) returns (SpeechToTextResponse) {}
   rpc aeneas(AudioTextRequest) returns (AudioTextResponse) {}
   rpc object_tracking(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
   rpc object_tracking_gpu(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}

@@ -29,10 +29,10 @@ class ApplicationBenchmarksStub(object):
                 request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
                 )
-        self.sample_audio_stream = channel.stream_unary(
-                '/protos.ApplicationBenchmarks/sample_audio_stream',
-                request_serializer=benchmark__pb2.AudioChunk.SerializeToString,
-                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+        self.pocket_sphinx = channel.stream_unary(
+                '/protos.ApplicationBenchmarks/pocket_sphinx',
+                request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
                 )
         self.image_classification_alexnet = channel.unary_unary(
                 '/protos.ApplicationBenchmarks/image_classification_alexnet',
@@ -63,11 +63,6 @@ class ApplicationBenchmarksStub(object):
                 '/protos.ApplicationBenchmarks/object_detection_darknet_gpu',
                 request_serializer=benchmark__pb2.ObjectDetectionRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.ObjectDetectionResponse.FromString,
-                )
-        self.pocket_sphinx = channel.unary_unary(
-                '/protos.ApplicationBenchmarks/pocket_sphinx',
-                request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
-                response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
                 )
         self.aeneas = channel.unary_unary(
                 '/protos.ApplicationBenchmarks/aeneas',
@@ -127,7 +122,7 @@ class ApplicationBenchmarksServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def sample_audio_stream(self, request_iterator, context):
+    def pocket_sphinx(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -164,12 +159,6 @@ class ApplicationBenchmarksServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def object_detection_darknet_gpu(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def pocket_sphinx(self, request, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -236,10 +225,10 @@ def add_ApplicationBenchmarksServicer_to_server(servicer, server):
                     request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
                     response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
             ),
-            'sample_audio_stream': grpc.stream_unary_rpc_method_handler(
-                    servicer.sample_audio_stream,
-                    request_deserializer=benchmark__pb2.AudioChunk.FromString,
-                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
+            'pocket_sphinx': grpc.stream_unary_rpc_method_handler(
+                    servicer.pocket_sphinx,
+                    request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
+                    response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
             ),
             'image_classification_alexnet': grpc.unary_unary_rpc_method_handler(
                     servicer.image_classification_alexnet,
@@ -270,11 +259,6 @@ def add_ApplicationBenchmarksServicer_to_server(servicer, server):
                     servicer.object_detection_darknet_gpu,
                     request_deserializer=benchmark__pb2.ObjectDetectionRequest.FromString,
                     response_serializer=benchmark__pb2.ObjectDetectionResponse.SerializeToString,
-            ),
-            'pocket_sphinx': grpc.unary_unary_rpc_method_handler(
-                    servicer.pocket_sphinx,
-                    request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
-                    response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
             ),
             'aeneas': grpc.unary_unary_rpc_method_handler(
                     servicer.aeneas,
@@ -373,7 +357,7 @@ class ApplicationBenchmarks(object):
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
     @staticmethod
-    def sample_audio_stream(request_iterator,
+    def pocket_sphinx(request_iterator,
             target,
             options=(),
             channel_credentials=None,
@@ -383,9 +367,9 @@ class ApplicationBenchmarks(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.stream_unary(request_iterator, target, '/protos.ApplicationBenchmarks/sample_audio_stream',
-            benchmark__pb2.AudioChunk.SerializeToString,
-            benchmark__pb2.EmptyProto.FromString,
+        return grpc.experimental.stream_unary(request_iterator, target, '/protos.ApplicationBenchmarks/pocket_sphinx',
+            benchmark__pb2.SpeechToTextRequest.SerializeToString,
+            benchmark__pb2.SpeechToTextResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -488,23 +472,6 @@ class ApplicationBenchmarks(object):
         return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_detection_darknet_gpu',
             benchmark__pb2.ObjectDetectionRequest.SerializeToString,
             benchmark__pb2.ObjectDetectionResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def pocket_sphinx(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/pocket_sphinx',
-            benchmark__pb2.SpeechToTextRequest.SerializeToString,
-            benchmark__pb2.SpeechToTextResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
