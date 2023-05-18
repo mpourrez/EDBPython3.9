@@ -7,6 +7,7 @@ import numpy as np
 
 import configs
 import utils
+import os
 
 np.random.seed(1)
 
@@ -111,7 +112,7 @@ class Client(object):
         print("[x] Response received from IPERF")
         return result
 
-    # END: Micor Benchmarks
+    # END: Micro Benchmarks
 
     def call_edge_to_start_resource_tracing(self):
         empty = pb2.EmptyProto()
@@ -179,13 +180,10 @@ class Client(object):
         return result
 
     def call_speech_to_text(self):
-        print("[x] Received request for speech to text")
-        request_time_ms = utils.current_milli_time()
-        audio = utils.get_random_audio()
-        message = pb2.SpeechToTextRequest(audio=audio, request_time_ms=request_time_ms)
-        result = self.application_stub.speech_to_text(message)
+        print("[x] Request for speech to text")
+        response = self.application_stub.speech_to_text(utils.send_random_audio_in_chunks())
         print("[x] Received response for speech to text")
-        return result
+        return response
 
     def call_image_classification_alexnet_cpu(self):
         request_time_ms = utils.current_milli_time()
@@ -207,20 +205,16 @@ class Client(object):
         return self.application_stub.object_detection_darknet(message)
 
     def call_pocket_sphinx(self):
-        request_time_ms = utils.current_milli_time()
-        audio = utils.get_random_audio()
-        message = pb2.PocketSphinxRequest(audio=audio, request_time_ms=request_time_ms)
-        result = self.application_stub.pocket_sphinx(message)
-        print(result)
-        return result
+        print("[x] Calling PocketSphinx")
+        response = self.application_stub.pocket_sphinx(utils.send_random_audio_in_chunks(send_defog=True))
+        print("[x] Received response for pocketsphinx")
+        return response
 
     def call_aeneas(self):
-        print("[x] Calling aeneas")
-        request_time_ms = utils.current_milli_time()
-        audio, transcript = utils.get_random_audio_text_for_alignment()
-        message = pb2.AudioTextRequest(audio=audio, text_input=transcript, request_time_ms=request_time_ms)
-        print(message)
-        return self.application_stub.aeneas(message)
+        print("[x] Calling Aeneas")
+        response = self.application_stub.aeneas(utils.send_random_audio_text_in_chunks())
+        print("[x] Received response for Aeneas")
+        return response
 
     def call_object_tracking(self):
         request_time_ms = utils.current_milli_time()
@@ -231,65 +225,3 @@ class Client(object):
         print("[x] Received result for object tracking")
         return result
 
-    ######################################################
-    ############ OLD CODE:################################
-    ######################################################
-
-    def call_object_tracking_server(self, image, frame_id):
-        message = create_grpc_request(image, frame_id)
-        return self.application_stub.track_objects(message)
-
-    def call_object_detection_server(self, image, frame_id):
-        message = create_grpc_request(image, frame_id)
-        return self.application_stub.detect_objects(message)
-
-    def call_pocketsphinx(self, audio, frame_id):
-        message = create_grpc_request(audio, frame_id)
-        return self.application_stub.speech_to_text(message)
-
-    # def call_aeneas(self, audio, text_input, frame_id):
-    #     request_time_ms = utils.current_milli_time()
-    #     message = pb2.AudioTextRequest(audio=audio, text_input=text_input, frame_id=frame_id,
-    #                                    request_time_ms=request_time_ms)
-    #     return self.application_stub.align_speech_text(message)
-
-    def call_server_to_start_mem_tracing(self):
-        empty = pb2.EmptyProto()
-        return self.application_stub.start_memory_tracing(empty)
-
-    def call_server_for_cpu_trace(self):
-        empty = pb2.EmptyProto()
-        return self.application_stub.get_cpu_trace(empty)
-
-    def call_server_for_memory_trace(self):
-        empty = pb2.EmptyProto()
-        return self.application_stub.get_memory_usage(empty)
-
-    # def call_server_to_get_fault_injection_status(self):
-    #     message = pb2.EmptyProto()
-    #     return self.application_stub.get_fault_injection_status(message)
-    #
-    # def ping_flood_edge_device(self, command, config):
-    #     shell_command = '{0} {1}'.format(command, config)
-    #     print('[x] TCP flooding the edge device: ' + shell_command)
-    #     self.ping_process = subprocess.Popen(shell_command, shell=True)
-    #     # wait for the subprocess to start the job
-    #     time.sleep(10)
-    #
-    # def kill_ping_process(self):
-    #     print("killing process!!!")
-    #     self.ping_process.kill()
-    #     # wait for kill process to finish
-    #     time.sleep(10)
-    #     if self.ping_process.poll() is None:
-    #         return False
-    #     return True
-
-
-####################################################################################
-####################### Create a gRPC request ######################################
-####################################################################################
-def create_grpc_request(image, frame_id):
-    request_time_ms = utils.current_milli_time()
-    message = pb2.Request(image=image, frame_id=frame_id, request_time_ms=request_time_ms)
-    return message

@@ -1,19 +1,14 @@
 import time
-from base64 import b64decode, b64encode
+from base64 import b64encode
 import cv2
 import numpy as np
-from io import BytesIO
-from pydub import AudioSegment
-import soundfile as sf
 import pandas as pd
-import librosa
 from scipy import stats
-from pydub import AudioSegment
-
 import os
 import random
 import linecache
 
+from protos import benchmark_pb2 as pb2
 import configs
 
 
@@ -21,7 +16,7 @@ def current_milli_time():
     return round(time.time() * 1000)
 
 
-random.seed(42)
+random.seed(33)
 random_tracking_start = random.randint(0, 429)
 current_tracking_number = random_tracking_start
 audio_directory = "workloads/LibriSpeech-dev-clean"  # path to audio files dataset
@@ -29,7 +24,15 @@ sentiment_filename = "workloads/stanfordSentimentTreebank/datasetSentences.txt" 
 image_dataset_directory = "workloads/coco-dataset-val2017"  # image dataset (coco)
 audio_alignment_dataset_dir = "workloads/Mozilla-dataset-2022-12-07/en"
 
+audio_alignment_metadata_df = None
+num_lines_in_sentiment_dataset = None
+image_files = None
+audio_files = None
+script_dir = None
+
+
 def initial_workload_setup():
+    global audio_files, image_files, num_lines_in_sentiment_dataset, audio_alignment_metadata_df, script_dir
     # get the path of the script and its directory
     script_path = os.path.abspath(__file__)
     script_dir = os.path.dirname(script_path)
@@ -49,7 +52,7 @@ def initial_workload_setup():
 
     # get a list of all audio dataset files and subdirectories in the directory
     all_audio_files = []
-    for root, dirs, files in os.walk(os.path.join(script_dir,audio_directory)):
+    for root, dirs, files in os.walk(os.path.join(script_dir, audio_directory)):
         for file in files:
             all_audio_files.append(os.path.join(root, file))
 
@@ -77,43 +80,6 @@ def get_random_sentiment_text():
     return random_line
 
 
-def get_random_audio():
-    # get a random file from the list
-    random_file = random.choice(audio_files)
-    # au_file = os.path.join(script_dir, 'workloads/audio/DeFog_b0430.wav')
-    # print(random_file)
-    data, sample_rate = sf.read(random_file)
-
-    # Convert the audio data to a Base64 string
-    audio_base64 = b64encode(data).decode('utf-8')
-    return audio_base64
-
-
-def get_random_audio_text_for_alignment():
-    # Select a random row from the metadata DataFrame
-    random_row = audio_alignment_metadata_df.sample(n=1).iloc[0]
-
-    # Load the audio file and transcription for the selected row
-    audio_path = os.path.join(script_dir, audio_alignment_dataset_dir, "clips", random_row["path"])
-    # audio_path = os.path.join(script_dir, audio_alignment_dataset_dir, "clips", 'common_voice_en_34925857.mp3')
-    # audio_path = os.path.join(script_dir, audio_alignment_dataset_dir, "clips")
-    transcription = random_row["sentence"]
-
-    # Load the input file using pydub
-    audio = AudioSegment.from_file(audio_path)
-
-    # Export the audio to a WAV file using pydub
-    audio.export(audio, format="wav")
-    # print(audio_path)
-    audio_data, sample_rate = librosa.load(audio)
-    audio_bytes = audio_data.tobytes()
-    # print(sample_rate)
-    # Encode the audio data as a Base64 string
-    audio_base64 = b64encode(audio_bytes).decode('utf-8')
-    transcript_utf8 = transcription.encode('utf-8')
-    return audio_base64, transcript_utf8
-
-
 def get_random_image_for_tracking():
     global current_tracking_number
     if current_tracking_number > 429:
@@ -133,6 +99,43 @@ def get_random_image_for_tracking():
     base64_string = jpg_as_text.decode('utf-8')
     current_tracking_number += 1
     return base64_string
+
+
+def send_random_audio_in_chunks(send_defog=False):
+    # Read the audio file and send it in chunks
+    random_file = random.choice(audio_files)
+    if send_defog:
+        random_file = os.path.join(script_dir, 'workloads/audio/DeFog_b0430.wav')
+    while '.txt' in random_file or '.DS_Store' in random_file or '2803-154328-0011.flac' in random_file:
+        random_file = random.choice(audio_files)
+    print(random_file)
+
+    chunk_size = 8192  # Set an appropriate chunk size
+    with open(random_file, 'rb') as audio_file:
+        while True:
+            timestamp = current_milli_time()
+            data = audio_file.read(chunk_size)
+            if not data:
+                break
+            yield pb2.SpeechToTextRequest(audio=data, request_time_ms=timestamp)
+
+
+def send_random_audio_text_in_chunks():
+    # Read the audio file and send it in chunks
+    random_row = audio_alignment_metadata_df.sample(n=1).iloc[0]
+    random_audio_file = os.path.join(script_dir, audio_alignment_dataset_dir, "clips", random_row["path"])
+    transcription = random_row["sentence"]
+    print(random_audio_file)
+    print(transcription)
+
+    chunk_size = 8192  # Set an appropriate chunk size
+    with open(random_audio_file, 'rb') as audio_file:
+        while True:
+            timestamp = current_milli_time()
+            data = audio_file.read(chunk_size)
+            if not data:
+                break
+            yield pb2.AudioTextRequest(audio=data, text_input=transcription, request_time_ms=timestamp)
 
 
 def get_avg_without_outlier(data_list):
@@ -169,72 +172,3 @@ def get_std_without_outlier(data_list):
     m, se = np.mean(a), stats.sem(a)
     h = se * stats.t.ppf((1 + 0.95) / 2., n - 1)
     return h
-
-
-# ####################################
-# # OLD CODES BELOW ##################
-# ####################################
-#
-#
-# def bytes_to_mb(bytes):
-#     KB = 1024  # One Kilobyte is 1024 bytes
-#     MB = KB * 1024  # One MB is 1024 KB
-#     return int(bytes / MB)
-#
-#
-# def extract_image(request_image):
-    #     byte_array = bytearray(request_image, encoding='utf-8')
-#     decoded_bytes = b64decode(byte_array)
-#     numpy_array = np.frombuffer(decoded_bytes, np.uint8)
-#     image = cv2.imdecode(numpy_array, cv2.IMREAD_COLOR)
-#     return image
-#
-#
-# def read_input_workload_frame(frame_id):
-#     count_frame_id_digits = 1
-#     workload_input_path = configs.WORKLOAD_INPUT_PATH
-#     if frame_id > 9:
-#         if frame_id > 99:
-#             count_frame_id_digits = 3
-#         else:
-#             count_frame_id_digits = 2
-#
-#     image_file = workload_input_path + "0" * (6 - count_frame_id_digits) + str(frame_id) + '.jpg'
-#     print('Frame:', image_file)
-#     im = cv2.imread(image_file)
-#     ret, buffer = cv2.imencode('.jpg', im)
-#     jpg_as_text = b64encode(buffer)
-#     base64_string = jpg_as_text.decode('utf-8')
-#     return base64_string
-#
-#
-def extract_audio(request_audio):
-    byte_array = bytearray(request_audio, encoding='utf-8')
-    decoded_bytes = b64decode(byte_array)
-    return decoded_bytes
-#
-#
-# def read_audio_workload():
-#     with open('workloads/audio/DeFog_b0430.wav', 'rb') as audio_file:
-#         audio_data = audio_file.read()
-#         base64_data = b64encode(audio_data).decode('utf-8')
-#     return base64_data
-#
-#
-# def read_aeneas_audio_workload():
-#     audio = AudioSegment.from_file("workloads/aeneas/DeFog_p001.mp3", format="mp3")
-#     first_five_seconds = audio[:5000]
-#     audio_bytes = BytesIO()
-#     first_five_seconds.export(audio_bytes, format("mp3"))
-#     audio_base64 = b64encode(audio_bytes.getvalue()).decode("utf-8")
-#     # with open('workloads/aeneas/DeFog_p001.mp3', 'rb') as audio_file:
-#     #     audio_data = audio_file.read()
-#     #     base64_data = b64encode(audio_data).decode('utf-8')
-#     return audio_base64
-#
-#
-# def read_aeneas_text_workload():
-#     with open('workloads/aeneas/p001.xhtml', 'rb') as text_file:
-#         text_date = text_file.read()
-#         base64_data = b64encode(text_date).decode('utf-8')
-#     return base64_data
