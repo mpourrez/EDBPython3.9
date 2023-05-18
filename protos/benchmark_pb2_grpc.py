@@ -66,8 +66,8 @@ class ApplicationBenchmarksStub(object):
                 )
         self.pocket_sphinx = channel.unary_unary(
                 '/protos.ApplicationBenchmarks/pocket_sphinx',
-                request_serializer=benchmark__pb2.PocketSphinxRequest.SerializeToString,
-                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
+                request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
+                response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
                 )
         self.aeneas = channel.unary_unary(
                 '/protos.ApplicationBenchmarks/aeneas',
@@ -273,8 +273,8 @@ def add_ApplicationBenchmarksServicer_to_server(servicer, server):
             ),
             'pocket_sphinx': grpc.unary_unary_rpc_method_handler(
                     servicer.pocket_sphinx,
-                    request_deserializer=benchmark__pb2.PocketSphinxRequest.FromString,
-                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
+                    request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
+                    response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
             ),
             'aeneas': grpc.unary_unary_rpc_method_handler(
                     servicer.aeneas,
@@ -503,8 +503,8 @@ class ApplicationBenchmarks(object):
             timeout=None,
             metadata=None):
         return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/pocket_sphinx',
-            benchmark__pb2.PocketSphinxRequest.SerializeToString,
-            benchmark__pb2.PocketSphinxResponse.FromString,
+            benchmark__pb2.SpeechToTextRequest.SerializeToString,
+            benchmark__pb2.SpeechToTextResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

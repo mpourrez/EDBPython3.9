@@ -5,8 +5,6 @@ from applications.image_classification import image_classification_alexnet_cpu, 
 from utils import *
 from protos import benchmark_pb2_grpc as pb2_grpc
 
-import speech_recognition as sr
-
 class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
 
     def __init__(self, *args, **kwargs):
@@ -63,25 +61,6 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         request_received_time_ms = current_milli_time()
         conversion_result = pocket_sphinx.convert_to_text(request, request_received_time_ms)
         return conversion_result
-
-    def sample_audio_stream(self, request, context):
-        audio_data = b""
-        for audio_chunk in request:
-            audio_data += audio_chunk.data
-
-        # Save the audio data to a file if necessary
-        # Replace 'output_path' with the desired output path
-        output_path = 'test_sample_audio.wav'
-        with open(output_path, 'wb') as audio_file:
-            audio_file.write(audio_data)
-
-        # Perform speech-to-text conversion
-        r = sr.Recognizer()
-        with sr.AudioFile(output_path) as source:
-            audio_text = r.recognize_google(audio=source)
-            print("Speech-to-Text:", audio_text)
-
-        return pb2.EmptyProto()
 
     def aeneas(self, request, context):
         request_received_time_ms = current_milli_time()
