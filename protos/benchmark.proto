@@ -16,12 +16,6 @@ service ApplicationBenchmarks{
   rpc aeneas(stream AudioTextRequest) returns (AudioTextResponse) {}
   rpc object_tracking(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
   rpc object_tracking_gpu(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
-
-  // OLD APPLICATIONS:
-  rpc track_objects(Request) returns (DetectionTrackingResponse) {}
-  rpc detect_objects(Request) returns (DetectionTrackingResponse) {}
-  rpc pocketsphinx(Request) returns (PocketSphinxResponse) {}
-  rpc align_speech_text(AudioTextRequest) returns (PocketSphinxResponse) {}
 }
 
 service MicroBenchmarks{
@@ -44,11 +38,6 @@ service EdgeResourceManagement{
   rpc stop_fault_injection(EmptyProto) returns (EmptyProto) {}
   rpc inject_fault_after_delay(FaultRequestWithDelay) returns (EmptyProto) {}
   rpc get_resource_logs(EmptyProto) returns (ResourceLogs) {}
-
-  // OLD SERVICES
-  rpc start_memory_tracing(EmptyProto) returns (EmptyProto) {}
-  rpc get_cpu_trace(EmptyProto) returns (CPUTrace) {}
-  rpc get_memory_usage(EmptyProto) returns (MemoryTrace) {}
 }
 
 /********************************************************
@@ -188,11 +177,6 @@ message SentimentAnalysisResponse{
   int64 response_received_time_ms = 7;
 }
 
-message AudioChunk {
-  bytes data = 1;
-  int64 timestamp = 2;
-}
-
 message SpeechToTextRequest{
   bytes audio = 1;
   int64 request_time_ms = 2;
@@ -231,19 +215,6 @@ message ObjectDetectionResponse{
   int64 response_time_ms = 3;
   int64 response_received_time_ms = 4;
   repeated DetectedTrackedObject detected_objects = 5;
-}
-
-message PocketSphinxRequest{
-  string audio = 1;
-  int64 request_time_ms = 2;
-}
-
-message PocketSphinxResponse{
-  string conversion_result = 1;
-  int64 request_time_ms = 2;
-  int64 request_received_time_ms = 3;
-  int64 response_time_ms = 4;
-  int64 response_received_time_ms = 5;
 }
 
 message AudioTextRequest{
@@ -317,30 +288,6 @@ message ProcessStatus {
   bool is_finished = 1;
 }
 
-message Request{
-  string image = 1;
-  int64 frame_id = 2;
-  int64 request_time_ms = 3;
-}
-
-message DetectionTrackingResponse{
-  int64 frame_id = 1;
-  int64 request_time_ms = 2;
-  int64 request_received_time_ms = 3;
-  int64 response_time_ms = 4;
-  int64 response_received_time_ms = 5;
-  repeated DetectedTrackedObject detected_objects = 6;
-}
-
-//message PocketSphinxResponse{
-//  int64 frame_id = 1;
-//  int64 request_time_ms = 2;
-//  int64 request_received_time_ms = 3;
-//  int64 response_time_ms = 4;
-//  int64 response_received_time_ms = 5;
-//  string conversion_result = 6;
-//}
-
 message DetectedTrackedObject {
   int32 track_id = 1;
   string clazz = 2;
@@ -349,16 +296,5 @@ message DetectedTrackedObject {
   int32 y_min = 5;
   int32 y_max = 6;
 }
-
-message CPUTrace {
-  float cpu_load = 1;
-}
-
-message MemoryTrace {
-  float current_memory_mb = 1;
-  float peak_memory_mb = 2;
-}
-
-
 
 message EmptyProto {}

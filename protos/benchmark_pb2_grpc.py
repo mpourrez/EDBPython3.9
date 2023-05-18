@@ -2,7 +2,7 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-from protos import benchmark_pb2 as benchmark__pb2
+from proto import benchmark_pb2 as benchmark__pb2
 
 
 class ApplicationBenchmarksStub(object):
@@ -78,26 +78,6 @@ class ApplicationBenchmarksStub(object):
                 '/protos.ApplicationBenchmarks/object_tracking_gpu',
                 request_serializer=benchmark__pb2.ObjectTrackingRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.ObjectTrackingResponse.FromString,
-                )
-        self.track_objects = channel.unary_unary(
-                '/protos.ApplicationBenchmarks/track_objects',
-                request_serializer=benchmark__pb2.Request.SerializeToString,
-                response_deserializer=benchmark__pb2.DetectionTrackingResponse.FromString,
-                )
-        self.detect_objects = channel.unary_unary(
-                '/protos.ApplicationBenchmarks/detect_objects',
-                request_serializer=benchmark__pb2.Request.SerializeToString,
-                response_deserializer=benchmark__pb2.DetectionTrackingResponse.FromString,
-                )
-        self.pocketsphinx = channel.unary_unary(
-                '/protos.ApplicationBenchmarks/pocketsphinx',
-                request_serializer=benchmark__pb2.Request.SerializeToString,
-                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
-                )
-        self.align_speech_text = channel.unary_unary(
-                '/protos.ApplicationBenchmarks/align_speech_text',
-                request_serializer=benchmark__pb2.AudioTextRequest.SerializeToString,
-                response_deserializer=benchmark__pb2.PocketSphinxResponse.FromString,
                 )
 
 
@@ -182,31 +162,6 @@ class ApplicationBenchmarksServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def track_objects(self, request, context):
-        """OLD APPLICATIONS:
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def detect_objects(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def pocketsphinx(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def align_speech_text(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_ApplicationBenchmarksServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -274,26 +229,6 @@ def add_ApplicationBenchmarksServicer_to_server(servicer, server):
                     servicer.object_tracking_gpu,
                     request_deserializer=benchmark__pb2.ObjectTrackingRequest.FromString,
                     response_serializer=benchmark__pb2.ObjectTrackingResponse.SerializeToString,
-            ),
-            'track_objects': grpc.unary_unary_rpc_method_handler(
-                    servicer.track_objects,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
-            ),
-            'detect_objects': grpc.unary_unary_rpc_method_handler(
-                    servicer.detect_objects,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.DetectionTrackingResponse.SerializeToString,
-            ),
-            'pocketsphinx': grpc.unary_unary_rpc_method_handler(
-                    servicer.pocketsphinx,
-                    request_deserializer=benchmark__pb2.Request.FromString,
-                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
-            ),
-            'align_speech_text': grpc.unary_unary_rpc_method_handler(
-                    servicer.align_speech_text,
-                    request_deserializer=benchmark__pb2.AudioTextRequest.FromString,
-                    response_serializer=benchmark__pb2.PocketSphinxResponse.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -523,74 +458,6 @@ class ApplicationBenchmarks(object):
         return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/object_tracking_gpu',
             benchmark__pb2.ObjectTrackingRequest.SerializeToString,
             benchmark__pb2.ObjectTrackingResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def track_objects(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/track_objects',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.DetectionTrackingResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def detect_objects(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/detect_objects',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.DetectionTrackingResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def pocketsphinx(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/pocketsphinx',
-            benchmark__pb2.Request.SerializeToString,
-            benchmark__pb2.PocketSphinxResponse.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def align_speech_text(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/align_speech_text',
-            benchmark__pb2.AudioTextRequest.SerializeToString,
-            benchmark__pb2.PocketSphinxResponse.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 
@@ -908,21 +775,6 @@ class EdgeResourceManagementStub(object):
                 request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
                 response_deserializer=benchmark__pb2.ResourceLogs.FromString,
                 )
-        self.start_memory_tracing = channel.unary_unary(
-                '/protos.EdgeResourceManagement/start_memory_tracing',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.EmptyProto.FromString,
-                )
-        self.get_cpu_trace = channel.unary_unary(
-                '/protos.EdgeResourceManagement/get_cpu_trace',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.CPUTrace.FromString,
-                )
-        self.get_memory_usage = channel.unary_unary(
-                '/protos.EdgeResourceManagement/get_memory_usage',
-                request_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-                response_deserializer=benchmark__pb2.MemoryTrace.FromString,
-                )
 
 
 class EdgeResourceManagementServicer(object):
@@ -982,25 +834,6 @@ class EdgeResourceManagementServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def start_memory_tracing(self, request, context):
-        """OLD SERVICES
-        """
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def get_cpu_trace(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
-    def get_memory_usage(self, request, context):
-        """Missing associated documentation comment in .proto file."""
-        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
-        context.set_details('Method not implemented!')
-        raise NotImplementedError('Method not implemented!')
-
 
 def add_EdgeResourceManagementServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -1048,21 +881,6 @@ def add_EdgeResourceManagementServicer_to_server(servicer, server):
                     servicer.get_resource_logs,
                     request_deserializer=benchmark__pb2.EmptyProto.FromString,
                     response_serializer=benchmark__pb2.ResourceLogs.SerializeToString,
-            ),
-            'start_memory_tracing': grpc.unary_unary_rpc_method_handler(
-                    servicer.start_memory_tracing,
-                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
-                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
-            ),
-            'get_cpu_trace': grpc.unary_unary_rpc_method_handler(
-                    servicer.get_cpu_trace,
-                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
-                    response_serializer=benchmark__pb2.CPUTrace.SerializeToString,
-            ),
-            'get_memory_usage': grpc.unary_unary_rpc_method_handler(
-                    servicer.get_memory_usage,
-                    request_deserializer=benchmark__pb2.EmptyProto.FromString,
-                    response_serializer=benchmark__pb2.MemoryTrace.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -1224,56 +1042,5 @@ class EdgeResourceManagement(object):
         return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_resource_logs',
             benchmark__pb2.EmptyProto.SerializeToString,
             benchmark__pb2.ResourceLogs.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def start_memory_tracing(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/start_memory_tracing',
-            benchmark__pb2.EmptyProto.SerializeToString,
-            benchmark__pb2.EmptyProto.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def get_cpu_trace(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_cpu_trace',
-            benchmark__pb2.EmptyProto.SerializeToString,
-            benchmark__pb2.CPUTrace.FromString,
-            options, channel_credentials,
-            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
-
-    @staticmethod
-    def get_memory_usage(request,
-            target,
-            options=(),
-            channel_credentials=None,
-            call_credentials=None,
-            insecure=False,
-            compression=None,
-            wait_for_ready=None,
-            timeout=None,
-            metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/protos.EdgeResourceManagement/get_memory_usage',
-            benchmark__pb2.EmptyProto.SerializeToString,
-            benchmark__pb2.MemoryTrace.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
