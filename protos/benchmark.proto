@@ -13,7 +13,7 @@ service ApplicationBenchmarks{
   rpc image_classification_squeezenet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc object_detection_darknet(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
   rpc object_detection_darknet_gpu(ObjectDetectionRequest) returns (ObjectDetectionResponse) {}
-  rpc aeneas(AudioTextRequest) returns (AudioTextResponse) {}
+  rpc aeneas(stream AudioTextRequest) returns (AudioTextResponse) {}
   rpc object_tracking(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
   rpc object_tracking_gpu(ObjectTrackingRequest) returns (ObjectTrackingResponse) {}
 
@@ -247,9 +247,9 @@ message PocketSphinxResponse{
 }
 
 message AudioTextRequest{
-  int64 request_time_ms = 1;
+  bytes audio = 1;
   string text_input = 2;
-  string audio = 3;
+  int64 request_time_ms = 3;
 }
 
 message AudioTextResponse{
