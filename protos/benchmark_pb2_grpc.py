@@ -29,6 +29,11 @@ class ApplicationBenchmarksStub(object):
                 request_serializer=benchmark__pb2.SpeechToTextRequest.SerializeToString,
                 response_deserializer=benchmark__pb2.SpeechToTextResponse.FromString,
                 )
+        self.sample_audio_stream = channel.stream_unary(
+                '/protos.ApplicationBenchmarks/sample_audio_stream',
+                request_serializer=benchmark__pb2.AudioChunk.SerializeToString,
+                response_deserializer=benchmark__pb2.EmptyProto.FromString,
+                )
         self.image_classification_alexnet = channel.unary_unary(
                 '/protos.ApplicationBenchmarks/image_classification_alexnet',
                 request_serializer=benchmark__pb2.ImageClassificationRequest.SerializeToString,
@@ -117,6 +122,12 @@ class ApplicationBenchmarksServicer(object):
         raise NotImplementedError('Method not implemented!')
 
     def speech_to_text(self, request, context):
+        """Missing associated documentation comment in .proto file."""
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def sample_audio_stream(self, request_iterator, context):
         """Missing associated documentation comment in .proto file."""
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -224,6 +235,11 @@ def add_ApplicationBenchmarksServicer_to_server(servicer, server):
                     servicer.speech_to_text,
                     request_deserializer=benchmark__pb2.SpeechToTextRequest.FromString,
                     response_serializer=benchmark__pb2.SpeechToTextResponse.SerializeToString,
+            ),
+            'sample_audio_stream': grpc.stream_unary_rpc_method_handler(
+                    servicer.sample_audio_stream,
+                    request_deserializer=benchmark__pb2.AudioChunk.FromString,
+                    response_serializer=benchmark__pb2.EmptyProto.SerializeToString,
             ),
             'image_classification_alexnet': grpc.unary_unary_rpc_method_handler(
                     servicer.image_classification_alexnet,
@@ -353,6 +369,23 @@ class ApplicationBenchmarks(object):
         return grpc.experimental.unary_unary(request, target, '/protos.ApplicationBenchmarks/speech_to_text',
             benchmark__pb2.SpeechToTextRequest.SerializeToString,
             benchmark__pb2.SpeechToTextResponse.FromString,
+            options, channel_credentials,
+            insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
+
+    @staticmethod
+    def sample_audio_stream(request_iterator,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.stream_unary(request_iterator, target, '/protos.ApplicationBenchmarks/sample_audio_stream',
+            benchmark__pb2.AudioChunk.SerializeToString,
+            benchmark__pb2.EmptyProto.FromString,
             options, channel_credentials,
             insecure, call_credentials, compression, wait_for_ready, timeout, metadata)
 

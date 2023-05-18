@@ -6,6 +6,8 @@ service ApplicationBenchmarks{
   rpc image_processing(ImageProcessingRequest) returns (ImageProcessingResponse) {}
   rpc sentiment_analysis(SentimentAnalysisRequest) returns (SentimentAnalysisResponse) {}
   rpc speech_to_text(SpeechToTextRequest) returns (SpeechToTextResponse) {}
+  rpc sample_audio_stream(stream AudioChunk) returns (EmptyProto) {}
+
   rpc image_classification_alexnet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc image_classification_alexnet_gpu(ImageClassificationRequest) returns (ImageClassificationResponse) {}
   rpc image_classification_squeezenet(ImageClassificationRequest) returns (ImageClassificationResponse) {}
@@ -186,6 +188,11 @@ message SentimentAnalysisResponse{
   int64 request_received_time_ms = 5;
   int64 response_time_ms = 6;
   int64 response_received_time_ms = 7;
+}
+
+message AudioChunk {
+  bytes data = 1;
+  int64 timestamp = 2;
 }
 
 message SpeechToTextRequest{
