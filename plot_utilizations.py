@@ -570,7 +570,9 @@ def draw_fault_free_comparisons():
     no_fault_network_data = []
     no_fault_disk_data = []
 
-    apps = ['FPO-SIN', 'FFT', 'SORT', 'DD', 'IPERF', 'IP', 'SA', 'OD-CPU']
+    apps = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
+                'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
+    # ['FPO-SIN', 'FFT', 'SORT', 'DD', 'IPERF', 'IP', 'SA', 'OD-CPU']
 
     for app in apps:
         print("************ Summary of app: {0},  No-Fault".format(app))
@@ -665,10 +667,10 @@ if __name__ == '__main__':
     latency_data = []
 
 
-    app_fault_statistics = AppFaultStatistics('IPERF', 'CPU-20')
-    app_fault_statistics.plot_resource_with_residual('CPU', 'SYS', show_injection_times=True)
+    # app_fault_statistics = AppFaultStatistics('IPERF', 'CPU-20')
+    # app_fault_statistics.plot_resource_with_residual('CPU', 'SYS', show_injection_times=True)
 
-    # draw_fault_free_comparisons()
+    draw_fault_free_comparisons()
 
     apps = []
     faults = []

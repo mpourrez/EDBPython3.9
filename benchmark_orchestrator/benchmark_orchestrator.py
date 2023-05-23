@@ -194,7 +194,7 @@ def run_application_over_time_fault_free(edge_server, application_to_test):
     print("***************************************************************************************")
     resource_tracing_status = client.call_server_to_get_resource_tracking_status()
     while not resource_tracing_status.is_finished:
-        print("[x] Previous experiment still in progress, we need to wait!! - (fault injection in progress)")
+        print("[x] Previous experiment still in progress, we need to wait!! - (resource monitoring in progress)")
         time.sleep(3)
         resource_tracing_status = client.call_server_to_get_resource_tracking_status()
     edge_server.call_edge_to_start_resource_tracing_with_saving()
@@ -288,14 +288,15 @@ if __name__ == '__main__':
             save_resource_logs(app, 'No-Fault', resource_logs)
             ######################################################################
 
-            # for fault in configs.FAULTS:
-            #     for fault_config in fault.fault_config:
-            #         experiment_results = run_application_over_time(client, app, fault, fault_config)
-            #         time.sleep(configs.MAX_EXPERIMENT_TIME)
-            #         save_experiment_results_over_time(app, '{0}-{1}'.format(fault.abbreviation, fault_config),
-            #                                           experiment_results)
-            #         resource_logs = client.get_resource_logs()
-            #         save_resource_logs(app, '{0}-{1}'.format(fault.abbreviation, fault_config), resource_logs)
+        for app in configs.APPLICATIONS:
+            for fault in configs.FAULTS:
+                for fault_config in fault.fault_config:
+                    experiment_results = run_application_over_time(client, app, fault, fault_config)
+                    time.sleep(10)
+                    save_experiment_results_over_time(app, '{0}-{1}'.format(fault.abbreviation, fault_config),
+                                                      experiment_results)
+                    resource_logs = client.get_resource_logs()
+                    save_resource_logs(app, '{0}-{1}'.format(fault.abbreviation, fault_config), resource_logs)
 
 
             ################################################################################
