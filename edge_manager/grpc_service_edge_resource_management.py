@@ -158,10 +158,10 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
             pass
         try:
             os.kill(self.fault_injection_process.pid, signal.SIGTERM)
-            self.fault_injection_stop_times_ms.append(utils.current_milli_time())
-            print("[x] ]ault Injection Process Killed.")
+            print("[x] Fault Injection Process Killed.")
         except:
             pass
+        self.fault_injection_stop_times_ms.append(utils.current_milli_time())
 
         with open('cpu_utilization.log', "rb") as f:
             cpu_data = f.read()

@@ -4,7 +4,7 @@ from aeneas.task import Task
 from protos import benchmark_pb2 as pb2
 from utils import current_milli_time
 
-def align_speech_text(request, request_received_time_ms):
+def align_speech_text(request):
     print("[x] Aeneas Request Received")
     audio_file = 'audio_ae.wav'
     transcript_file = 'transcript.txt'
@@ -16,6 +16,8 @@ def align_speech_text(request, request_received_time_ms):
             request_time_ms = audio_chunk.request_time_ms
             transcript = audio_chunk.text_input
         audio_data.extend(audio_chunk.audio)
+    # This is when finally all chunks are received and we are ready to process
+    request_received_time_ms = current_milli_time()
     # Save the audio chunk to a file
     with open(audio_file, "wb") as f:
         f.write(audio_data)

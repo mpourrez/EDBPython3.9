@@ -198,11 +198,13 @@ def run_application_over_time_fault_free(edge_server, application_to_test):
         time.sleep(3)
         resource_tracing_status = client.call_server_to_get_resource_tracking_status()
     edge_server.call_edge_to_start_resource_tracing_with_saving()
+    # # wait for resource tracing to start
+    # time.sleep(2)
 
     exp_results = []
 
     print("[x]**** Start Fault Free Operations")
-    configs.EXPERIMENT_DURATION = 4 * configs.FAULT_FREE_DURATIONS
+    configs.EXPERIMENT_DURATION = configs.NUMBER_OF_FAULT_FREE_ROUNDS * configs.FAULT_FREE_DURATIONS
     start_time = time.time()
     while time.time() < start_time + configs.EXPERIMENT_DURATION:
         grpc_result = get_application_result(application_to_test)
