@@ -195,6 +195,8 @@ class EdgeResourceManagementGRPCService(pb2_grpc.EdgeResourceManagementServicer)
                                          fault_injection_stop_times_ms=self.fault_injection_stop_times_ms,
                                          temperature_timestamps_ms=temperature_timestamps_ms,
                                          cpu_temperatures=cpu_temperatures)
+        self.fault_injection_start_times_ms = []
+        self.fault_injection_stop_times_ms = []
         return resource_logs
 
     # OLD CODE BELOW
