@@ -8,7 +8,8 @@ config.set_string('-lm', '/usr/share/pocketsphinx/model/en-us/en-us.lm.bin')
 config.set_string('-dict', '/usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
 decoder = pocketsphinx.Decoder(config)
 
-def convert_to_text(request, request_received_time_ms):
+
+def convert_to_text(request):
     print("[x] Pocketsphinx Request Received")
     audio_file = 'audio_ps.wav'
     first_chunk = True
@@ -18,6 +19,8 @@ def convert_to_text(request, request_received_time_ms):
             first_chunk = False
             request_time_ms = audio_chunk.request_time_ms
         audio_data.extend(audio_chunk.audio)
+    # This is when finally all chunks are received and we are ready to process
+    request_received_time_ms = current_milli_time()
     # Save the audio chunk to a file
     with open(audio_file, "wb") as f:
         f.write(audio_data)

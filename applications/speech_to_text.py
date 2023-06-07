@@ -2,7 +2,8 @@ import speech_recognition as sr
 from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
 
-def convert_to_text(request, request_received_time_ms):
+
+def convert_to_text(request):
     print("[x] Speech-to-Text Request Received")
     audio_file = 'audio_st.wav'
     first_chunk = True
@@ -12,6 +13,8 @@ def convert_to_text(request, request_received_time_ms):
             first_chunk = False
             request_time_ms = audio_chunk.request_time_ms
         audio_data.extend(audio_chunk.audio)
+    # This is when finally all chunks are received and we are ready to process
+    request_received_time_ms = current_milli_time()
     # Save the audio chunk to a file
     with open(audio_file, "wb") as f:
         f.write(audio_data)
@@ -28,4 +31,3 @@ def convert_to_text(request, request_received_time_ms):
     conversion_response.response_time_ms = current_milli_time()
 
     return conversion_response
-

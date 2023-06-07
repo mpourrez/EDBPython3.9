@@ -23,8 +23,7 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         return analysis_result
 
     def speech_to_text(self, request, context):
-        request_received_time_ms = current_milli_time()
-        conversion_result = speech_to_text.convert_to_text(request, request_received_time_ms)
+        conversion_result = speech_to_text.convert_to_text(request)
         return conversion_result
 
     def image_classification_alexnet(self, request, context):
@@ -58,8 +57,7 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         return detection_result
 
     def pocket_sphinx(self, request, context):
-        request_received_time_ms = current_milli_time()
-        conversion_result = pocket_sphinx.convert_to_text(request, request_received_time_ms)
+        conversion_result = pocket_sphinx.convert_to_text(request)
         return conversion_result
 
     def aeneas(self, request, context):
