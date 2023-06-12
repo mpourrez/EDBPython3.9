@@ -2,11 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import datetime
 import numpy as np
-import time
-import pytz
 import math
 import utils
-from utils import get_avg_without_outlier, get_std_without_outlier
+import configs
+import csv
 
 
 class AppFaultStatistics:
@@ -29,10 +28,24 @@ class AppFaultStatistics:
         self.net_datetimes, self.net_utilizations, self.net_receive_rates, self.net_transmit_rates = None, None, None, None
         # Disk Utilizations
         self.io_datetimes, self.disk_utilization = None, None
+        self.experiment_duration = configs.EXPERIMENT_DURATION
         self.read_all_saved_statistics()
+
+    def get_base_date(self):
+        if self.app == 'FFT' or self.app == 'FPO-SIN' or self.app == 'FPO-SQRT' or self.app == 'SORT':
+            if self.fault != 'No-Fault':
+                return '2023-05-23 '
+
+        if self.app == 'DD' and (self.fault == 'CPU-20' or self.fault == 'CPU-60' or
+                                 self.fault == 'CPU-90' or self.fault == 'MEM-20%'):
+            return '2023-05-23 '
+        return '2023-05-24 '
+
 
     def read_all_saved_statistics(self):
         self.get_fault_injection_times()
+        if len(self.fault_start_times) == 0:
+            self.experiment_duration = configs.NUMBER_OF_FAULT_FREE_ROUNDS * configs.FAULT_FREE_DURATIONS
         self.get_cpu_utilization()
         self.get_cpu_temperatures()
         self.get_latencies()
@@ -41,7 +54,6 @@ class AppFaultStatistics:
         self.get_memory_utilization()
 
     def get_resource_datetimes(self, resource):
-        resource_datetime = None
         if resource == 'CPU':
             resource_datetime = self.cpu_datetimes
         elif resource == 'MEM':
@@ -58,7 +70,7 @@ class AppFaultStatistics:
 
     def get_resource_values(self, resource, rtype):
         values = None
-        if resource == 'CPU' and rtype=='SYS':
+        if resource == 'CPU' and rtype == 'SYS':
             values = self.sys_cpu_utilization
         elif resource == 'CPU' and rtype == 'USR':
             values = self.user_cpu_utilization
@@ -74,16 +86,15 @@ class AppFaultStatistics:
             values = self.net_utilizations
         elif resource == 'DISK':
             values = self.disk_utilization
-        elif resource == 'LATENCY' and rtype=='COM-TIME':
+        elif resource == 'LATENCY' and rtype == 'COM-TIME':
             values = self.compute_times
-        elif resource == 'LATENCY' and rtype=='TRA-TIME':
+        elif resource == 'LATENCY' and rtype == 'TRA-TIME':
             values = self.transmission_times
         else:
             values = self.cpu_temperatures
         return values
 
     def get_resource_metric(self, resource, rtype):
-        metric = None
         if resource == 'NET' and rtype == 'REC':
             metric = 'kB/s'
         elif resource == 'NET' and rtype == 'TRA':
@@ -99,22 +110,28 @@ class AppFaultStatistics:
     def get_faulty_values(self, resource, rtype):
         resource_datetime = self.get_resource_datetimes(resource)
         resource_values = self.get_resource_values(resource, rtype)
-        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetime, self.fault_start_times)
-        _, resource_faulty_values = get_fault_free_faulty_values(resource_values, fault_start_indices, fault_end_indices)
+        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetime,
+                                                                                 self.fault_start_times)
+        _, resource_faulty_values = get_fault_free_faulty_values(resource_values, fault_start_indices,
+                                                                 fault_end_indices)
         return resource_faulty_values
+
     def get_fault_free_values(self, resource, rtype):
         resource_datetime = self.get_resource_datetimes(resource)
         resource_values = self.get_resource_values(resource, rtype)
-        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetime, self.fault_start_times)
-        resource_fault_free_values, _ = get_fault_free_faulty_values(resource_values, fault_start_indices, fault_end_indices)
+        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetime,
+                                                                                 self.fault_start_times)
+        resource_fault_free_values, _ = get_fault_free_faulty_values(resource_values, fault_start_indices,
+                                                                     fault_end_indices)
         return resource_fault_free_values
+
     def get_fault_injection_times(self):
         fault_injection_times = pd.read_csv(
             'results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-FaultInjection.csv',
             delimiter=',')
+
         fault_start_times_cl = fault_injection_times['fault_injection_start_time']
         fault_stop_times_cl = fault_injection_times['fault_injection_stop_time']
-
         self.fault_start_times = []
         self.fault_stop_times = []
 
@@ -128,46 +145,51 @@ class AppFaultStatistics:
     #########     CPU Utilization    ############
     #############################################
     def get_cpu_utilization(self):
-        date = '2023-04-17 '
-        if self.app == 'DD' or (self.app == 'SORT' and self.fault == 'CPU-80') or (self.app == 'SORT' and self.fault == 'IO-100') or (
-                self.app == 'SORT' and self.fault == 'PF-0') or (self.app == 'SORT' and self.fault == 'CCHE-0') or (
-                self.app == 'SORT' and self.fault == 'CTXS-10000') or (self.app == 'FPO-SIN' and self.fault == 'MEM-80%') or (
-                self.app == 'IPERF'):
-            date = '2023-04-18 '
-        elif self.app == 'IPERF':
-            date = '2023-04-20 '
-        elif self.app == 'IP' or self.app == 'SA' or self.app == 'OD-CPU':
-            date = '2023-04-21 '
-
-
+        date = self.get_base_date()
         cpu_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-CPU.txt',
                              delimiter='\s+', skiprows=2)
         cpu_times = cpu_df.iloc[:, 0]
         self.cpu_datetimes = []
         for t in cpu_times:
-            cpu_datetime = datetime.datetime.strptime(date + t + ' PM', '%Y-%m-%d %I:%M:%S %p')
-            self.cpu_datetimes.append(cpu_datetime)
-        self.user_cpu_utilization = cpu_df['%usr']
-        self.sys_cpu_utilization = cpu_df['%sys']
-        self.total_cpu_utilization = 100 - cpu_df['%idle']
+            if 'Average' not in t:
+                cpu_datetime = datetime.datetime.strptime(date + t + ' PM', '%Y-%m-%d %I:%M:%S %p')
+                self.cpu_datetimes.append(cpu_datetime)
+        self.cpu_datetimes = self.cpu_datetimes[:self.experiment_duration + 1]
+        self.user_cpu_utilization = cpu_df['%usr'][:self.experiment_duration + 1]
+        self.sys_cpu_utilization = cpu_df['%sys'][:self.experiment_duration + 1]
+        self.total_cpu_utilization = 100 - cpu_df['%idle'][:self.experiment_duration + 1]
 
     #############################################
     #########     CPU Temperatures    ###########
     #############################################
     def get_cpu_temperatures(self):
-        cpu_temp_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-TEMP.txt', delimiter=',')
+        cpu_temp_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-TEMP.txt',
+                                  delimiter=',')
         cpu_temp_times = cpu_temp_df['Timestamp_ms']
         self.cpu_temp_datetimes = []
-        for t in cpu_temp_times:
-            self.cpu_temp_datetimes.append(get_datetime_from_timestamp(self.app, self.fault, t))
-        self.cpu_temperatures = cpu_temp_df['CPU_Temp']
 
+        first_date = self.cpu_datetimes[0]
+        first_index = 0
+        last_date = self.cpu_datetimes[len(self.cpu_datetimes) - 1]
+        last_index = 0
+        for t in cpu_temp_times:
+            cpu_temp_datetime = get_datetime_from_timestamp(self.app, self.fault, t)
+            cpu_temp_datetime = cpu_temp_datetime.replace(microsecond=0)
+            if cpu_temp_datetime < first_date:
+                first_index += 1
+                continue
+            if cpu_temp_datetime > last_date:
+                break
+            self.cpu_temp_datetimes.append(cpu_temp_datetime)
+            last_index += 1
+        self.cpu_temperatures = cpu_temp_df['CPU_Temp'][first_index:last_index + 1]
 
     #############################################
     #########     Latencies    ##################
     #############################################
     def get_latencies(self):
-        latencies_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-Latency.csv', delimiter=',')
+        latencies_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-Latency.csv',
+                                   delimiter=',')
         request_times = latencies_df['request_received_time_ms']
         response_times = latencies_df['response_time_ms']
         self.compute_times = latencies_df['compute_time']
@@ -184,19 +206,7 @@ class AppFaultStatistics:
     #########     Disk Utilization    ###########
     #############################################
     def get_iostat(self):
-        date = '2023-04-17 '
-        if self.app == 'DD' or (self.app == 'SORT' and self.fault == 'CPU-80') or (
-                self.app == 'SORT' and self.fault == 'IO-100') or (
-                self.app == 'SORT' and self.fault == 'PF-0') or (self.app == 'SORT' and self.fault == 'CCHE-0') or (
-                self.app == 'SORT' and self.fault == 'CTXS-10000') or (
-                self.app == 'FPO-SIN' and self.fault == 'MEM-80%') or (
-                self.app == 'IPERF'):
-            date = '2023-04-18 '
-        elif self.app == 'IPERF':
-            date = '2023-04-20 '
-        elif self.app == 'IP' or self.app == 'SA' or self.app == 'OD-CPU':
-            date = '2023-04-21 '
-
+        date = '2023-05-24 '
         io_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-IO.txt', delimiter='\s+',
                             skiprows=3)
         self.io_datetimes = []
@@ -205,105 +215,83 @@ class AppFaultStatistics:
         write_kilobytes = []  # wkB/s
         write_wait_times = []  # w_await
         first = True
+        first_date = self.cpu_datetimes[0]
+        last_date = self.cpu_datetimes[len(self.cpu_datetimes) - 1]
         for i in range(len(io_df)):
-            if io_df.iloc[:, 0][i] == '04/16/2023' or io_df.iloc[:, 0][i] == '04/17/2023' or \
-                    io_df.iloc[:, 0][i] == '04/18/2023' or io_df.iloc[:, 0][i] == '04/20/2023' or io_df.iloc[:, 0][i] == '04/21/2023':
+            if '/2023' in io_df.iloc[:, 0][i]:
                 io_time = io_df.iloc[:, 1][i]
                 io_datetime = datetime.datetime.strptime(date + io_time + ' PM', '%Y-%m-%d %I:%M:%S %p')
+                io_datetime = io_datetime.replace(microsecond=0)
+                if io_datetime < first_date:
+                    continue
+                if io_datetime > last_date:
+                    break
                 if first:
-                    first_missing_date = io_datetime.replace(minute=(io_datetime.minute - 1))
+                    first_missing_date = io_datetime.replace(second=(io_datetime.second - 1))
+                    if first_missing_date < first_date:
+                        continue
                     self.io_datetimes.append(first_missing_date)
                     first = False
                 self.io_datetimes.append(io_datetime)
             elif io_df.iloc[:, 0][i] == 'mmcblk0':
                 self.disk_utilization.append(float(io_df.iloc[:, 22][i]))
 
-
     #############################################
     #########     NEtwork Utilizations    #######
     #############################################
     def get_network_statistics(self):
-        date = '2023-04-17 '
-        if self.app == 'DD' or (self.app == 'SORT' and self.fault == 'CPU-80') or (
-                self.app == 'SORT' and self.fault == 'IO-100') or (
-                self.app == 'SORT' and self.fault == 'PF-0') or (self.app == 'SORT' and self.fault == 'CCHE-0') or (
-                self.app == 'SORT' and self.fault == 'CTXS-10000') or (
-                self.app == 'FPO-SIN' and self.fault == 'MEM-80%') or (
-                self.app == 'IPERF'):
-            date = '2023-04-18 '
-        elif self.app == 'IPERF':
-            date = '2023-04-20 '
-        elif self.app == 'IP' or self.app == 'SA' or self.app == 'OD-CPU':
-            date = '2023-04-21 '
+        date = self.get_base_date()
 
-        net_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-NET.txt', delimiter='\s+',
+        net_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-NET.txt',
+                             delimiter='\s+',
                              skiprows=2)
         self.net_datetimes = []
         self.net_utilizations = []  # %ifutil
         self.net_receive_rates = []  # rxkB/s The number of kilobytes received per second.
         self.net_transmit_rates = []  # txkB/s: The number of kilobytes transmitted per second
 
+        last_date = self.cpu_datetimes[len(self.cpu_datetimes) - 1]
         for i in range(len(net_df)):
-            if self.app == 'IP' or self.app == 'SA' or self.app == 'OD-CPU':
-                if net_df.iloc[:, 2][i] == 'wlan0':
-                    net_time = net_df.iloc[:, 0][i]
-                    net_datetime = datetime.datetime.strptime(date + net_time + ' PM', '%Y-%m-%d %I:%M:%S %p')
-                    self.net_datetimes.append(net_datetime)
-
-                    self.net_utilizations.append(float(net_df.iloc[:, 10][i]))
-                    self.net_receive_rates.append(float(net_df.iloc[:, 5][i]))
-                    self.net_transmit_rates.append(float(net_df.iloc[:, 6][i]))
-            else:
-                if net_df.iloc[:, 2][i] == 'lo':
-                    net_time = net_df.iloc[:, 0][i]
-                    net_datetime = datetime.datetime.strptime(date + net_time + ' PM', '%Y-%m-%d %I:%M:%S %p')
-                    self.net_datetimes.append(net_datetime)
-
-                    self.net_utilizations.append(float(net_df.iloc[:, 10][i]))
-                    self.net_receive_rates.append(float(net_df.iloc[:, 5][i]))
-                    self.net_transmit_rates.append(float(net_df.iloc[:, 6][i]))
-
-        if self.app=='IPERF':
-            index_of_zero = 0
-            for i, val in enumerate(self.net_receive_rates[1:], start=1):
-                if all(x == 0.0 for x in self.net_receive_rates[i:]):
-                    index_of_zero = i
+            if net_df.iloc[:, 2][i] == 'wlan0':
+                net_time = net_df.iloc[:, 0][i]
+                net_datetime = datetime.datetime.strptime(date + net_time + ' PM', '%Y-%m-%d %I:%M:%S %p')
+                if net_datetime > last_date:
                     break
-            # index_of_zero = net_float_receive_rates.index(19291.64)
-            print(index_of_zero)
-            self.net_utilizations = self.net_utilizations[:index_of_zero]
-            self.net_receive_rates = self.net_receive_rates[:index_of_zero]
-            self.net_transmit_rates = self.net_transmit_rates[:index_of_zero]
-            self.net_datetimes = self.net_datetimes[:index_of_zero]
+                self.net_datetimes.append(net_datetime)
+
+                self.net_utilizations.append(float(net_df.iloc[:, 10][i]))
+                self.net_receive_rates.append(float(net_df.iloc[:, 5][i]))
+                self.net_transmit_rates.append(float(net_df.iloc[:, 6][i]))
+
+        # if self.app=='IPERF':
+        #     index_of_zero = 0
+        #     for i, val in enumerate(self.net_receive_rates[1:], start=1):
+        #         if all(x == 0.0 for x in self.net_receive_rates[i:]):
+        #             index_of_zero = i
+        #             break
+        #     # index_of_zero = net_float_receive_rates.index(19291.64)
+        #     print(index_of_zero)
+        #     self.net_utilizations = self.net_utilizations[:index_of_zero]
+        #     self.net_receive_rates = self.net_receive_rates[:index_of_zero]
+        #     self.net_transmit_rates = self.net_transmit_rates[:index_of_zero]
+        #     self.net_datetimes = self.net_datetimes[:index_of_zero]
 
     #############################################
     #########     Memory Utilizations    ########
     #############################################
     def get_memory_utilization(self):
-        date = '2023-04-17 '
-        if self.app == 'DD' or (self.app == 'SORT' and self.fault == 'CPU-80') or (
-                self.app == 'SORT' and self.fault == 'IO-100') or (
-                self.app == 'SORT' and self.fault == 'PF-0') or (self.app == 'SORT' and self.fault == 'CCHE-0') or (
-                self.app == 'SORT' and self.fault == 'CTXS-10000') or (
-                self.app == 'FPO-SIN' and self.fault == 'MEM-80%') or (
-                self.app == 'IPERF'):
-            date = '2023-04-18 '
-        elif self.app == 'IPERF':
-            date = '2023-04-20 '
-        elif self.app == 'IP' or self.app == 'SA' or self.app == 'OD-CPU':
-            date = '2023-04-21 '
+        date = self.get_base_date()
         mem_df = pd.read_csv('results_over_time/raspberrypi/' + self.app + '-' + self.fault + '-MEM.txt',
                              delimiter='\s+', skiprows=2)
         mem_times = mem_df.iloc[:, 0]
         self.mem_datetimes = []
-        first = True
         for t in mem_times:
-            mem_datetime = datetime.datetime.strptime(date + t + ' PM', '%Y-%m-%d %I:%M:%S %p')
-            self.mem_datetimes.append(mem_datetime)
-        self.mem_utilization = mem_df['%memused']
-        self.mem_utilization = self.mem_utilization[: len(self.mem_utilization) - 1]
-        self.mem_datetimes = self.mem_datetimes[:len(self.mem_datetimes) - 1]
+            if 'Average' not in t:
+                mem_datetime = datetime.datetime.strptime(date + t + ' PM', '%Y-%m-%d %I:%M:%S %p')
+                self.mem_datetimes.append(mem_datetime)
 
+        self.mem_utilization = mem_df['%memused'][:self.experiment_duration + 1]
+        self.mem_datetimes = self.mem_datetimes[:self.experiment_duration + 1]
 
     ######################################################################################################################
     #################################     END: Reading Files      ########################################################
@@ -313,7 +301,8 @@ class AppFaultStatistics:
         resource_datetimes = self.get_resource_datetimes(resource)
         resource_values = self.get_resource_values(resource, rtype)
         resource_metric = self.get_resource_metric(resource, rtype)
-        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes, self.fault_start_times)
+        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes,
+                                                                                 self.fault_start_times)
         fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(8, 4))
         axs.plot(resource_datetimes, resource_values, label='memused')
         if show_injection_times:
@@ -322,11 +311,12 @@ class AppFaultStatistics:
             for end in fault_end_indices:
                 axs.axvline(x=resource_datetimes[end], color='b')
         axs.set_xlabel('Time', fontsize=16, fontweight='bold')
-        axs.set_ylabel(resource+'-'+ rtype + ' ('+resource_metric+')', fontsize=16, fontweight='bold')
+        axs.set_ylabel(resource + '-' + rtype + ' (' + resource_metric + ')', fontsize=16, fontweight='bold')
         # axs.set_xlim(right=230)
         # axs.set_xlim(left=-10)
         axs.grid(which="major")
-        fig.suptitle(resource+'-'+ rtype+' Utilization Plot for App: '+self.app + ' - Fault: ' + self.fault, fontsize=16, fontweight='bold')
+        fig.suptitle(resource + '-' + rtype + ' Utilization Plot for App: ' + self.app + ' - Fault: ' + self.fault,
+                     fontsize=16, fontweight='bold')
         plt.show()
 
     def jitter_faulty_fault_free(self, resource, rtype, is_faulty):
@@ -349,8 +339,8 @@ class AppFaultStatistics:
         fault_free_values = resource_values[start_ind:len(resource_datetimes) - 85]
         fault_free_jitters.append(jitter(fault_free_values))
 
-        average_fault_free_jitter = sum(fault_free_jitters)/len(fault_free_jitters)
-        average_faulty_jitter = sum(faulty_jitters)/len(faulty_jitters)
+        average_fault_free_jitter = sum(fault_free_jitters) / len(fault_free_jitters)
+        average_faulty_jitter = sum(faulty_jitters) / len(faulty_jitters)
 
         if is_faulty:
             print("faulty avg: {0}".format(average_faulty_jitter))
@@ -362,7 +352,8 @@ class AppFaultStatistics:
         resource_datetimes = self.get_resource_datetimes(resource)
         resource_values = self.get_resource_values(resource, rtype)
         resource_metric = self.get_resource_metric(resource, rtype)
-        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes, self.fault_start_times)
+        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes,
+                                                                                 self.fault_start_times)
         fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(8, 4))
         axs.plot(resource_datetimes, resource_values, label='memused')
         if show_injection_times:
@@ -371,23 +362,25 @@ class AppFaultStatistics:
             for end in fault_end_indices:
                 axs.axvline(x=resource_datetimes[end], color='b')
         axs.set_xlabel('Time', fontsize=16, fontweight='bold')
-        axs.set_ylabel(resource+'-'+ rtype + ' ('+resource_metric+')', fontsize=16, fontweight='bold')
+        axs.set_ylabel(resource + '-' + rtype + ' (' + resource_metric + ')', fontsize=16, fontweight='bold')
         # axs.set_xlim(right=230)
         # axs.set_xlim(left=-10)
         axs.grid(which="major")
-        fig.suptitle(resource+'-'+ rtype+' Utilization Plot for App: '+self.app + ' - Fault: ' + self.fault, fontsize=16, fontweight='bold')
+        fig.suptitle(resource + '-' + rtype + ' Utilization Plot for App: ' + self.app + ' - Fault: ' + self.fault,
+                     fontsize=16, fontweight='bold')
         plt.show()
 
     def plot_resource_with_residual(self, resource, rtype, show_injection_times):
         resource_datetimes = self.get_resource_datetimes(resource)
         resource_values = self.get_resource_values(resource, rtype)
         resource_metric = self.get_resource_metric(resource, rtype)
-        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes, self.fault_start_times)
+        fault_start_indices, fault_end_indices = extract_fault_start_end_indices(resource_datetimes,
+                                                                                 self.fault_start_times)
         print(self.fault_start_times)
         print(resource_datetimes)
 
         fig, axs = plt.subplots(nrows=1, ncols=1, figsize=(8, 4))
-        axs.plot(resource_datetimes, resource_values, label=resource+'-'+rtype)
+        axs.plot(resource_datetimes, resource_values, label=resource + '-' + rtype)
 
         residual_means = []
         residual_jitters = []
@@ -398,26 +391,28 @@ class AppFaultStatistics:
                 axs.axvline(x=resource_datetimes[fault_start], color='r')
                 axs.axvline(x=resource_datetimes[fault_end], color='b')
 
-                fault_free_middle_date = resource_datetimes[start_ind] + (resource_datetimes[fault_start] - resource_datetimes[start_ind]) / 2
-                faulty_middle_date = resource_datetimes[fault_start] + (resource_datetimes[fault_end] - resource_datetimes[fault_start]) / 2
+                fault_free_middle_date = resource_datetimes[start_ind] + (
+                            resource_datetimes[fault_start] - resource_datetimes[start_ind]) / 2
+                faulty_middle_date = resource_datetimes[fault_start] + (
+                            resource_datetimes[fault_end] - resource_datetimes[fault_start]) / 2
                 fault_free_values = resource_values[start_ind:fault_start]
                 faulty_values = resource_values[fault_start:fault_end]
 
                 residual_dates.append(fault_free_middle_date)
                 residual_dates.append(faulty_middle_date)
-                residual_means.append(sum(fault_free_values)/len(fault_free_values))
-                residual_means.append(sum(faulty_values)/len(faulty_values))
+                residual_means.append(sum(fault_free_values) / len(fault_free_values))
+                residual_means.append(sum(faulty_values) / len(faulty_values))
                 residual_jitters.append(jitter(fault_free_values))
                 residual_jitters.append(jitter(faulty_values))
                 start_ind = fault_end + 1
 
             extra_end = 85
-            if resource =='NET':
+            if resource == 'NET':
                 extra_end = 1
 
-            fault_free_middle_date = resource_datetimes[len(resource_datetimes)-extra_end] + (
-                        resource_datetimes[len(resource_datetimes)-extra_end] - resource_datetimes[start_ind]) / 2
-            fault_free_values = resource_values[start_ind:len(resource_datetimes)-extra_end]
+            fault_free_middle_date = resource_datetimes[len(resource_datetimes) - extra_end] + (
+                    resource_datetimes[len(resource_datetimes) - extra_end] - resource_datetimes[start_ind]) / 2
+            fault_free_values = resource_values[start_ind:len(resource_datetimes) - extra_end]
             residual_dates.append(fault_free_middle_date)
             residual_means.append(sum(fault_free_values) / len(fault_free_values))
             residual_jitters.append(jitter(fault_free_values))
@@ -425,13 +420,141 @@ class AppFaultStatistics:
         axs.plot(residual_dates, residual_means, label='residual-mean')
         axs.plot(residual_dates, residual_jitters, label='residual-jitter')
         axs.set_xlabel('Time', fontsize=16, fontweight='bold')
-        axs.set_ylabel(resource+'-'+ rtype + ' ('+resource_metric+')', fontsize=16, fontweight='bold')
+        axs.set_ylabel(resource + '-' + rtype + ' (' + resource_metric + ')', fontsize=16, fontweight='bold')
         # axs.legends()
         # axs.set_xlim(right=230)
         # axs.set_xlim(left=-10)
         axs.grid(which="major")
-        fig.suptitle(resource+'-'+ rtype+' Utilization Plot for App: '+self.app + ' - Fault: ' + self.fault, fontsize=16, fontweight='bold')
+        fig.suptitle(resource + '-' + rtype + ' Utilization Plot for App: ' + self.app + ' - Fault: ' + self.fault,
+                     fontsize=16, fontweight='bold')
         plt.show()
+
+    def get_resource_summary_matrix(self):
+        summary_matrix = {}
+
+        for (cpu_date, cpu_user, cpu_sys, cpu_total) in \
+                zip(self.cpu_datetimes, self.user_cpu_utilization, self.sys_cpu_utilization,
+                    self.total_cpu_utilization):
+            result_summary = ResultSummary(cpu_user, cpu_sys, cpu_total, 'No-Fault')
+            summary_matrix[cpu_date] = result_summary
+
+        for (cpu_temp_date, cpu_temp) in zip(self.cpu_temp_datetimes, self.cpu_temperatures):
+            if cpu_temp_date in summary_matrix.keys():
+                summary_matrix[cpu_temp_date].cpu_temp = cpu_temp
+
+        for (mem_date, mem) in zip(self.mem_datetimes, self.mem_utilization):
+            if mem_date in summary_matrix.keys():
+                summary_matrix[mem_date].mem = mem
+
+        for (disk_date, disk) in zip(self.io_datetimes, self.disk_utilization):
+            if disk_date in summary_matrix.keys():
+                summary_matrix[disk_date].disk = disk
+
+        for (net_date, net_rec, net_tra) in zip(self.net_datetimes, self.net_receive_rates, self.net_transmit_rates):
+            if net_date in summary_matrix.keys():
+                summary_matrix[net_date].net_rec = net_rec
+                summary_matrix[net_date].net_tra = net_tra
+
+        for (response_datetime, compute_time, transmit_time) in \
+                zip(self.response_datetimes, self.compute_times, self.transmission_times):
+            if response_datetime.replace(microsecond=0) in summary_matrix.keys():
+                summary_matrix[response_datetime.replace(microsecond=0)].com_t = compute_time
+                summary_matrix[response_datetime.replace(microsecond=0)].tra_t = transmit_time
+
+        # Update fault labels according to injection times
+        fault_end_datetimes = [dt + datetime.timedelta(seconds=configs.FAULT_INJECTION_DURATION) for dt in self.fault_start_times]
+        for (start_injection, end_injection) in zip(self.fault_start_times, fault_end_datetimes):
+            # print('{0} - {1}'.format(start_injection, end_injection))
+            for key in summary_matrix.keys():
+                # print(key)
+                if start_injection <= key <= end_injection:
+                    summary_matrix[key].label = self.fault
+            # print('-------------------------------')
+
+
+        return summary_matrix
+
+        # for key in summary_matrix.keys():
+        #     print('{0} -----  {1}'.format(key, summary_matrix[key]))
+
+
+class ResultSummary:
+    def __init__(self, cpu_user, cpu_sys, cpu_tot, label):
+        super().__init__()
+        self.cpu_user = cpu_user
+        self.cpu_sys = cpu_sys
+        self.cpu_tot = cpu_tot
+        self.cpu_temp = '-----'
+        self.mem = None
+        self.disk = None
+        self.net_rec = None
+        self.net_tra = None
+        self.com_t = '-----'
+        self.tra_t = '-----'
+        self.label = label
+
+    def __str__(self):
+        if self.cpu_temp == '-----':
+            return 'cpu_usr: {0:.2f} - cpu_sys: {1:.2f} - cpu_tot: {2:.2f} - cpu_temp:{3} - mem: {4:.2f} - ' \
+                   'disk: {5:.2f} - net_rec: {6:.2f} - net_tra: {7:.2f} - compute_time: {8}, ' \
+                   'transmit_time:{9} - label: {10}'.format(
+                self.cpu_user, self.cpu_sys, self.cpu_tot, self.cpu_temp, self.mem, self.disk, self.net_rec,
+                self.net_tra, self.com_t, self.tra_t, self.label)
+
+        return 'cpu_usr: {0:.2f} - cpu_sys: {1:.2f} - cpu_tot: {2:.2f} - cpu_temp:{3:.2f} - mem: {4:.2f} - ' \
+               'disk: {5:.2f} - net_rec: {6:.2f} - net_tra: {7:.2f} - compute_time: {8}, ' \
+                   'transmit_time:{9} - label: {10}'.format(
+                self.cpu_user, self.cpu_sys, self.cpu_tot, self.cpu_temp, self.mem, self.disk, self.net_rec,
+                self.net_tra, self.com_t, self.tra_t, self.label)
+
+
+class AppStatistics:
+    def __init__(self, app):
+        super().__init__()
+        self.app = app
+        self.combine_statistics()
+
+    def combine_statistics(self):
+        with open('results_over_time/raspberrypi/summary-'+self.app+'.csv', 'w', newline='') as file:
+            writer = csv.writer(file)
+            headers = ['Time', 'CPU_USER', 'CPU_SYS', 'CPU_TOT', 'CPU_TEMP', 'MEM', 'DISK', 'NET_REC', 'NET_TRA',
+                       'COM_T', 'TRA_T', 'Label']
+            writer.writerow(headers)
+
+            # Write No Fault Results
+            app_no_fault_statistics = AppFaultStatistics(self.app, 'No-Fault')
+            summary_matrix = app_no_fault_statistics.get_resource_summary_matrix()
+            for key in summary_matrix.keys():
+                value = summary_matrix[key]
+                row = [key, value.cpu_user, value.cpu_sys,  ("%.2f" % value.cpu_tot)]
+                rest_row = [value.mem, value.disk, value.net_rec, value.net_tra, value.com_t, value.tra_t, value.label]
+                if value.cpu_temp!='-----':
+                    row.append("%.2f" % value.cpu_temp)
+                else:
+                    row.append('-')
+                row.extend(rest_row)
+                writer.writerow(row)
+
+            # Write Faulty Results
+            for fault in configs.FAULTS:
+                for fault_config in fault.fault_config:
+                    print('{0}-{1}'.format(fault.abbreviation, fault_config))
+                    app_fault_statistics = AppFaultStatistics(self.app, '{0}-{1}'.format(fault.abbreviation,
+                                                                                         fault_config))
+                    summary_matrix = app_fault_statistics.get_resource_summary_matrix()
+                    for key in summary_matrix.keys():
+                        value = summary_matrix[key]
+                        row = [key, value.cpu_user, value.cpu_sys, ("%.2f" % value.cpu_tot)]
+                        rest_row = [value.mem, value.disk, value.net_rec, value.net_tra, value.com_t, value.tra_t,
+                                    value.label]
+                        if value.cpu_temp != '-----':
+                            row.append("%.2f" % value.cpu_temp)
+                        else:
+                            row.append('-')
+                        row.extend(rest_row)
+                        writer.writerow(row)
+
+
 
 
 def normalized_jitter(values):
@@ -444,6 +567,7 @@ def normalized_jitter(values):
     mean_normalized = np.mean(normalized)
     std_normalized = np.std(normalized)
     return std_normalized
+
 
 def jitter(values):
     n = len(values)
@@ -476,26 +600,26 @@ def calculate_average_jitter_on_faults(values, fault_injection_times, fault_dura
 
 def get_datetime_from_timestamp(app, fault, timestamp):
     fault_start_time = datetime.datetime.fromtimestamp(timestamp / 1000)
-    new_hour = fault_start_time.hour - 3
-    if new_hour < 0:
-        new_hour += 24
-    fault_start_time_updated = fault_start_time.replace(hour=new_hour)
-    if app == 'DD' or (app == 'SORT' and fault == 'CPU-80') or (app == 'SORT' and fault == 'IO-100') or (
-            app == 'SORT' and fault == 'PF-0') or (app == 'SORT' and fault == 'CCHE-0') or (
-            app == 'SORT' and fault == 'CTXS-10000') or (app == 'FPO-SIN' and fault == 'MEM-80%') or (app=='IPERF'):
-        fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=18)
-        fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
-    elif app=='IPERF':
-        fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=20)
-        fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
-    elif app=='IP' or app=='SA':
-        fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=21)
-        fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
-    elif app=='OD-CPU':
-        fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=21)
-    else:
-        fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=17)
-    return fault_start_time_updated
+    # new_hour = fault_start_time.hour - 3
+    # if new_hour < 0:
+    #     new_hour += 24
+    # fault_start_time_updated = fault_start_time.replace(hour=new_hour)
+    # if app == 'DD' or (app == 'SORT' and fault == 'CPU-80') or (app == 'SORT' and fault == 'IO-100') or (
+    #         app == 'SORT' and fault == 'PF-0') or (app == 'SORT' and fault == 'CCHE-0') or (
+    #         app == 'SORT' and fault == 'CTXS-10000') or (app == 'FPO-SIN' and fault == 'MEM-80%') or (app=='IPERF'):
+    #     fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=18)
+    #     fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
+    # elif app=='IPERF':
+    #     fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=20)
+    #     fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
+    # elif app=='IP' or app=='SA':
+    #     fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=21)
+    #     fault_start_time_updated = fault_start_time_updated.replace(hour=(fault_start_time_updated.hour+12))
+    # elif app=='OD-CPU':
+    #     fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=21)
+    # else:
+    #     fault_start_time_updated = fault_start_time_updated.replace(year=2023, month=4, day=17)
+    return fault_start_time
 
 
 def find_fault_injection_indices_on_utilizations(utilization_times, fault_injection_times):
@@ -503,7 +627,7 @@ def find_fault_injection_indices_on_utilizations(utilization_times, fault_inject
     fault_index = 0
 
     fault_injection_indices = []
-    while index< len(utilization_times):
+    while index < len(utilization_times):
         if fault_index >= len(fault_injection_times):
             break
         if fault_injection_times[fault_index] < utilization_times[index]:
@@ -513,14 +637,15 @@ def find_fault_injection_indices_on_utilizations(utilization_times, fault_inject
 
     return fault_injection_indices
 
+
 def get_fault_free_faulty_values(values, fault_start_indices, fault_end_indices):
     index = 0
     fault_free_values = []
     faulty_values = []
     for i in range(len(values)):
-        if index>=len(fault_start_indices) or i<fault_start_indices[index] and i<fault_end_indices[index]:
+        if index >= len(fault_start_indices) or i < fault_start_indices[index] and i < fault_end_indices[index]:
             fault_free_values.append(values[i])
-        elif i>=fault_start_indices[index] and i>=fault_end_indices[index] and index<len(fault_start_indices):
+        elif i >= fault_start_indices[index] and i >= fault_end_indices[index] and index < len(fault_start_indices):
             index += 1
             faulty_values.append(values[i])
         else:
@@ -531,7 +656,8 @@ def get_fault_free_faulty_values(values, fault_start_indices, fault_end_indices)
 def extract_fault_start_end_indices(resource_datetimes, fault_start_times):
     resource_fault_start_indices = find_fault_injection_indices_on_utilizations(resource_datetimes, fault_start_times)
     resource_fault_end_datetimes = [dt + datetime.timedelta(seconds=30) for dt in fault_start_times]
-    resource_fault_end_indices = find_fault_injection_indices_on_utilizations(resource_datetimes, resource_fault_end_datetimes)
+    resource_fault_end_indices = find_fault_injection_indices_on_utilizations(resource_datetimes,
+                                                                              resource_fault_end_datetimes)
 
     return resource_fault_start_indices, resource_fault_end_indices
 
@@ -556,13 +682,15 @@ def draw_heatmap(x_labels, y_labels, heatmap_data):
     # display the plot
     plt.show()
 
+
 def normalized_average(faulties, fault_frees):
     # avg_faulties = utils.get_avg_without_outlier(faulties)
     # avg_fault_frees = utils.get_avg_without_outlier(fault_frees)
-    avg_faulties = sum(faulties)/len(faulties)
-    avg_fault_frees = sum(fault_frees)/len(fault_frees)
+    avg_faulties = sum(faulties) / len(faulties)
+    avg_fault_frees = sum(fault_frees) / len(fault_frees)
 
-    return avg_faulties-avg_fault_frees/avg_fault_frees
+    return avg_faulties - avg_fault_frees / avg_fault_frees
+
 
 def draw_fault_free_comparisons():
     no_fault_cpu_data = []
@@ -570,65 +698,64 @@ def draw_fault_free_comparisons():
     no_fault_network_data = []
     no_fault_disk_data = []
 
-    apps = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
-                'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
+    apps = ['AE']  # , 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
+    # 'IP', 'SA', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
     # ['FPO-SIN', 'FFT', 'SORT', 'DD', 'IPERF', 'IP', 'SA', 'OD-CPU']
 
     for app in apps:
         print("************ Summary of app: {0},  No-Fault".format(app))
         app_fault_statistics = AppFaultStatistics(app, 'No-Fault')
 
-        no_fault_cpu_data.append((app,
-                                  get_avg_without_outlier(app_fault_statistics.get_fault_free_values('CPU', 'USR')),
-                                  get_std_without_outlier(app_fault_statistics.get_fault_free_values('CPU', 'USR'))))
-        no_fault_memory_data.append((app,
-                                  get_avg_without_outlier(app_fault_statistics.get_fault_free_values('MEM', '')),
-                                  get_std_without_outlier(app_fault_statistics.get_fault_free_values('MEM', ''))))
-        no_fault_network_data.append((app,
-                                     get_avg_without_outlier(app_fault_statistics.get_fault_free_values('NET', 'TRA')),
-                                     get_std_without_outlier(app_fault_statistics.get_fault_free_values('NET', 'TRA'))))
-        no_fault_disk_data.append((app,
-                                     get_avg_without_outlier(app_fault_statistics.get_fault_free_values('DISK', '')),
-                                     get_std_without_outlier(app_fault_statistics.get_fault_free_values('DISK', ''))))
-    # extract the labels, values, and errors into separate lists
-    labels = [x[0] for x in no_fault_cpu_data]
-    cpu_values = [x[1] for x in no_fault_cpu_data]
-    cpu_errors = [x[2] for x in no_fault_cpu_data]
-    memory_values = [x[1] for x in no_fault_memory_data]
-    memory_errors = [x[2] for x in no_fault_memory_data]
-    network_values = [x[1] for x in no_fault_network_data]
-    network_errors = [x[2] for x in no_fault_network_data]
-    disk_values = [x[1] for x in no_fault_disk_data]
-    disk_errors = [x[2] for x in no_fault_disk_data]
+    #     no_fault_cpu_data.append((app,
+    #                               get_avg_without_outlier(app_fault_statistics.get_fault_free_values('CPU', 'USR')),
+    #                               get_std_without_outlier(app_fault_statistics.get_fault_free_values('CPU', 'USR'))))
+    #     no_fault_memory_data.append((app,
+    #                               get_avg_without_outlier(app_fault_statistics.get_fault_free_values('MEM', '')),
+    #                               get_std_without_outlier(app_fault_statistics.get_fault_free_values('MEM', ''))))
+    #     no_fault_network_data.append((app,
+    #                                  get_avg_without_outlier(app_fault_statistics.get_fault_free_values('NET', 'TRA')),
+    #                                  get_std_without_outlier(app_fault_statistics.get_fault_free_values('NET', 'TRA'))))
+    #     no_fault_disk_data.append((app,
+    #                                  get_avg_without_outlier(app_fault_statistics.get_fault_free_values('DISK', '')),
+    #                                  get_std_without_outlier(app_fault_statistics.get_fault_free_values('DISK', ''))))
+    # # extract the labels, values, and errors into separate lists
+    # labels = [x[0] for x in no_fault_cpu_data]
+    # cpu_values = [x[1] for x in no_fault_cpu_data]
+    # cpu_errors = [x[2] for x in no_fault_cpu_data]
+    # memory_values = [x[1] for x in no_fault_memory_data]
+    # memory_errors = [x[2] for x in no_fault_memory_data]
+    # network_values = [x[1] for x in no_fault_network_data]
+    # network_errors = [x[2] for x in no_fault_network_data]
+    # disk_values = [x[1] for x in no_fault_disk_data]
+    # disk_errors = [x[2] for x in no_fault_disk_data]
+    #
+    # # create a 2x2 grid of subplots
+    # fig, axs = plt.subplots(2, 2, figsize=(8, 8))
+    #
+    # # plot the data in each subplot
+    # axs[0, 0].bar(labels, cpu_values, yerr=cpu_errors, capsize=4)
+    # axs[0, 0].set_title('CPU Utilization', fontweight='bold')
+    # axs[0, 0].set_ylabel('CPU USR Utilization (%)', fontweight='bold')
+    # axs[0, 0].grid(which="major")
+    # axs[0, 1].bar(labels, memory_values, yerr=memory_errors, capsize=4)
+    # axs[0, 1].set_title('Memory Utilization', fontweight='bold')
+    # axs[0, 1].set_ylabel('Memory Utilization (%)', fontweight='bold')
+    # axs[0, 1].grid(which="major")
+    # axs[1, 0].bar(labels, network_values, yerr=network_errors, capsize=4)
+    # axs[1, 0].set_title('Network Utilization', fontweight='bold')
+    # axs[1, 0].set_ylabel('Network Receiving Packets Rate (kB/s)', fontweight='bold')
+    # axs[1, 0].grid(which="major")
+    # axs[1, 1].bar(labels, disk_values, yerr=disk_errors, capsize=4)
+    # axs[1, 1].set_title('Disk Utilization', fontweight='bold')
+    # axs[1, 1].set_ylabel('Disk utilization (%)', fontweight='bold')
+    # axs[1, 1].grid(which="major")
+    #
+    # # adjust spacing between subplots
+    # fig.tight_layout()
+    # plt.show()
 
-    # create a 2x2 grid of subplots
-    fig, axs = plt.subplots(2, 2, figsize=(8, 8))
 
-    # plot the data in each subplot
-    axs[0, 0].bar(labels, cpu_values, yerr=cpu_errors, capsize=4)
-    axs[0, 0].set_title('CPU Utilization', fontweight='bold')
-    axs[0, 0].set_ylabel('CPU USR Utilization (%)', fontweight='bold')
-    axs[0, 0].grid(which="major")
-    axs[0, 1].bar(labels, memory_values, yerr=memory_errors, capsize=4)
-    axs[0, 1].set_title('Memory Utilization', fontweight='bold')
-    axs[0, 1].set_ylabel('Memory Utilization (%)', fontweight='bold')
-    axs[0, 1].grid(which="major")
-    axs[1, 0].bar(labels, network_values, yerr=network_errors, capsize=4)
-    axs[1, 0].set_title('Network Utilization', fontweight='bold')
-    axs[1, 0].set_ylabel('Network Receiving Packets Rate (kB/s)', fontweight='bold')
-    axs[1, 0].grid(which="major")
-    axs[1, 1].bar(labels, disk_values, yerr=disk_errors, capsize=4)
-    axs[1, 1].set_title('Disk Utilization', fontweight='bold')
-    axs[1, 1].set_ylabel('Disk utilization (%)', fontweight='bold')
-    axs[1, 1].grid(which="major")
-
-    # adjust spacing between subplots
-    fig.tight_layout()
-    plt.show()
-
-
-
-if __name__ == '__main__':
+def draw_heatmaps():
     x_labels = {'FPO-SIN-CPU%USR': 0, 'FPO-SIN-CPU%SYS': 1, 'FFT-CPU%USR': 2, 'FFT-CPU%SYS': 3,
                 'SORT-CPU%USR': 4, 'SORT-CPU%SYS': 5, 'DD-CPU%USR': 6, 'DD-CPU%SYS': 7,
                 'IPERF-CPU%USR': 8, 'IPERF-CPU%SYS': 9, 'IP-CPU%USR': 10, 'IP-CPU%SYS': 11, 'SA-CPU%USR': 12,
@@ -636,25 +763,27 @@ if __name__ == '__main__':
                 'FPO-SIN-MEM': 16, 'FFT-MEM': 17, 'SORT-MEM': 18, 'DD-MEM': 19, 'IPERF-MEM': 20,
                 'IP-MEM': 21, 'SA-MEM': 22, 'OD-CPU-MEM': 23,
                 'FPO-SIN-DISK': 24, 'FFT-DISK': 25, 'SORT-DISK': 26, 'DD-DISK': 27, 'IPERF-DISK': 28,
-                'IP-DISK': 29, 'SA-DISK': 30, 'OD-CPU-DISK': 31}\
+                'IP-DISK': 29, 'SA-DISK': 30, 'OD-CPU-DISK': 31} \
         # ,
-        #         'FPO-SIN-NET-REC': 20, 'FFT-NET-REC': 21, 'SORT-NET-REC': 22, 'DD-NET-REC': 23, 'IPERF-NET-REC': 24,
-        #         'FPO-SIN-NET-TRA': 25, 'FFT-NET-TRA': 26, 'SORT-NET-TRA': 27, 'DD-NET-TRA': 28, 'IPERF-NET-TRA': 29
-        #         }
+    #         'FPO-SIN-NET-REC': 20, 'FFT-NET-REC': 21, 'SORT-NET-REC': 22, 'DD-NET-REC': 23, 'IPERF-NET-REC': 24,
+    #         'FPO-SIN-NET-TRA': 25, 'FFT-NET-TRA': 26, 'SORT-NET-TRA': 27, 'DD-NET-TRA': 28, 'IPERF-NET-TRA': 29
+    #         }
 
     x_network_labels = {'FPO-SIN-NET-REC': 0, 'FFT-NET-REC': 1, 'SORT-NET-REC': 2, 'DD-NET-REC': 3, 'IPERF-NET-REC': 4,
                         'IP-NET-REC': 5, 'SA-NET-REC': 6, 'OD-CPU-NET-REC': 7,
-                'FPO-SIN-NET-TRA': 8, 'FFT-NET-TRA': 9, 'SORT-NET-TRA': 10, 'DD-NET-TRA': 11, 'IPERF-NET-TRA': 12,
+                        'FPO-SIN-NET-TRA': 8, 'FFT-NET-TRA': 9, 'SORT-NET-TRA': 10, 'DD-NET-TRA': 11,
+                        'IPERF-NET-TRA': 12,
                         'IP-NET-TRA': 13, 'SA-NET-TRA': 14, 'OD-CPU-NET-TRA': 15}
 
-    x_latencies_labels = {'FPO-SIN-LATENCY': 0, 'FFT-LATENCY': 1, 'SORT-LATENCY': 2, 'DD-LATENCY': 3, 'IPERF-LATENCY': 4,
+    x_latencies_labels = {'FPO-SIN-LATENCY': 0, 'FFT-LATENCY': 1, 'SORT-LATENCY': 2, 'DD-LATENCY': 3,
+                          'IPERF-LATENCY': 4,
                           'IP-LATENCY': 5, 'SA-LATENCY': 6, 'OD-CPU-LATENCY': 7}
 
     y_labels = {'No-Fault': 0, 'CPU-20': 1, 'CPU-80': 2, 'MEM-20%': 3, 'MEM-80%': 4, 'IO-100': 5,
                 'PF-0': 6, 'CCHE-0': 7, 'CTXS-10000': 8}
 
     y_diff_labels = {'CPU-20': 0, 'CPU-80': 1, 'MEM-20%': 2, 'MEM-80%': 3, 'IO-100': 4,
-                'PF-0': 5, 'CCHE-0': 6, 'CTXS-10000': 7}
+                     'PF-0': 5, 'CCHE-0': 6, 'CTXS-10000': 7}
 
     jitter_heatmap_data = []
     diffs_heatmap_data = []
@@ -665,12 +794,6 @@ if __name__ == '__main__':
     latency_diffs_data = []
 
     latency_data = []
-
-
-    # app_fault_statistics = AppFaultStatistics('IPERF', 'CPU-20')
-    # app_fault_statistics.plot_resource_with_residual('CPU', 'SYS', show_injection_times=True)
-
-    draw_fault_free_comparisons()
 
     apps = []
     faults = []
@@ -710,13 +833,20 @@ if __name__ == '__main__':
                 app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME'),
                 app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME'))])
 
-            jitter_heatmap_data.append([(app + '-CPU%SYS'), fault, jitter(app_fault_statistics.get_faulty_values('CPU', 'SYS'))])
-            jitter_heatmap_data.append([(app + '-CPU%USR'), fault, jitter(app_fault_statistics.get_faulty_values('CPU', 'USR'))])
-            jitter_heatmap_data.append([(app + '-MEM'), fault, jitter(app_fault_statistics.get_faulty_values('MEM',''))])
-            jitter_heatmap_data.append([(app + '-DISK'), fault, jitter(app_fault_statistics.get_faulty_values('DISK', ''))])
-            network_jitter_heatmap_date.append([(app + '-NET-REC'), fault, jitter(app_fault_statistics.get_faulty_values('NET', 'REC'))])
-            network_jitter_heatmap_date.append([(app + '-NET-TRA'), fault, jitter(app_fault_statistics.get_faulty_values('NET', 'TRA'))])
-            latency_jitter_data.append([(app + '-LATENCY'), fault, jitter(app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME'))])
+            jitter_heatmap_data.append(
+                [(app + '-CPU%SYS'), fault, jitter(app_fault_statistics.get_faulty_values('CPU', 'SYS'))])
+            jitter_heatmap_data.append(
+                [(app + '-CPU%USR'), fault, jitter(app_fault_statistics.get_faulty_values('CPU', 'USR'))])
+            jitter_heatmap_data.append(
+                [(app + '-MEM'), fault, jitter(app_fault_statistics.get_faulty_values('MEM', ''))])
+            jitter_heatmap_data.append(
+                [(app + '-DISK'), fault, jitter(app_fault_statistics.get_faulty_values('DISK', ''))])
+            network_jitter_heatmap_date.append(
+                [(app + '-NET-REC'), fault, jitter(app_fault_statistics.get_faulty_values('NET', 'REC'))])
+            network_jitter_heatmap_date.append(
+                [(app + '-NET-TRA'), fault, jitter(app_fault_statistics.get_faulty_values('NET', 'TRA'))])
+            latency_jitter_data.append(
+                [(app + '-LATENCY'), fault, jitter(app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME'))])
             # jitter_heatmap_data.append([(app + '-NET-UTIL'), fault, jitter(app_fault_statistics.get_faulty_values('NET', 'UTIL'))])
             # jitter_heatmap_data.append([(app + '-CPU%SYS'), 'No-Fault',
             #                             app_fault_statistics.jitter_faulty_fault_free('CPU', 'SYS', is_faulty=True)])
@@ -734,8 +864,10 @@ if __name__ == '__main__':
             #                                                                                   is_faulty=True)])
 
             latency_data.append(((app + '-' + fault),
-                                 utils.get_avg_without_outlier(app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME')),
-                                 utils.get_std_without_outlier(app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME'))))
+                                 utils.get_avg_without_outlier(
+                                     app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME')),
+                                 utils.get_std_without_outlier(
+                                     app_fault_statistics.get_faulty_values('LATENCY', 'COM-TIME'))))
 
             if not no_fault_written:
                 # jitter_heatmap_data.append([(app + '-CPU%SYS'), 'No-Fault', app_fault_statistics.jitter_faulty_fault_free('CPU', 'SYS', is_faulty=False)])
@@ -745,30 +877,36 @@ if __name__ == '__main__':
                 # network_jitter_heatmap_date.append([(app + '-NET-REC'), 'No-Fault', app_fault_statistics.jitter_faulty_fault_free('NET', 'REC', is_faulty=False)])
                 # network_jitter_heatmap_date.append([(app + '-NET-TRA'), 'No-Fault', app_fault_statistics.jitter_faulty_fault_free('NET', 'TRA', is_faulty=False)])
 
-                jitter_heatmap_data.append([(app + '-CPU%SYS'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('CPU', 'SYS'))])
-                jitter_heatmap_data.append([(app + '-CPU%USR'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('CPU', 'USR'))])
-                jitter_heatmap_data.append([(app + '-MEM'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('MEM', ''))])
-                jitter_heatmap_data.append([(app + '-DISK'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('DISK', ''))])
-                network_jitter_heatmap_date.append([(app + '-NET-REC'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('NET', 'REC'))])
-                network_jitter_heatmap_date.append([(app + '-NET-TRA'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('NET', 'TRA'))])
-                latency_jitter_data.append([(app + '-LATENCY'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME'))])
-
+                jitter_heatmap_data.append(
+                    [(app + '-CPU%SYS'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('CPU', 'SYS'))])
+                jitter_heatmap_data.append(
+                    [(app + '-CPU%USR'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('CPU', 'USR'))])
+                jitter_heatmap_data.append(
+                    [(app + '-MEM'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('MEM', ''))])
+                jitter_heatmap_data.append(
+                    [(app + '-DISK'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('DISK', ''))])
+                network_jitter_heatmap_date.append(
+                    [(app + '-NET-REC'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('NET', 'REC'))])
+                network_jitter_heatmap_date.append(
+                    [(app + '-NET-TRA'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('NET', 'TRA'))])
+                latency_jitter_data.append([(app + '-LATENCY'), 'No-Fault',
+                                            jitter(app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME'))])
 
                 # jitter_heatmap_data.append([(app + '-NET-UTIL'), 'No-Fault', jitter(app_fault_statistics.get_fault_free_values('NET', 'UTIL'))])
                 latency_data.append(((app + '-No-Fault'),
-                                     utils.get_avg_without_outlier(app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME')),
-                                     utils.get_std_without_outlier(app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME'))))
+                                     utils.get_avg_without_outlier(
+                                         app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME')),
+                                     utils.get_std_without_outlier(
+                                         app_fault_statistics.get_fault_free_values('LATENCY', 'COM-TIME'))))
                 no_fault_written = True
 
-
-    draw_heatmap(x_labels, y_labels, jitter_heatmap_data)
+    # draw_heatmap(x_labels, y_labels, jitter_heatmap_data)
     # draw_heatmap(x_labels, y_diff_labels, diffs_heatmap_data)
     # draw_heatmap(x_network_labels, y_diff_labels, network_diffs_heatmapt_date)
     # draw_heatmap(x_network_labels, y_labels, network_jitter_heatmap_date)
     # draw_heatmap(x_latencies_labels, y_labels, latency_jitter_data)
     # draw_heatmap(x_latencies_labels, y_labels, latency_diffs_data)
-
-#############################################
+    #############################################
     # extract the labels, values, and errors into separate lists
     # labels = [x[0] for x in latency_data]
     # values = [x[1] for x in latency_data]
@@ -791,7 +929,33 @@ if __name__ == '__main__':
 
     # plot_single_resource(app, fault, compute_times, fault_start_indices, fault_end_indices, show_injection_times=True)
 
+def draw_fault_free_resource_comparisons():
+    app_statistics = {}
+    apps = ['FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
+            'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE']
+
+    max_x_axix = 0
+    for app in apps:
+        app_stat = AppFaultStatistics(app, 'No-Fault')
+        app_statistics[app] = app_stat
+        experiment_duration = len(app_stat.get_resource_summary_matrix().keys())
+        if experiment_duration > max_x_axix:
+            max_x_axix = experiment_duration
+
+    fig, ax = plt.subplots()
+    
+    for app in apps:
+        ax.plot(x1, y1, label='Line 1')
 
 
+    # Create the figure and subplots
+    fig, axes = plt.subplots(5, 1, figsize=(8, 12), sharex=True)
 
+if __name__ == '__main__':
+    # app_fault_statistics = AppFaultStatistics('AE', 'CTXS-10000')
+    # app_fault_statistics.plot_resource_with_residual('CPU', 'SYS', show_injection_times=False)
+    # draw_fault_free_comparisons()
+    app_statistic = AppStatistics('AE')
 
+    # '2023-05-23 14:33:59.347000 - 2023-05-23 14:34:29.347000'
+    # '2023-05-23 14:33:59.347000 - 2023-05-23 14:34:29.347000'
