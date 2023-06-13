@@ -6,9 +6,9 @@ configs.py
 
 from enum import Enum
 class EdgeDevice(Enum):
-    RPI = 1
-    NANO = 2
-    CORAL = 3
+    RPI = 'raspberrypi'
+    NANO = 'nano'
+    CORAL = 'coral'
 
 EDGE_DEVICE_NAME = EdgeDevice.RPI
 if EDGE_DEVICE_NAME == EdgeDevice.RPI:
