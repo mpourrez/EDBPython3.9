@@ -4,29 +4,42 @@
 configs.py
 """
 
+from enum import Enum
+class EdgeDevice(Enum):
+    RPI = 1
+    NANO = 2
+    CORAL = 3
+
+EDGE_DEVICE_NAME = EdgeDevice.RPI
+if EDGE_DEVICE_NAME == EdgeDevice.RPI:
+    EDGE_DEVICES_IP = ['192.168.0.168']
+    PROJECT_PATH = "/home/pi/Projects/"
+else:
+    EDGE_DEVICES_IP = ['192.168.0.225']
+    PROJECT_PATH = "/home/nano/Projects/"
+EDGE_DEVICE_PORT = 50051
+ORCHESTRATOR_IP = '192.168.0.22'
+
 MAX_FRAME_NUM = 300
-#PROJECT_PATH = "/home/pi/Projects/"
-PROJECT_PATH = "/Users/maryampourreza/Projects/"
+#PROJECT_PATH = "/Users/maryampourreza/Projects/"
 WORKLOAD_INPUT_PATH = 'workloads/MOT20-01/img1/'
 TIME_BOUND_FOR_FAULT_INJECTION = 5  # in-seconds
 
 FAULT_FREE_DURATIONS = 30
 NUMBER_OF_FAULT_INJECTIONS = 10
+NUMBER_OF_FAULT_FREE_ROUNDS = 10
 FAULT_INJECTION_DURATION = 30
 RESOURCE_MONITOR_INTERVALS = 1  # in-seconds
 EXPERIMENT_DURATION = FAULT_INJECTION_DURATION * NUMBER_OF_FAULT_INJECTIONS + \
                       FAULT_FREE_DURATIONS * (NUMBER_OF_FAULT_INJECTIONS + 1)
 
-EDGE_DEVICE_NAME = 'raspberrypi'
-EDGE_DEVICES_IP = ['192.168.0.168']
-EDGE_DEVICE_PORT = 50051
-ORCHESTRATOR_IP = '192.168.0.22'
 #
 APPLICATIONS = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT',
                 'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU']
 
 # APPLICATIONS = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
 #                 'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
+
 
 class Fault:
     def __init__(self, fault_name, abbreviation, fault_command, fault_config):
@@ -41,7 +54,7 @@ FAULTS = [
     Fault('io-stress', 'IO', '--io', ['100']),
     Fault('page-fault', 'PF', '--fault', ['0']),
     Fault('cache-thrashing', 'CCHE', '--cache', ['0']),
-    Fault('context-switch', 'CTXS', '--cswitch --cswitch-ops', ['10000']),
+    # Fault('context-switch', 'CTXS', '--cswitch --cswitch-ops', ['10000']),
 
     # Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['20%']),
     # Fault('cpu-overload', 'CPU', '--cpu 0 --cpu-load', ['80']),

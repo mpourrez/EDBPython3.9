@@ -7,7 +7,11 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-squeezenet = models.squeezenet1_0(pretrained=True)
+# Check if a GPU is available and set the device accordingly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("[x] Device found: {0}".format(device))
+
+squeezenet = models.squeezenet1_0(pretrained=True).to(device)
 torch.save(squeezenet.state_dict(), 'squeezenet.pth')
 
 
@@ -23,17 +27,17 @@ def classify_image(request, request_received_time_ms):
     ])
 
     # Create a new instance of SqueezeNet
-    model = models.squeezenet1_0(pretrained=False)
+    model = models.squeezenet1_0(pretrained=False).to(device)
     model.transform = transform
     # Load the state_dict into the new_model
-    model.load_state_dict(torch.load('squeezenet.pth', map_location=torch.device('cpu')))
+    model.load_state_dict(torch.load('squeezenet.pth', map_location=device))
 
     # Decode the base64 image
     image_data = base64.b64decode(request.image)
     # Open the image using PIL
     image = Image.open(io.BytesIO(image_data))
     # Preprocess the image using the transformation pipeline
-    input_image = transform(image).unsqueeze(0)  # Add an extra dimension for batch
+    input_image = transform(image).unsqueeze(0).to(device)  # Add an extra dimension for batch
 
     output = model(input_image)
     prob, predicted = torch.max(output, 1)

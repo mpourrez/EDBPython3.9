@@ -1,8 +1,14 @@
+import base64
+import subprocess
+import torch
+import torchvision.transforms as transforms
+from PIL import Image
 from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
-import base64
-import os
-import subprocess
+
+# Check if a GPU is available and set the device accordingly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("[x] Device found: {0}".format(device))
 
 def detect(request, request_received_time_ms):
     # Decode base64 string to binary format
@@ -12,12 +18,17 @@ def detect(request, request_received_time_ms):
     with open('input.jpg', 'wb') as f:
         f.write(binary_data)
 
-    # Use Darknet to perform object classification with GPU
-    cmd = ['darknet', 'detector', 'test', 'cfg/coco.data', 'cfg/yolov3.cfg', 'yolov3.weights', '-dont_show',
-           'input.jpg']
-    env = os.environ.copy()
-    env['CUDA_VISIBLE_DEVICES'] = '0'  # Set the GPU index here
-    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE, env=env)
+    # Load the image and apply transformations
+    image = Image.open('input.jpg').convert('RGB')
+    transform = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225])
+    ])
+    image = transform(image).unsqueeze(0).to(device)
+
+    # Use Darknet to perform object detection
+    cmd = ['darknet', 'detect', 'cfg/yolov3.cfg', 'yolov3.weights', 'input.jpg']
+    proc = subprocess.Popen(cmd, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
     output, err = proc.communicate()
 
     # Parse the output of Darknet and return the results
@@ -36,14 +47,14 @@ def detect(request, request_received_time_ms):
             label = parts[0].strip()
             confidence = float(parts[1].strip().replace('%', '')) / 100.0
             results.append((label, confidence))
-            detected_objects = pb2.DetectedTrackedObject()
-            detected_objects.clazz = label
-            detected_objects.append(detected_objects)
+            detected_object = pb2.DetectedTrackedObject()
+            detected_object.clazz = label
+            detected_objects.append(detected_object)
 
     detection_result = pb2.ObjectDetectionResponse()
     detection_result.request_time_ms = request.request_time_ms
     detection_result.request_received_time_ms = request_received_time_ms
     detection_result.response_time_ms = current_milli_time()
     detection_result.detected_objects.extend(detected_objects)
-    print("[x] Object-detection - Responded the client request")
+    print("[x] Object-detection - Responded to the client request")
     return detection_result
