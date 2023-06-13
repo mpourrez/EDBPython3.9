@@ -20,7 +20,7 @@ import signal
 ####################################################################################
 ####################################################################################
 def save_experiment_results_over_time(application, fault_config_file_name, results):
-    latency_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application \
+    latency_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application \
                        + "-" + fault_config_file_name + "-Latency.csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
@@ -44,7 +44,7 @@ def save_experiment_results_over_time(application, fault_config_file_name, resul
 
 
 def save_experiment_results(application, fault_config_file_name, results, res_utilizations):
-    latency_filename = configs.PROJECT_PATH + "EDB/results/" + configs.EDGE_DEVICE_NAME + "/" + application + "-" + \
+    latency_filename = configs.PROJECT_PATH + "EDB/results/" + configs.EDGE_DEVICE_NAME.value + "/" + application + "-" + \
                        fault_config_file_name + ".csv"
     print("********[x]***** Saving results for filename:{}".format(latency_filename))
     print("********[x]***** Size of results: " + str(len(results)))
@@ -73,17 +73,17 @@ def save_experiment_results(application, fault_config_file_name, results, res_ut
 
 
 def save_resource_logs(application, fault_config_file_name, resource_logs):
-    cpu_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application + \
+    cpu_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application + \
                    "-" + fault_config_file_name + "-CPU.txt"
-    mem_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application + \
+    mem_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application + \
                    "-" + fault_config_file_name + "-MEM.txt"
-    net_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application + \
+    net_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application + \
                    "-" + fault_config_file_name + "-NET.txt"
-    io_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application + \
+    io_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application + \
                   "-" + fault_config_file_name + "-IO.txt"
-    cpu_temps_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + application + \
+    cpu_temps_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + application + \
                          "-" + fault_config_file_name + "-TEMP.txt"
-    fault_injection_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME + "/" + \
+    fault_injection_filename = configs.PROJECT_PATH + "EDB/results_over_time/" + configs.EDGE_DEVICE_NAME.value + "/" + \
                                application + "-" + fault_config_file_name + "-FaultInjection.csv"
     with open(cpu_filename, "wb") as cpu_f:
         cpu_f.write(resource_logs.cpu_log.data)
@@ -123,7 +123,7 @@ def run_single_experiment(client, application, fault, fault_config, experiment_i
         fault_config_file_name = '{0}-{1}'.format(fault.abbreviation, fault_config)
     print("***************************************************************************************")
     print("****************** Starting experiment: device:{0} - ip:{1} - app:{2} - {3} - exp id: {4}".format(
-        configs.EDGE_DEVICE_NAME, client.host, application, fault_config_file_name, experiment_id))
+        configs.EDGE_DEVICE_NAME.value, client.host, application, fault_config_file_name, experiment_id))
     print("***************************************************************************************")
 
     fault_injection_status = client.call_server_to_get_fault_injection_status()
@@ -168,10 +168,16 @@ def get_application_result(application_to_test):
         grpc_result = client.call_speech_to_text()
     elif application_to_test == 'IC-A-CPU':
         grpc_result = client.call_image_classification_alexnet_cpu()
+    elif application_to_test == 'IC-A-GPU':
+        grpc_result = client.call_image_classification_alexnet_gpu()
     elif application_to_test == 'IC-S-CPU':
         grpc_result = client.call_image_classification_squeezenet_cpu()
+    elif application_to_test == 'IC-S-GPU':
+        grpc_result = client.call_image_classification_squeezenet_gpu()
     elif application_to_test == 'OD-CPU':
         grpc_result = client.call_object_detection_darknet()
+    elif application_to_test == 'OD-GPU':
+        grpc_result = client.call_object_detection_darknet_gpu()
     elif application_to_test == 'PS':
         grpc_result = client.call_pocket_sphinx()
     elif application_to_test == 'AE':
@@ -190,7 +196,7 @@ def get_application_result(application_to_test):
 def run_application_over_time_fault_free(edge_server, application_to_test):
     print("***************************************************************************************")
     print("****************** Starting experiment: device:{0} - ip:{1} - app:{2} - Fault - Free".format(
-        configs.EDGE_DEVICE_NAME, edge_server.host, application_to_test))
+        configs.EDGE_DEVICE_NAME.value, edge_server.host, application_to_test))
     print("***************************************************************************************")
     resource_tracing_status = client.call_server_to_get_resource_tracking_status()
     while not resource_tracing_status.is_finished:
@@ -216,7 +222,7 @@ def run_application_over_time_fault_free(edge_server, application_to_test):
 def run_application_over_time(edge_server, application_to_test, fault_to_inject, fconfig):
     print("***************************************************************************************")
     print("****************** Starting experiment: device:{0} - ip:{1} - app:{2} - fault:{3} - config:{4}".format(
-        configs.EDGE_DEVICE_NAME, edge_server.host, application_to_test, fault_to_inject.abbreviation, fconfig))
+        configs.EDGE_DEVICE_NAME.value, edge_server.host, application_to_test, fault_to_inject.abbreviation, fconfig))
     print("***************************************************************************************")
     # resource_tracing_status = client.call_server_to_get_resource_tracking_status()
     # while not resource_tracing_status.is_finished:
@@ -280,15 +286,15 @@ if __name__ == '__main__':
     utils.initial_workload_setup()
     for edge_device_ip in configs.EDGE_DEVICES_IP:
         client = grpc_client.Client(edge_device_ip)
-        for app in configs.APPLICATIONS:
-            ######################################################################
-            ####### Fault Free Resource Evaluations ##############################
-            experiment_results = run_application_over_time_fault_free(client, app)
-            time.sleep(10)
-            save_experiment_results_over_time(app, 'No-Fault', experiment_results)
-            resource_logs = client.get_resource_logs()
-            save_resource_logs(app, 'No-Fault', resource_logs)
-            ######################################################################
+        # for app in configs.APPLICATIONS:
+        #     ######################################################################
+        #     ####### Fault Free Resource Evaluations ##############################
+        #     experiment_results = run_application_over_time_fault_free(client, app)
+        #     time.sleep(10)
+        #     save_experiment_results_over_time(app, 'No-Fault', experiment_results)
+        #     resource_logs = client.get_resource_logs()
+        #     save_resource_logs(app, 'No-Fault', resource_logs)
+        #     ######################################################################
 
         for app in configs.APPLICATIONS:
             for fault in configs.FAULTS:

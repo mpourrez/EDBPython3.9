@@ -191,11 +191,22 @@ class Client(object):
         message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
         return self.application_stub.image_classification_alexnet(message)
 
+    def call_image_classification_alexnet_gpu(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.image_classification_alexnet_gpu(message)
+
     def call_image_classification_squeezenet_cpu(self):
         request_time_ms = utils.current_milli_time()
         image = utils.get_random_image()
         message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
         return self.application_stub.image_classification_squeezenet(message)
+    def call_image_classification_squeezenet_gpu(self):
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ImageClassificationRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.image_classification_squeezenet_gpu(message)
 
     def call_object_detection_darknet(self):
         print("[x] Sending request for object detection")
@@ -203,6 +214,13 @@ class Client(object):
         image = utils.get_random_image()
         message = pb2.ObjectDetectionRequest(image=image, request_time_ms=request_time_ms)
         return self.application_stub.object_detection_darknet(message)
+
+    def call_object_detection_darknet_gpu(self):
+        print("[x] Sending request for object detection GPU")
+        request_time_ms = utils.current_milli_time()
+        image = utils.get_random_image()
+        message = pb2.ObjectDetectionRequest(image=image, request_time_ms=request_time_ms)
+        return self.application_stub.object_detection_darknet_gpu(message)
 
     def call_pocket_sphinx(self):
         print("[x] Calling PocketSphinx")
