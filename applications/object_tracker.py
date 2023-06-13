@@ -24,31 +24,31 @@ from protos import benchmark_pb2 as pb2
 from utils import current_milli_time
 import configs
 
-# comment out below line to enable tensorflow logging outputs
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
-
-# Definition of the parameters
-max_cosine_distance = 0.4
-nn_budget = None
-nms_max_overlap = 1.0
-
-# initialize deep sort
-model_filename = configs.PROJECT_PATH + 'EDB/applications/object_tracking/model_data/mars-small128.pb'
-encoder = gdet.create_box_encoder(model_filename, batch_size=1)
-# calculate cosine distance metric
-metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
-# initialize tracker
-tracker = Tracker(metric)
-
-# load configuration for object detector
-config = ConfigProto()
-config.gpu_options.allow_growth = True
-session = InteractiveSession(config=config)
-STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config2(FLAGS)
-input_size = 416  # FLAGS.size
-weights = configs.PROJECT_PATH + "EDB/applications/object_tracking/checkpoints/yolov4-tiny-416"
-saved_model_loaded = tf.saved_model.load(weights, tags=[tag_constants.SERVING])
-infer = saved_model_loaded.signatures['serving_default']
+# # comment out below line to enable tensorflow logging outputs
+# os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+#
+# # Definition of the parameters
+# max_cosine_distance = 0.4
+# nn_budget = None
+# nms_max_overlap = 1.0
+#
+# # initialize deep sort
+# model_filename = configs.PROJECT_PATH + 'EDB/applications/object_tracking/model_data/mars-small128.pb'
+# encoder = gdet.create_box_encoder(model_filename, batch_size=1)
+# # calculate cosine distance metric
+# metric = nn_matching.NearestNeighborDistanceMetric("cosine", max_cosine_distance, nn_budget)
+# # initialize tracker
+# tracker = Tracker(metric)
+#
+# # load configuration for object detector
+# config = ConfigProto()
+# config.gpu_options.allow_growth = True
+# session = InteractiveSession(config=config)
+# STRIDES, ANCHORS, NUM_CLASS, XYSCALE = utils.load_config2(FLAGS)
+# input_size = 416  # FLAGS.size
+# weights = configs.PROJECT_PATH + "EDB/applications/object_tracking/checkpoints/yolov4-tiny-416"
+# saved_model_loaded = tf.saved_model.load(weights, tags=[tag_constants.SERVING])
+# infer = saved_model_loaded.signatures['serving_default']
 
 
 def enable_gpu():
