@@ -7,11 +7,11 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-if configs.EDGE_DEVICE_NAME == EdgeDevice.NANO:
-    alexnet = models.alexnet(pretrained=True)
-else:
-    alexnet = models.alexnet(weights=models.AlexNet_Weights.IMAGENET1K_V1)
-torch.save(alexnet.state_dict(), 'alexnet.pth')
+# if configs.EDGE_DEVICE_NAME == EdgeDevice.NANO:
+#     alexnet = models.alexnet(pretrained=True)
+# else:
+#     alexnet = models.alexnet(weights=models.AlexNet_Weights.IMAGENET1K_V1)
+# torch.save(alexnet.state_dict(), 'alexnet.pth')
 
 def classify_image(request, request_received_time_ms):
     transform = transforms.Compose([

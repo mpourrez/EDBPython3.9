@@ -6,9 +6,9 @@ from PIL import Image
 from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
 
-# Check if a GPU is available and set the device accordingly
-device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-print("[x] Device found: {0}".format(device))
+# # Check if a GPU is available and set the device accordingly
+# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+# print("[x] Device found: {0}".format(device))
 
 def detect(request, request_received_time_ms):
     # Decode base64 string to binary format

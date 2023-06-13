@@ -2,11 +2,11 @@ import pocketsphinx
 from utils import current_milli_time
 from protos import benchmark_pb2 as pb2
 
-config = pocketsphinx.Decoder.default_config()
-config.set_string('-hmm', '/usr/share/pocketsphinx/model/en-us/en-us')
-config.set_string('-lm', '/usr/share/pocketsphinx/model/en-us/en-us.lm.bin')
-config.set_string('-dict', '/usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
-decoder = pocketsphinx.Decoder(config)
+# config = pocketsphinx.Decoder.default_config()
+# config.set_string('-hmm', '/usr/share/pocketsphinx/model/en-us/en-us')
+# config.set_string('-lm', '/usr/share/pocketsphinx/model/en-us/en-us.lm.bin')
+# config.set_string('-dict', '/usr/share/pocketsphinx/model/en-us/cmudict-en-us.dict')
+# decoder = pocketsphinx.Decoder(config)
 
 
 def convert_to_text(request):
