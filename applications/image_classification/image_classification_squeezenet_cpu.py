@@ -7,8 +7,8 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-# squeezenet = models.squeezenet1_0(pretrained=True)
-# torch.save(squeezenet.state_dict(), 'squeezenet.pth')
+squeezenet = models.squeezenet1_0(pretrained=True)
+torch.save(squeezenet.state_dict(), 'squeezenet.pth')
 
 
 def classify_image(request, request_received_time_ms):

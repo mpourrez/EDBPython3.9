@@ -7,12 +7,12 @@ import torch
 import torchvision.transforms as transforms
 import torchvision.models as models
 
-# # Check if a GPU is available and set the device accordingly
-# device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
-# print("[x] Device found: {0}".format(device))
-#
-# squeezenet = models.squeezenet1_0(pretrained=True).to(device)
-# torch.save(squeezenet.state_dict(), 'squeezenet.pth')
+# Check if a GPU is available and set the device accordingly
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+print("[x] Device found: {0}".format(device))
+
+squeezenet = models.squeezenet1_0(pretrained=True).to(device)
+torch.save(squeezenet.state_dict(), 'squeezenet.pth')
 
 
 def classify_image(request, request_received_time_ms):
