@@ -108,9 +108,8 @@ def save_resource_logs(application, fault_config_file_name, resource_logs):
         fi_writer = csv.writer(fi_csv_output)
 
         fi_writer.writerow(["fault_injection_start_time", "fault_injection_stop_time"])
-        for f_start, f_stop in zip(resource_logs.fault_injection_start_times_ms,
-                                   resource_logs.fault_injection_stop_times_ms):
-            fi_writer.writerow([f_start, f_stop])
+        for f_start in resource_logs.fault_injection_start_times_ms:
+            fi_writer.writerow([f_start])
 
 
 ####################################################################################
