@@ -10,9 +10,9 @@ class EdgeDevice(Enum):
     NANO = 'nano'
     CORAL = 'coral'
 
-EDGE_DEVICE_NAME = EdgeDevice.NANO
+EDGE_DEVICE_NAME = EdgeDevice.RPI
 if EDGE_DEVICE_NAME == EdgeDevice.RPI:
-    EDGE_DEVICES_IP = ['192.168.0.168']
+    EDGE_DEVICES_IP = ['192.168.0.194']
     PROJECT_PATH = "/home/pi/Projects/"
 else:
     EDGE_DEVICES_IP = ['192.168.0.225']
@@ -21,20 +21,20 @@ EDGE_DEVICE_PORT = 50051
 ORCHESTRATOR_IP = '192.168.0.22'
 
 MAX_FRAME_NUM = 300
-PROJECT_PATH = "/Users/maryampourreza/Projects/edge/"
+PROJECT_PATH = "/Users/maryampourreza/Projects/"
 WORKLOAD_INPUT_PATH = 'workloads/MOT20-01/img1/'
 TIME_BOUND_FOR_FAULT_INJECTION = 5  # in-seconds
 
-FAULT_FREE_DURATIONS = 10
-NUMBER_OF_FAULT_INJECTIONS = 1
-NUMBER_OF_FAULT_FREE_ROUNDS = 1
-FAULT_INJECTION_DURATION = 10
+FAULT_FREE_DURATIONS = 30
+NUMBER_OF_FAULT_INJECTIONS = 10
+NUMBER_OF_FAULT_FREE_ROUNDS = 10
+FAULT_INJECTION_DURATION = 30
 RESOURCE_MONITOR_INTERVALS = 1  # in-seconds
 EXPERIMENT_DURATION = FAULT_INJECTION_DURATION * NUMBER_OF_FAULT_INJECTIONS + \
                       FAULT_FREE_DURATIONS * (NUMBER_OF_FAULT_INJECTIONS + 1)
 
 #
-APPLICATIONS = ['IC-A-CPU', 'IC-A-GPU', 'IC-S-CPU', 'IC-S-GPU', 'OD-CPU', 'OD-GPU']
+APPLICATIONS = ['FFT']
 
 # APPLICATIONS = ['MM', 'FFT', 'FPO-SIN', 'FPO-SQRT', 'SORT', 'DD', 'IPERF',
 #                 'IP', 'SA', 'ST', 'IC-A-CPU', 'IC-S-CPU', 'OD-CPU', 'PS', 'AE', 'OT-CPU']
@@ -49,7 +49,7 @@ class Fault:
 
 FAULTS = [
     Fault('cpu-overload', 'CPU', '--cpu 0 --cpu-load', ['20', '60', '90']),
-    Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['20%', '60%', '90%']),
+    Fault('memory-contention', 'MEM', '--vm 0 --vm-method all --vm-bytes', ['20%', '60%']),
     Fault('io-stress', 'IO', '--io', ['100']),
     Fault('page-fault', 'PF', '--fault', ['0']),
     Fault('cache-thrashing', 'CCHE', '--cache', ['0']),

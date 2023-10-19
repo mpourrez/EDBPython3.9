@@ -1,34 +1,7 @@
-name: benchmark
+name: benchmarkPython39
 
 dependencies:
   - python==3.9
   - pip
-  - matplotlib
   - pip:
-    - opencv-contrib-python
-    - lxml
-    - tqdm
-    - tensorflow
-    - seaborn
-    - absl-py
-    - easydict
-    - pillow
-    - nest_asyncio
-    - pyshark
-    - ntplib
-    - psutil
-    - scipy
-    - speedtest-cli
-    - pocketsphinx
-    - SpeechRecognition
-    - numpy
-    - pydub
-    - soundfile
-    - librosa
-    - nltk
-    - textblob
-    - torch
-    - torchvision
-    - pyaudio
-    - scikit-image
-    - filterpy
+    - grpcio
