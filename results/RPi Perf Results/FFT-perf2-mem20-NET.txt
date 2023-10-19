@@ -1,0 +1,511 @@
+Linux 5.19.0-1022-raspi (pi-desktop) 	10/18/2023 	_aarch64_	(4 CPU)
+
+06:43:46 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:47 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:47 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:47 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:47 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:48 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:48 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:48 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:48 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:49 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:49 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:49 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:49 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:50 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:50 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:50 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:50 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:51 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:51 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:51 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:51 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:52 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:52 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:52 PM     wlan0    430.00    342.00    412.58    412.79      0.00      0.00      0.00      0.00
+
+06:43:52 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:53 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:53 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:53 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:53 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:54 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:54 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:54 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:54 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:55 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:55 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:55 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:55 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:56 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:56 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:56 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:56 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:57 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:57 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:57 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:57 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:58 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:58 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:58 PM     wlan0    424.00    417.00    412.27    417.63      0.00      0.00      0.00      0.00
+
+06:43:58 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:43:59 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:59 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:43:59 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:43:59 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:00 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:00 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:00 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:00 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:01 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:01 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:01 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:01 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:02 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:02 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:02 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:02 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:03 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:03 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:03 PM     wlan0    436.00    335.00    412.88    412.34      0.00      0.00      0.00      0.00
+
+06:44:03 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:04 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:04 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:04 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:04 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:05 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:05 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:05 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:05 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:06 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:06 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:06 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:06 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:07 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:07 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:07 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:07 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:08 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:08 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:08 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:08 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:09 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:09 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:09 PM     wlan0    421.00    321.00    412.12    411.44      0.00      0.00      0.00      0.00
+
+06:44:09 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:10 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:10 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:10 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:10 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:11 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:11 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:11 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:11 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:12 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:12 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:12 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:12 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:13 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:13 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:13 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:13 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:14 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:14 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:14 PM     wlan0    422.00    330.00    412.17    412.02      0.00      0.00      0.00      0.00
+
+06:44:14 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:15 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:15 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:15 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:15 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:16 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:16 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:16 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:16 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:17 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:17 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:17 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:17 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:18 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:18 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:18 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:18 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:19 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:19 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:19 PM     wlan0      0.00     10.00      0.00     14.79      0.00      0.00      0.00      0.00
+
+06:44:19 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:20 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:20 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:20 PM     wlan0    433.00    279.00    412.73    394.59      0.00      0.00      0.00      0.00
+
+06:44:20 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:21 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:21 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:21 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:21 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:22 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:22 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:22 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:22 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:23 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:23 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:23 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:23 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:24 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:24 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:24 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:24 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:25 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:25 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:25 PM     wlan0    308.00    302.00    247.59    410.21      0.00      0.00      0.00      0.00
+
+06:44:25 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:26 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:26 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:26 PM     wlan0    115.00     15.00    164.63      0.97      0.00      0.00      0.00      0.00
+
+06:44:26 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:27 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:27 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:27 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:27 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:28 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:28 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:28 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:28 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:29 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:29 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:29 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:29 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:30 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:30 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:30 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:30 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:31 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:31 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:31 PM     wlan0    420.00    307.00    412.07    410.54      0.00      0.00      0.00      0.00
+
+06:44:31 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:32 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:32 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:32 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:32 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:33 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:33 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:33 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:33 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:34 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:34 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:34 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:34 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:35 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:35 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:35 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:35 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:36 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:36 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:36 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:36 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:37 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:37 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:37 PM     wlan0    424.00    323.00    412.27    411.57      0.00      0.00      0.00      0.00
+
+06:44:37 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:38 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:38 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:38 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:38 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:39 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:39 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:39 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:39 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:40 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:40 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:40 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:40 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:41 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:41 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:41 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:41 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:42 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:42 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:42 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:42 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:43 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:43 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:43 PM     wlan0    430.00    309.00    412.63    410.77      0.00      0.00      0.00      0.00
+
+06:44:43 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:44 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:44 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:44 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:44 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:45 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:45 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:45 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:45 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:46 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:46 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:46 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:46 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:47 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:47 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:47 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:47 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:48 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:48 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:48 PM     wlan0      1.00      1.00      0.03      0.04      0.00      0.00      0.00      0.00
+
+06:44:48 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:49 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:49 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:49 PM     wlan0    414.00    322.00    411.76    411.50      0.00      0.00      0.00      0.00
+
+06:44:49 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:50 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:50 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:50 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:50 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:51 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:51 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:51 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:51 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:52 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:52 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:52 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:52 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:53 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:53 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:53 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:53 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:54 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:54 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:54 PM     wlan0     65.00    164.00      3.34    242.48      0.00      0.00      0.00      0.00
+
+06:44:54 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:55 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:55 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:55 PM     wlan0    358.00    149.00    408.88    168.45      0.00      0.00      0.00      0.00
+
+06:44:55 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:56 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:56 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:56 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:56 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:57 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:57 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:57 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:57 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:58 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:58 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:58 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:58 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:44:59 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:59 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:44:59 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:44:59 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:00 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:00 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:00 PM     wlan0    418.00    307.00    411.97    410.54      0.00      0.00      0.00      0.00
+
+06:45:00 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:01 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:01 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:01 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:01 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:02 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:02 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:02 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:02 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:03 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:03 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:03 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:03 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:04 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:04 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:04 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:04 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:05 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:05 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:05 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:05 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:06 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:06 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:06 PM     wlan0    490.00    302.00    415.62    410.21      0.00      0.00      0.00      0.00
+
+06:45:06 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:07 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:07 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:07 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:07 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:08 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:08 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:08 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:08 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:09 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:09 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:09 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:09 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:10 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:10 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:10 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:10 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:11 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:11 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:11 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:11 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:12 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:12 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:12 PM     wlan0    442.00    312.00    413.19    410.86      0.00      0.00      0.00      0.00
+
+06:45:12 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:13 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:13 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:13 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:13 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:14 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:14 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:14 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:14 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:15 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:15 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:15 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:15 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:16 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:16 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:16 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:16 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:17 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:17 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:17 PM     wlan0     33.00    122.00      1.72    180.38      0.00      0.00      0.00      0.00
+
+06:45:17 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:18 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:18 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:18 PM     wlan0    110.00    155.00      5.59    228.21      0.00      0.00      0.00      0.00
+
+06:45:18 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:19 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:19 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:19 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:19 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:20 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:20 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:20 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:20 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:21 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:21 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:21 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:21 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:22 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:22 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:22 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:22 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:23 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:23 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:23 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:23 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:24 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:24 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:24 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:24 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:25 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:25 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:25 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:25 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:26 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:26 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:26 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:26 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:27 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:27 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:27 PM     wlan0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+
+06:45:27 PM     IFACE   rxpck/s   txpck/s    rxkB/s    txkB/s   rxcmp/s   txcmp/s  rxmcst/s   %ifutil
+06:45:28 PM        lo      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:28 PM      eth0      0.00      0.00      0.00      0.00      0.00      0.00      0.00      0.00
+06:45:28 PM     wlan0      3.00      2.00      0.27      0.15      0.00      0.00      0.00      0.00

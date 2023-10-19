@@ -1,0 +1,511 @@
+Linux 5.19.0-1022-raspi (pi-desktop) 	10/18/2023 	_aarch64_	(4 CPU)
+
+10/18/2023 06:46:34 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.47     21.89     0.18  28.03   15.57    47.06    0.41     26.10     0.49  54.18   53.88    63.18    0.01      4.81     0.00   5.98   22.23   809.87    0.00    0.00    0.03   0.39
+
+
+10/18/2023 06:46:35 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  498.02   3330.69   233.66  31.94   11.65     6.69   12.87    126.73     0.00   0.00   26.00     9.85    0.00    0.00    6.14 100.20
+
+
+10/18/2023 06:46:36 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  657.58   3959.60   306.06  31.76    3.27     6.02    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.15  98.18
+
+
+10/18/2023 06:46:37 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  244.00   4280.00   235.00  49.06   13.80    17.54    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.37  51.60
+
+
+10/18/2023 06:46:38 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  269.00   4224.00   177.00  39.69   10.59    15.70    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.85  54.80
+
+
+10/18/2023 06:46:39 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  297.00   4944.00   311.00  51.15   11.29    16.65    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.35  60.80
+
+
+10/18/2023 06:46:40 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  273.00   4216.00   244.00  47.20   13.53    15.44    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.69  56.00
+
+
+10/18/2023 06:46:41 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  328.00   5160.00   287.00  46.67   15.02    15.73    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.93  65.20
+
+
+10/18/2023 06:46:42 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  287.00   4612.00   222.00  43.61   11.83    16.07    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.40  57.60
+
+
+10/18/2023 06:46:43 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  227.00   3880.00   222.00  49.44   10.22    17.09    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.32  44.80
+
+
+10/18/2023 06:46:44 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  233.00   5152.00   263.00  53.02    6.84    22.11    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.59  53.60
+
+
+10/18/2023 06:46:45 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  232.69   3980.77   179.81  43.59   12.82    17.11    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.98  52.69
+
+
+10/18/2023 06:46:46 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  279.17   4575.00   246.88  46.93   11.56    16.39    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.23  60.00
+
+
+10/18/2023 06:46:47 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  255.00   4508.00   273.00  51.70   17.84    17.68    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.55  53.60
+
+
+10/18/2023 06:46:48 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  264.00   4572.00   242.00  47.83   12.48    17.32    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.30  56.40
+
+
+10/18/2023 06:46:49 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  263.00   4712.00   180.00  40.63   12.18    17.92    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.20  52.40
+
+
+10/18/2023 06:46:50 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  263.00   4604.00   231.00  46.76   11.75    17.51    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.09  52.40
+
+
+10/18/2023 06:46:51 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  187.00   4296.00   194.00  50.92    4.96    22.97    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.93  45.60
+
+
+10/18/2023 06:46:52 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  256.44   4495.05   253.47  49.71   14.03    17.53    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.60  53.47
+
+
+10/18/2023 06:46:53 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  305.05   4690.91   198.99  39.48   10.31    15.38    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.14  61.82
+
+
+10/18/2023 06:46:54 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  261.00   4372.00   255.00  49.42   12.19    16.75    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.18  50.40
+
+
+10/18/2023 06:46:55 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  285.00   4608.00   253.00  47.03   18.22    16.17    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    5.20  62.80
+
+
+10/18/2023 06:46:56 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  279.00   4528.00   254.00  47.65   13.54    16.23    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.78  60.40
+
+
+10/18/2023 06:46:57 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  264.36   4704.95   227.72  46.28   12.37    17.80    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.27  54.65
+
+
+10/18/2023 06:46:58 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  288.89   4496.97   244.44  45.83   12.19    15.57    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.52  59.39
+
+
+10/18/2023 06:46:59 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  200.99   4269.31   179.21  47.14    8.93    21.24    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.80  45.15
+
+
+10/18/2023 06:47:00 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  228.00   4260.00   254.00  52.70    8.86    18.68    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.02  52.40
+
+
+10/18/2023 06:47:01 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  290.00   4724.00   229.00  44.12   13.08    16.29    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.79  58.40
+
+
+10/18/2023 06:47:02 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  310.00   5076.00   215.00  40.95   13.51    16.37    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.19  67.20
+
+
+10/18/2023 06:47:03 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  266.00   4292.00   220.00  45.27    8.46    16.14    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.25  56.00
+
+
+10/18/2023 06:47:04 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  319.00   4912.00   285.00  47.19   14.32    15.40    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.57  66.40
+
+
+10/18/2023 06:47:05 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  272.00   4364.00   216.00  44.26   14.24    16.04    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.88  54.00
+
+
+10/18/2023 06:47:06 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  294.00   4740.00   285.00  49.22   15.24    16.12    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.48  59.20
+
+
+10/18/2023 06:47:07 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  288.46   4915.38   274.04  48.72   12.07    17.04    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.48  60.38
+
+
+10/18/2023 06:47:08 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  182.29   4037.50   250.00  57.83    4.53    22.15    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.83  41.25
+
+
+10/18/2023 06:47:09 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  280.00   5024.00   238.00  45.95   12.11    17.94    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.39  58.00
+
+
+10/18/2023 06:47:10 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  256.00   4300.00   256.00  50.00   17.49    16.80    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.48  54.00
+
+
+10/18/2023 06:47:11 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  341.00   5232.00   268.00  44.01   10.46    15.34    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.57  68.80
+
+
+10/18/2023 06:47:12 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  309.00   4216.00   225.00  42.13   15.07    13.64    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.66  59.60
+
+
+10/18/2023 06:47:13 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  304.00   4876.00   256.00  45.71   12.64    16.04    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.84  60.40
+
+
+10/18/2023 06:47:14 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  297.00   4964.00   310.00  51.07   12.15    16.71    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.61  64.80
+
+
+10/18/2023 06:47:15 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  253.00   4200.00   273.00  51.90   13.16    16.60    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.33  54.40
+
+
+10/18/2023 06:47:16 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  272.64   4781.13   270.75  49.83   14.18    17.54    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.87  57.36
+
+
+10/18/2023 06:47:17 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  237.23   4765.96   252.13  51.52    5.79    20.09    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.37  53.62
+
+
+10/18/2023 06:47:18 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  261.00   4536.00   200.00  43.38   12.93    17.38    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.38  54.80
+
+
+10/18/2023 06:47:19 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  293.00   4612.00   259.00  46.92   10.12    15.74    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.96  62.40
+
+
+10/18/2023 06:47:20 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  332.00   5176.00   292.00  46.79   14.50    15.59    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.82  65.60
+
+
+10/18/2023 06:47:21 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  300.00   4776.00   208.00  40.94   11.07    15.92    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.32  59.20
+
+
+10/18/2023 06:47:22 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  271.29   4598.02   200.00  42.44   10.86    16.95    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.95  53.86
+
+
+10/18/2023 06:47:23 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  292.93   4541.41   274.75  48.40   12.35    15.50    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.62  60.61
+
+
+10/18/2023 06:47:24 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  237.14   4102.86   192.38  44.79   10.20    17.30    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.42  52.57
+
+
+10/18/2023 06:47:25 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  233.33   5225.00   216.67  48.15    4.81    22.39    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.12  52.50
+
+
+10/18/2023 06:47:26 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  282.00   3988.00   155.00  35.47   17.06    14.14    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.81  53.60
+
+
+10/18/2023 06:47:27 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  289.00   5412.00   208.00  41.85   12.16    18.73    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.51  60.80
+
+
+10/18/2023 06:47:28 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  295.00   4316.00   242.00  45.07   12.06    14.63    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.56  60.80
+
+
+10/18/2023 06:47:29 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  305.00   5008.00   339.00  52.64   11.56    16.42    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.53  63.20
+
+
+10/18/2023 06:47:30 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  248.00   4600.00   238.00  48.97   12.11    18.55    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.00  50.40
+
+
+10/18/2023 06:47:31 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  281.00   4596.00   245.00  46.58   14.70    16.36    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.13  56.40
+
+
+10/18/2023 06:47:32 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  148.00   3824.00   188.00  55.95    4.86    25.84    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.72  40.00
+
+
+10/18/2023 06:47:33 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  288.00   4672.00   210.00  42.17   11.81    16.22    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.40  61.60
+
+
+10/18/2023 06:47:34 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  286.00   5048.00   264.00  48.00   11.14    17.65    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.19  59.60
+
+
+10/18/2023 06:47:35 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  305.00   4524.00   273.00  47.23   11.45    14.83    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.49  60.80
+
+
+10/18/2023 06:47:36 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  251.00   4612.00   175.00  41.08   13.69    18.37    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.44  54.40
+
+
+10/18/2023 06:47:37 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  234.95   3852.43   302.91  56.32   14.73    16.40    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.46  59.42
+
+
+10/18/2023 06:47:38 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  302.06   4973.20   217.53  41.87   10.82    16.46    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.27  64.74
+
+
+10/18/2023 06:47:39 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  286.41   4151.46   266.99  48.25   10.21    14.49    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.93  56.31
+
+
+10/18/2023 06:47:40 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  200.00   4779.38   246.39  55.20    4.35    23.90    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    0.87  47.84
+
+
+10/18/2023 06:47:41 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  264.36   4419.80   203.96  43.55   12.46    16.72    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.30  58.22
+
+
+10/18/2023 06:47:42 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  308.08   4630.30   278.79  47.50   12.96    15.03    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.99  61.41
+
+
+10/18/2023 06:47:43 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  298.00   4352.00   211.00  41.45   11.20    14.60    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.34  60.40
+
+
+10/18/2023 06:47:44 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  288.00   4908.00   348.00  54.72   11.42    17.04    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.29  57.20
+
+
+10/18/2023 06:47:45 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  295.00   4668.00   191.00  39.30   14.81    15.82    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.37  59.60
+
+
+10/18/2023 06:47:46 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  250.00   4404.00   215.00  46.24   13.06    17.62    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.26  50.80
+
+
+10/18/2023 06:47:47 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          8.00    192.00     0.00   0.00    7.88    24.00  219.00   4488.00   247.00  53.00    5.21    20.49    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.20  56.40
+
+
+10/18/2023 06:47:48 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  245.00   4476.00   163.00  39.95    8.92    18.27    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.19  50.00
+
+
+10/18/2023 06:47:49 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  304.00   4896.00   268.00  46.85   11.11    16.11    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.38  60.00
+
+
+10/18/2023 06:47:50 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  280.00   4420.00   260.00  48.15   16.45    15.79    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.61  57.60
+
+
+10/18/2023 06:47:51 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  264.00   4504.00   235.00  47.09   11.52    17.06    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.04  58.00
+
+
+10/18/2023 06:47:52 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  300.00   4908.00   233.00  43.71   13.20    16.36    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.96  66.00
+
+
+10/18/2023 06:47:53 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  256.44   4039.60   147.52  36.52   13.37    15.75    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.43  51.49
+
+
+10/18/2023 06:47:54 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  300.00   4938.46   254.81  45.93   12.23    16.46    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.67  61.54
+
+
+10/18/2023 06:47:55 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  251.58   4728.42   321.05  56.07    4.72    18.79    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    1.19  53.05
+
+
+10/18/2023 06:47:56 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  288.00   4704.00   266.00  48.01   11.26    16.33    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.24  63.20
+
+
+10/18/2023 06:47:57 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  236.63   4411.88   210.89  47.12    9.26    18.64    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.19  49.90
+
+
+10/18/2023 06:47:58 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  261.00   4524.00   247.00  48.62   11.77    17.33    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.07  54.80
+
+
+10/18/2023 06:47:59 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  279.00   4408.00   219.00  43.98   10.72    15.80    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.99  56.40
+
+
+10/18/2023 06:48:00 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  275.00   4652.00   238.00  46.39   16.76    16.92    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.61  59.20
+
+
+10/18/2023 06:48:01 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  262.00   4356.00   269.00  50.66   11.73    16.63    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.07  56.40
+
+
+10/18/2023 06:48:02 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  280.00   4900.00   271.00  49.18   12.05    17.50    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.37  58.40
+
+
+10/18/2023 06:48:03 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  247.00   4380.00   203.00  45.11    8.26    17.73    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.04  55.60
+
+
+10/18/2023 06:48:04 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  223.00   4348.00   219.00  49.55   10.88    19.50    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.43  48.00
+
+
+10/18/2023 06:48:05 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  260.00   4804.00   282.00  52.03   10.37    18.48    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.70  56.40
+
+
+10/18/2023 06:48:06 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  242.00   3664.00   173.00  41.69   14.29    15.14    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.46  48.80
+
+
+10/18/2023 06:48:07 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  222.00   3148.00   217.00  49.43   13.60    14.18    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.02  42.00
+
+
+10/18/2023 06:48:08 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  275.00   3524.00   290.00  51.33   15.01    12.81    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    4.13  50.00
+
+
+10/18/2023 06:48:09 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  267.00   3960.00   201.00  42.95   22.34    14.83    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    5.96  49.20
+
+
+10/18/2023 06:48:10 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  263.00   3900.00   247.00  48.43   13.05    14.83    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.43  48.80
+
+
+10/18/2023 06:48:11 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  218.00   3276.00   175.00  44.53   13.82    15.03    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.01  46.40
+
+
+10/18/2023 06:48:12 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  249.00   3672.00   189.00  43.15   12.50    14.75    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.11  50.00
+
+
+10/18/2023 06:48:13 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  219.00   3144.00   198.00  47.48   15.73    14.36    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.44  42.00
+
+
+10/18/2023 06:48:14 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  229.70   4015.84   304.95  57.04   15.98    17.48    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    3.67  45.15
+
+
+10/18/2023 06:48:15 PM
+Device            r/s     rkB/s   rrqm/s  %rrqm r_await rareq-sz     w/s     wkB/s   wrqm/s  %wrqm w_await wareq-sz     d/s     dkB/s   drqm/s  %drqm d_await dareq-sz     f/s f_await  aqu-sz  %util
+mmcblk0          0.00      0.00     0.00   0.00    0.00     0.00  224.24   3612.12   195.96  46.63   10.42    16.11    0.00      0.00     0.00   0.00    0.00     0.00    0.00    0.00    2.34  43.23
+
