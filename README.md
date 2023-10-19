@@ -13,8 +13,12 @@ To get started, install the proper dependencies via Anaconda.
 
 ```bash
 # Tensorflow CPU
-conda env create -f conda-cpu.yml
-conda activate benchmark
+conda create --name test_env_python39 python=3.9    
+conda activate benchmarkPython39
+pip install grpcio
+pip install google
+pip install --upgrade protobuf
+pip install numpy scipy psutil
 
 # Tensorflow GPU
 conda env create -f conda-gpu.yml
