@@ -1,6 +1,5 @@
 from utils import *
-from applications import image_processing, sentiment_analysis, aeneas, pocket_sphinx, object_detection_darknet_gpu, \
-    object_detection_darknet_gpu
+from applications import image_processing, sentiment_analysis, aeneas, pocket_sphinx, object_detection_darknet_cpu
 from protos import benchmark_pb2_grpc as pb2_grpc
 
 class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
@@ -41,9 +40,7 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         return detection_result
 
     def object_detection_darknet_gpu(self, request, context):
-        request_received_time_ms = current_milli_time()
-        detection_result = object_detection_darknet_gpu.detect(request, request_received_time_ms)
-        return detection_result
+        return request
 
     def pocket_sphinx(self, request, context):
         conversion_result = pocket_sphinx.convert_to_text(request)

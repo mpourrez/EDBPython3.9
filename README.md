@@ -23,8 +23,8 @@ pip install lxml
 cd aeneas
 pip install -r requirements.txt
 python setup.py install
-cd darknet
-make
+export PATH=/home/nano/Projects/darknet:$PATH
+export OPENBLAS_CORETYPE=ARMV8
 
 
 

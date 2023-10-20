@@ -2,11 +2,10 @@ import time
 import numpy as np
 from scipy import stats
 
-
+image_dataset_directory = "workloads/coco-dataset-val2017"  # image dataset (coco)
 
 def current_milli_time():
     return round(time.time() * 1000)
-
 
 def get_avg_without_outlier(data_list):
     # return sum(data_list) / len(data_list)
