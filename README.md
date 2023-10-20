@@ -15,8 +15,18 @@ To get started, install the proper dependencies via Anaconda.
 # Tensorflow CPU
 conda create --name benchmarkPython39 python=3.9    
 conda activate benchmarkPython39
-pip install grpcio google numpy scipy psutil Pillow nltk textblob
+pip install grpcio google numpy scipy psutil Pillow nltk textblob pocketsphinx
 pip install --upgrade protobuf
+sudo apt-get install libxml2-dev
+sudo apt-get install libxslt-dev
+pip install lxml
+cd aeneas
+pip install -r requirements.txt
+python setup.py install
+cd darknet
+make
+
+
 
 # Tensorflow GPU
 conda env create -f conda-gpu.yml
