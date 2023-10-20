@@ -1,4 +1,5 @@
 from utils import *
+from applications import image_processing, sentiment_analysis, aeneas, pocket_sphinx
 from protos import benchmark_pb2_grpc as pb2_grpc
 
 class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
@@ -9,10 +10,14 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         self.resource_tracing_process = None
 
     def image_processing(self, request, context):
-        return request
+        request_received_time_ms = current_milli_time()
+        processing_result = image_processing.resize_image(request, request_received_time_ms)
+        return processing_result
 
     def sentiment_analysis(self, request, context):
-        return request
+        request_received_time_ms = current_milli_time()
+        analysis_result = sentiment_analysis.analyze_sentiment(request, request_received_time_ms)
+        return analysis_result
 
     def speech_to_text(self, request, context):
         return request
@@ -36,10 +41,12 @@ class ApplicationBenchmarksGRPCService(pb2_grpc.ApplicationBenchmarksServicer):
         return request
 
     def pocket_sphinx(self, request, context):
-        return request
+        conversion_result = pocket_sphinx.convert_to_text(request)
+        return conversion_result
 
     def aeneas(self, request, context):
-        return request
+        speech_to_text_result = aeneas.align_speech_text(request)
+        return speech_to_text_result
 
     def object_tracking(self, request, context):
         return request

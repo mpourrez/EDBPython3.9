@@ -15,7 +15,7 @@ To get started, install the proper dependencies via Anaconda.
 # Tensorflow CPU
 conda create --name benchmarkPython39 python=3.9    
 conda activate benchmarkPython39
-pip install grpcio google numpy scipy psutil
+pip install grpcio google numpy scipy psutil Pillow nltk textblob
 pip install --upgrade protobuf
 
 # Tensorflow GPU
